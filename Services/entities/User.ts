@@ -4,7 +4,7 @@ import { Transaction } from "./Transaction";
 @Entity('users')
 export class User{
 
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn('identity')
     id?: string
 
     //identity
@@ -25,6 +25,27 @@ export class User{
 
     @Column('varchar', { unique: true })
     email?: string
+
+    @Column("text")
+    address?: string
+
+    @Column('text')
+    country?: string
+
+    //Account infos
+    
+    @Column('double', { default: 0.0 })
+    balance: number = 0
+
+    @Column('double')
+    creationDate?: number
+
+    @Column('text')
+    passwordHash?: string
+
+    @Column('text')
+    passwordSecret?: string
+
 
 
     //verifications
