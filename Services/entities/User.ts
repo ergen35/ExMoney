@@ -4,7 +4,7 @@ import { Transaction } from "./Transaction";
 @Entity('users')
 export class User{
 
-    @PrimaryGeneratedColumn('identity')
+    @PrimaryGeneratedColumn('uuid')
     id?: string
 
     //identity
@@ -20,7 +20,7 @@ export class User{
     @Column('varchar')
     sex?: 'Male' | 'Female' = 'Male'
 
-    @Column('varchar', { unique: true })
+    @Column('varchar')
     phone?: string
 
     @Column('varchar', { unique: true })

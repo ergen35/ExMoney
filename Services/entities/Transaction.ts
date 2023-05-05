@@ -24,6 +24,9 @@ export class Transaction{
     @Column('double')
     rate = 0
 
+    @Column('varchar')
+    status!:  'accepted' | 'processing' | 'finished' | 'rejected'
+
     //relations
     @ManyToOne(() => User, u => u.transactions)
     transactionActor?: User
