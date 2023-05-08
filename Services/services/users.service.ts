@@ -15,7 +15,7 @@ module.exports = {
     actions: {
 
         register:{
-
+ 
             rest: 'POST /register',
            
             params: {
