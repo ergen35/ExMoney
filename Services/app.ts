@@ -1,13 +1,16 @@
 import 'reflect-metadata'
 
 import { ServiceBroker } from 'moleculer';
+import { AppDataSource } from './data/data-sources';
 
 const brokerZero = new ServiceBroker({
     namespace: "dev",
     transporter: "NATS",
 
     logger: true,
+    
     hotReload: true,
+
     logLevel: "info",
     metadata: {
 
@@ -15,6 +18,7 @@ const brokerZero = new ServiceBroker({
 
     started()
     {
+        
         //TODO: too multiple
         //Create & Init database if not exists  
         // function createDatabaseIfNotExists(dataSource: DataSource) {

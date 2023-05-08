@@ -1,7 +1,6 @@
-import { ServiceSchema, ServiceSettingSchema } from 'moleculer'
+import { Errors as MolErrors, ServiceSchema, ServiceSettingSchema } from 'moleculer'
 import { AppDataSource, User } from '../data/data-sources'
 import { Currency } from '../entities/Currency'
-import { Errors as MolErrors } from 'moleculer'
 import { Transaction } from '../entities/Transaction'
 
 
@@ -19,8 +18,8 @@ module.exports = {
             params:{
                 userId: 'string',
 
-                baseCurrencyId: 'string',
-                changeCurrencyId: 'string',
+                baseCurrencyId: 'number',
+                changeCurrencyId: 'number',
                 amount: { type: 'number', positive: 'true' },
             },
 
@@ -29,16 +28,10 @@ module.exports = {
                 //verify Currencies
                 const currenciesRepos = AppDataSource.getRepository(Currency)
                 
-                //FIXME: call currency service
-                const baseCurrency = await currenciesRepos.findOneBy({
-                    id: ctx.params.baseCurrencyId
-                });
                 
-                //FIXME: call currency service
-                const changeCurrency = await currenciesRepos.findOneBy({
-                    id: ctx.params.changeCurrencyId
-                });
-
+                // use 'mcall' to simplify
+                const baseCurrency: Currency | null = await ctx.call('v1.currencies.getById', { id: ctx.params.baseCurrencyId })
+                const changeCurrency: Currency | null = await ctx.call('v1.currencies.getById', { id: ctx.params.changeCurrencyId })
                 const user: User = await ctx.call('v1.users.getById', { id: ctx.params.userId })
 
                 if(!user){

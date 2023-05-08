@@ -13,7 +13,7 @@ let AppDataSource = new DataSource({
     database: "exmoneydb",
     username: 'root',
     password: '',
-    synchronize: true,
+    synchronize: false,
     entities: [User, Transaction, Currency],
 
     migrations: [],
@@ -49,6 +49,7 @@ export {
 
     AppDataSource,
     Transaction,
-    User
+    User,
+    Currency
 
 }

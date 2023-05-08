@@ -187,7 +187,7 @@ module.exports = {
         
         update: {
 
-            rest: 'POST /update',
+            rest: 'PUT /update',
             params: {
                 id: 'string',
 
