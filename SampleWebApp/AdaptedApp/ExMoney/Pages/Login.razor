@@ -11,21 +11,14 @@
 
 <div class="row">
 
-    <EditForm Model=@Input OnInvalidSubmit="OnValidSubmit">
-        @if (Input.isEmail)
-        {
-            <div class="mb-4">
-                <label for="EmailAddress" class="form-label">Adresse e-mail</label>
-                <InputText type="email"  @bind-Value=@Input.EmailAddress class="form-control rounded-2"  autocomplete="email" />
-            </div>
-        }
-        else
-        {
-            <div class="mb-4">
-                <label for="Phone" class="form-label">Numéro Tél.</label>
-                <InputText @bind-Value=@Input.Phone class="form-control rounded-2" type="tel"  autocomplete="phone"/>
-            </div>
-        }
+    <EditForm Model=@Input OnSubmit="OnLoginSubmit">
+        
+        <DataAnnotationsValidator />
+        
+        <div class="mb-4">
+            <label for="EmailAddress" class="form-label">Adresse e-mail</label>
+            <InputText type="email"  @bind-Value=@Input.EmailAddress class="form-control rounded-2"  autocomplete="email" />
+        </div>  
 
         <div class="mb-4">
             <label for="Password" class="form-label">Mot de passe</label>
@@ -34,7 +27,19 @@
 
         <div class="text-center">
             <button type="submit" class="btn btn-primary btn-block btn-lg shadow-sm">
-               <span class="fas fa-lock me-2"></span> Me Connecter
+             @if(isSubmitting){
+                 <span> 
+                    <div class="spinner-border text-white mx-2 spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span> 
+                    </div>
+                 </span>
+             }
+             else
+             {
+                <span>
+                  <span class="fas fa-lock me-2"></span> Me Connecter
+                </span>
+             }
             </button>
         </div>
     </EditForm>

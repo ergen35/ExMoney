@@ -1,13 +1,20 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ExMoney.Data;
+using ExMoney.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Configuration
+builder.Configuration["AuthBaseAddress"] = "http://localhost:3000";
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddLogging();
+
+builder.Services.AddTransient<AuthService>();
 
 var app = builder.Build();
 
@@ -19,7 +26,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 

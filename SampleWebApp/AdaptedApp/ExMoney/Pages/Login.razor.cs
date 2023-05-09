@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
 using ExMoney;
 using ExMoney.Shared;
+using ExMoney.Services;
 using ExMoney.Pages.Shared;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,20 +21,39 @@ namespace ExMoney.Pages
 {
     public partial class Login
     {
+        [Inject] public AuthService authService { get; set; }
+        [Inject] public ILogger<Login> logger { get; set; }
+        [Inject] public NavigationManager navManager { get; set; }
         public LoginModel Input { get; set; } = new();
+        public bool isSubmitting  = false;
 
-
-        public void OnValidSubmit(EditContext ctx)
+        public async Task OnLoginSubmit(EditContext ctx)
         {
+            isSubmitting = true; StateHasChanged();
             
+            //delay
+            await Task.Delay(TimeSpan.FromSeconds(3));
+
+            var isValid = ctx.Validate();
+            if(!isValid) {
+                logger.LogError("Form is not valid");
+                return;
+            }
+
+            //form is valid
+            var token = await authService.Login(Input.EmailAddress, Input.Password, true);
+
+            isSubmitting = false; StateHasChanged();
+
+            if(!string.IsNullOrWhiteSpace(token))
+            {
+                navManager.NavigateTo("/account/dahsboard");
+            }
         }
     }
 
     public class LoginModel
     {
-        [Required, Phone]
-        public string Phone { get; set; }
-
         [Required, EmailAddress]
         public string EmailAddress { get; set; }
 

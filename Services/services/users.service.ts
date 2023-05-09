@@ -92,14 +92,14 @@ module.exports = {
                 isEmail: { type: "boolean", default: true }
             },
 
-            handler(ctx){
+            async handler(ctx){
 
                 let user = null
                 const usersRepos = AppDataSource.getRepository(User);
 
                 if(ctx.params.isEmail === true){
 
-                    user = usersRepos.findOneBy({
+                    user = await usersRepos.findOneBy({
                         email: ctx.params.username
                     });
 
@@ -109,7 +109,7 @@ module.exports = {
                 }
                 else
                 {
-                    user = usersRepos.findOneBy({
+                    user = await usersRepos.findOneBy({
                         phone: ctx.params.username
                     })
                     
@@ -118,7 +118,10 @@ module.exports = {
                     } 
                 }
                 
-            
+                
+                if(user){
+
+                }
                 //TODO: user exists: log user | return login token
                 return {
                     token: "lkedzekldeckldceazckdhjedaz"
