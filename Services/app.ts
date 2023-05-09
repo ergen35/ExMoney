@@ -16,6 +16,8 @@ const brokerZero = new ServiceBroker({
 
     },
 
+    // serializer: { },  //TODO: Define a correct serializer that accepts PascalCase and CamelCase as same
+    
     started()
     {
         

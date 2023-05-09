@@ -25,4 +25,9 @@ public class AuthService
         else 
             return null;        
     }
+
+    public async Task Register(){
+
+
+    }
 }
