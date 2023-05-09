@@ -1,0 +1,57 @@
+@page "/auth/login"
+
+@layout AuthLayout
+
+
+<div class="row my-5">
+    <div class="col-12 text-center">
+        <span class="display-3 text-primary">Connexion</span>
+    </div>
+</div>
+
+<div class="row">
+
+    <EditForm Model=@Input OnInvalidSubmit="OnValidSubmit">
+        @if (Input.isEmail)
+        {
+            <div class="mb-4">
+                <label for="EmailAddress" class="form-label">Adresse e-mail</label>
+                <InputText type="email"  @bind-Value=@Input.EmailAddress class="form-control rounded-2"  autocomplete="email" />
+            </div>
+        }
+        else
+        {
+            <div class="mb-4">
+                <label for="Phone" class="form-label">Numéro Tél.</label>
+                <InputText @bind-Value=@Input.Phone class="form-control rounded-2" type="tel"  autocomplete="phone"/>
+            </div>
+        }
+
+        <div class="mb-4">
+            <label for="Password" class="form-label">Mot de passe</label>
+            <InputText @bind-Value=@Input.Password  class="form-control rounded-2" type="password"/>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-block btn-lg shadow-sm">
+               <span class="fas fa-lock me-2"></span> Me Connecter
+            </button>
+        </div>
+    </EditForm>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="text-center">
+            <a class="btn btn-outline-danger border-0 btn-sm">Mot de passe Oublié ?</a>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-1">
+    <div class="col-12">
+        <div class="text-center">
+            <a href="/auth/register" class="btn btn-outline-secondary btn-sm border-0 text-primary">Inscription ?</a>
+        </div>
+    </div>
+</div>
