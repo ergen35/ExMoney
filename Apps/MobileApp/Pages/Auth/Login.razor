@@ -1,3 +1,49 @@
 @page "/auth/login"
+@layout AuthLayout
 
-<p>LOgin Here Hehe</p>
+
+<div class="row">
+    <div class="">[Logo] ExMoney</div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="mb-2">
+            <span>Connexion</span>
+        </div>
+    </div>
+</div>
+
+<EditForm class="row">
+    <div class="col-12">
+        <div class="form-outline mb-3">
+            <input type="text" id="form1" class="form-control" />
+            <label class="form-label" for="form1" style="margin-left: 0px">Adresse e-mail ou Tél.</label>
+            <div class="form-notch">
+                <div class="form-notch-leading" style="width: 9px"></div>
+                <div class="form-notch-middle" style="width: 88.8px"></div>
+                <div class="form-notch-trailing"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-auto">
+        <div class="form-outline">
+            <input type="password" class="form-control" id="inputPassword2" placeholder="Password" autocomplete="off"
+                style="
+                          background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAUBJREFUOBGVVE2ORUAQLvIS4gwzEysHkHgnkMiEc4zEJXCMNwtWTmDh3UGcYoaFhZUFCzFVnu4wIaiE+vvq6+6qTgthGH6O4/jA7x1OiCAIPwj7CoLgSXDxSjEVzAt9k01CBKdWfsFf/2WNuEwc2YqigKZpK9glAlVVwTTNbQJZlnlCkiTAZnF/mePB2biRdhwHdF2HJEmgaRrwPA+qqoI4jle5/8XkXzrCFoHg+/5ICdpm13UTho7Q9/0WnsfwiL/ouHwHrJgQR8WEwVG+oXpMPaDAkdzvd7AsC8qyhCiKJjiRnCKwbRsMw9hcQ5zv9maSBeu6hjRNYRgGFuKaCNwjkjzPoSiK1d1gDDecQobOBwswzabD/D3Np7AHOIrvNpHmPI+Kc2RZBm3bcp8wuwSIot7QQ0PznoR6wYSK0Xb/AGVLcWwc7Ng3AAAAAElFTkSuQmCC');
+                          background-repeat: no-repeat;
+                          background-attachment: scroll;
+                          background-size: 16px 18px;
+                          background-position: 98% 50%;
+                        " />
+            <label class="form-label" for="inputPassword2" style="margin-left: 0px">Password</label>
+            <div class="form-notch">
+                <div class="form-notch-leading" style="width: 9px"></div>
+                <div class="form-notch-middle" style="width: 64px"></div>
+                <div class="form-notch-trailing"></div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Me Connecter</button>
+</EditForm>
