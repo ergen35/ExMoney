@@ -1,5 +1,7 @@
 @page "/account/make-exchange"
 
+@using Microsoft.AspNetCore.WebUtilities
+
 @inject Backend backend
 @inject NavigationManager navManager
 
@@ -13,7 +15,7 @@ else
 {
     <div>
         select base currency : 
-        <select name="baseCurency" id="baseCurency" @bind=@baseCurrencyId>
+        <select name="baseCurency" id="baseCurency" @bind=@BaseCurrencyId>
             @foreach(var c in Currencies)
             {
                 <option value="@c.Id">@c.Name (@c.Symbol)</option>
@@ -21,7 +23,7 @@ else
         </select> <br>
 
         select change currency
-        <select name="changeCurrency" id="changeCurrency" @bind=@changeCurrencyId>
+        <select name="changeCurrency" id="changeCurrency" @bind=@ChangeCurrencyId>
             @foreach(var c in Currencies)
             {
                 <option value="@c.Id">@c.Name (@c.Symbol)</option>
@@ -39,14 +41,21 @@ else
 
     public List<Currency> Currencies { get; set; }
 
-    public int baseCurrencyId { get; set; }
-    public int changeCurrencyId { get; set; }
+    public int BaseCurrencyId { get; set; }
+    public int ChangeCurrencyId { get; set; }
 
     public double Amount { get; set; } = 0.0;
 
     public void ContinueToConfig()
     {
-        navManager.NavigateTo($"/account/make-exchange/configure-payment?BaseCurrencyId={baseCurrencyId}&ChangeCurrencyId={changeCurrencyId}&Amount={Amount}");
+        var queries = new Dictionary<string, string>()
+                .Append(new("baseCurrencyId", BaseCurrencyId.ToString()))
+                .Append(new("changeCurrencyId", ChangeCurrencyId.ToString()))
+                .Append(new("amount", Amount.ToString()));
+    
+        var nextUri = QueryHelpers.AddQueryString("/account/make-exchange/configure-payment", queries);
+
+        navManager.NavigateTo(nextUri);
     }
     
     protected override async Task OnInitializedAsync()
