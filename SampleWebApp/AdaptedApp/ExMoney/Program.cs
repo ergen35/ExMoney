@@ -1,4 +1,3 @@
-using ExMoney.Data;
 using ExMoney.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +9,8 @@ builder.Configuration["BackendBaseAddress"] = "http://localhost:3000";
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddLogging();
-
 builder.Services.AddHttpClient();
+builder.Services.AddLogging();
 
 //Add backend HttpClients
 builder.Services.AddScoped<Backend>();

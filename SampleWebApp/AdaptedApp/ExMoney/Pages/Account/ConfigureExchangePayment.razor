@@ -2,13 +2,23 @@
 
 @inject Backend backend
 
-
-<span>
-    Here to configure payment... <br>
-    <span>Base currency: @Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name</span> <br>
-    <span>Change currency: @Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name</span> <br>
-    <span>Transaction Amount: @Amount</span> <br>
-</span>
+@if(Currencies is null)
+{
+    <span>Loading...</span>
+}
+else
+{
+    <span>There are @Currencies.Count() currencies available</span>
+    <span>@ChangeCurrencyId</span> <br>
+    <span>@Amount</span> <br>
+    <span>@BaseCurrencyId</span> <br>
+    <span>
+        Here to configure payment... <br>
+        <span>Base currency: @Currencies.Where(c => c.Id == BaseCurrencyId).FirstOrDefault()?.Symbol</span> <br>
+        <span>Change currency:@Currencies.Where(c => c.Id == ChangeCurrencyId).FirstOrDefault()?.Symbol</span> <br>
+        <span>Transaction Amount: @Amount</span> <br>
+    </span>
+}
 
 @code{
 
@@ -18,12 +28,7 @@
 
     public List<Currency> Currencies { get; set; }
 
-    protected override Task OnInitializedAsync()
-    {
-        return base.OnInitializedAsync();
-    }
-
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
         Currencies = await backend.ListCurrencies();
     }
