@@ -1,0 +1,30 @@
+@page "/account/infos"
+@inject Backend backend
+
+Theses are my account infos
+
+<p>
+   @if(CurrentUser is not null)
+   {
+        <span>
+             @(System.Text.Json.JsonSerializer.Serialize(CurrentUser, new System.Text.Json.JsonSerializerOptions(){
+                WriteIndented = true
+            }))
+        </span>
+   }
+   else{
+        <span>Chargement...</span>
+   }
+</p>
+
+
+@code{
+
+    public User CurrentUser { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
+        CurrentUser = await backend.GetUserById(userId);
+    }
+
+}

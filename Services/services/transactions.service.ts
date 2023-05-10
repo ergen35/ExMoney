@@ -1,4 +1,4 @@
-import { Errors as MolErrors, ServiceSchema, ServiceSettingSchema } from 'moleculer'
+import Moleculer, { Errors as MolErrors, ServiceSchema, ServiceSettingSchema } from 'moleculer'
 import { AppDataSource, User } from '../data/data-sources'
 import { Currency } from '../entities/Currency'
 import { Transaction } from '../entities/Transaction'
@@ -65,9 +65,38 @@ module.exports = {
                 throw new MolErrors.MoleculerClientError('internal server error', 500)
             }
 
+        },
+
+        list: {
+            rest: "GET /list/:userId",
+
+            cache: true,
+            
+            params: {
+                userId: "string"
+            },
+
+            async handler(ctx){
+                
+                //find user
+                const user = await AppDataSource.getRepository(User).findOne({
+                    where:  {
+                        id: ctx.params.userId
+                    },
+                    relations: {
+                        transactions: true
+                    }
+                });
+
+                if(!user){
+                    return new Moleculer.Errors.MoleculerClientError('transaction actor not found', 404)
+                }
+                
+                if(user.transactions)
+                    return user.transactions;
+                return [];
+            }
         }
-
-
     }
 
 
