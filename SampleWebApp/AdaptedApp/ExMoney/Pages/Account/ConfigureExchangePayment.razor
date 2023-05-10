@@ -1,0 +1,31 @@
+@page "/account/make-exchange/configure-payment"
+
+@inject Backend backend
+
+
+<span>
+    Here to configure payment... <br>
+    <span>Base currency: @Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name</span> <br>
+    <span>Change currency: @Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name</span> <br>
+    <span>Transaction Amount: @Amount</span> <br>
+</span>
+
+@code{
+
+    [Parameter] public int ChangeCurrencyId { get; set; }
+    [Parameter] public int BaseCurrencyId { get; set; }
+    [Parameter] public double Amount { get; set; }
+
+    public List<Currency> Currencies { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Currencies = await backend.ListCurrencies();
+    }
+}
+

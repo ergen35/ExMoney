@@ -93,7 +93,8 @@ module.exports = {
 
         list:{
             rest: "GET /list",
-
+            
+            cache: true,
             async handler(ctx){
 
                 return await AppDataSource.manager.find(Currency);

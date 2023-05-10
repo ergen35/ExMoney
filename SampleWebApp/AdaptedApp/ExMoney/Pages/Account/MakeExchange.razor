@@ -1,0 +1,59 @@
+@page "/account/make-exchange"
+
+@inject Backend backend
+@inject NavigationManager navManager
+
+This is the page to make exchanges
+
+@if(Currencies is null)
+{
+    <span>Chargement...</span>
+}
+else
+{
+    <div>
+        select base currency : 
+        <select name="baseCurency" id="baseCurency" @bind=@baseCurrencyId>
+            @foreach(var c in Currencies)
+            {
+                <option value="@c.Id">@c.Name (@c.Symbol)</option>
+            }
+        </select> <br>
+
+        select change currency
+        <select name="changeCurrency" id="changeCurrency" @bind=@changeCurrencyId>
+            @foreach(var c in Currencies)
+            {
+                <option value="@c.Id">@c.Name (@c.Symbol)</option>
+            }
+        </select> <br>
+
+        Entrer le montant: <input type="number" @bind-value=@Amount name="" id="" step="0.1"> <br>
+
+
+        <button class="btn btn-outline-secondary" @onclick="ContinueToConfig">Continuer</button>
+    </div>
+}
+
+@code {
+
+    public List<Currency> Currencies { get; set; }
+
+    public int baseCurrencyId { get; set; }
+    public int changeCurrencyId { get; set; }
+
+    public double Amount { get; set; } = 0.0;
+
+    public void ContinueToConfig()
+    {
+        navManager.NavigateTo($"/account/make-exchange/configure-payment?baseCurrencyId={baseCurrencyId}&changeCurrencyId={changeCurrencyId}&amount={Amount}");
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        //load currencies
+        Currencies = await backend.ListCurrencies(); 
+    }
+
+}
+

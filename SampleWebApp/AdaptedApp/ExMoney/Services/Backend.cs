@@ -42,4 +42,13 @@ public class Backend
     }
 
     #endregion
+
+
+    #region Currencies
+        
+    public Task<List<Currency>> ListCurrencies()
+    {
+        return client.GetFromJsonAsync<List<Currency>>("/api/v1/currencies/list");
+    }
+    #endregion
 }
