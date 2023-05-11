@@ -3,8 +3,8 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light rounded-2 shadow-sm mx-3 mt-2 shadow-inner mb-4">
     <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-primary shadow-0 rounded-0">
-            <i class="fa fa-bars"></i>
+        <button type="button" id="sidebarCollapse" class="btn btn-outline-primary border-0 shadow-0 rounded-0" @onclick="ShowMenu">
+            <i class="fa fa-bars fs-3"></i>
         </button>
         <span class="badge badge-secondary fs-6 rounded-pill me-n2">
             XOF 7676 <span class="fas fa-money-bill ms-1 me-1"></span>
@@ -15,3 +15,19 @@
 <main role="main" class="container-fluid">
     @Body
 </main>
+
+
+@code{
+
+    [CascadingParameter] public IModalService modalService { get; set; }
+
+    public void ShowMenu()
+    {
+        var modalRef = modalService.Show<AppMenu>("", new ModalOptions(){
+            DisableBackgroundCancel = false,
+            Size = ModalSize.Automatic,
+            Class = "p-0 bg-light mx-2"   
+        });
+    }
+
+}

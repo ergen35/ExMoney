@@ -1,4 +1,5 @@
 using ExMoney.Services;
+using Blazored.Modal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddLogging();
 //Add backend HttpClients
 builder.Services.AddScoped<Backend>();
 builder.Services.AddTransient<AuthService>();
+
+//add blazored modal
+builder.Services.AddBlazoredModal();
 
 var app = builder.Build();
 
