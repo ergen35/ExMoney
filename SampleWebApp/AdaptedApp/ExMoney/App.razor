@@ -3,13 +3,15 @@
     Size="ModalSize.Automatic" Position="ModalPosition.Middle">
     <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(PagesLayout)" />
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
+                <p role="alert">
+                    Il n'y a rien à voir ici, allez, <span class="fs-2 fw-bolder fst-italic">ouste</span>!
+                </p>
             </LayoutView>
         </NotFound>
     </Router>
