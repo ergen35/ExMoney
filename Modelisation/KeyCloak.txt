@@ -1,0 +1,39 @@
+Realm: exmoney
+
+...........
+Groups: Users, Admins
+
+...........
+Realm Roles: [Admin, User]
+
+..........
+Clients:
+- exmoney-mobile-app: [public]
+- exmoney-admin-webapp: [confidential]
+- exmoney-backend-services: [confidential]
+
+..........
+All Scopes:
+users:create
+users:read
+users:update
+users:delete
+users:activate
+users:deactivate
+---
+transactions:create
+transactions:read
+transactions:cancel
+---
+currencies:create
+currencies:read
+currencies:update
+currencies:delete
+
+Roles[User].Scopes = [users:read, users:update, transactions:create, transactions:read,
+		      transactions:list, currencies:read, transactions:cancel, currencies:list]
+
+Roles[Admin].Scopes = [users:read, users:list, transactions:read, transactions:delete
+			transactions:list, transactions:cancel, currencies:create, 
+			currencies:read,currencies:update, currencies:delete, 
+			currencies:list, users:activate, users:deactivate]
