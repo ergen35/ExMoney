@@ -3,27 +3,11 @@ import { AppDataSource, User } from '../data/data-sources';
 import { Errors as MolErrors} from 'moleculer'
 import { hashSync, genSaltSync } from 'bcrypt'
 
-class AuthMixin implements ServiceSchema<ServiceSettingSchema>
-{
-    //TODO: Create an Auth Mixin that get roles and scopes and wrap them up
-    name = "auth service"
-
-    methods?: ServiceMethods | undefined = {
-
-        userHasRole(ctx: Moleculer.Context){
-            
-        }
-
-    }
-} 
 
 module.exports = {
 
     name: 'users',
     version: 1,
-
-    //TODO: auth mixin
-    // mixins: [AuthMixin],
 
     settings: {
 
