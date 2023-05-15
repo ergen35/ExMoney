@@ -2,6 +2,7 @@ import * as ApiGateway from "moleculer-web"
 import { default as ApiGatewayOptions } from "moleculer-web"
 import Moleculer, { ServiceSchema, ServiceSettingSchema } from 'moleculer'
 
+
 //TODO: npm install jsonwebtoken
 
 
@@ -38,12 +39,14 @@ module.exports = {
         {
             //extract authorizeHeader from headers
             let authHeader = req.headers.authorization;
-
+            
             if(!authHeader || !authHeader.startsWith("Bearer")){
                 return Promise.reject(new ApiGatewayOptions.Errors.UnAuthorizedError(ApiGatewayOptions.Errors.ERR_NO_TOKEN, req))
             }
 
             const accessToken = authHeader.slice(7);
+
+
             
             //TODO: use access token to fetch ID token
             //TODO: verify then decode ID token
