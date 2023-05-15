@@ -15,6 +15,6 @@ namespace ExMoney.SharedLibs
         public string Name { get; set; }
 
         [Url]
-        public string? ValueProviderUrl { get; set; } = string.Empty;
+        public string ValueProviderUrl { get; set; } = string.Empty;
     }
 }
