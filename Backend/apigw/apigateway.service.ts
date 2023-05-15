@@ -30,7 +30,7 @@ module.exports = {
 
         
     },
-
+    
     methods: {
 
         authenticate(ctx: Moleculer.Context, route: ApiGateway.Route, 
