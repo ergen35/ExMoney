@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using ExMoney.SharedLibs;
 using ExMoney.SharedLibs.DTOs;
 using ExMoney.Backend.Data;
@@ -35,9 +34,60 @@ public class CurrenciesController: ControllerBase
     }
 
     [HttpPost("add")]
-    public Task<ActionResult<Currency>> Add(CurrencyCreateDTO data)
+    public async Task<ActionResult<Currency>> Add(CurrencyCreateDTO data)
     {
         var currency = mapper.Map<Currency>(data);
-        if(ModelState.)
+
+        try
+        {
+            await db.Currencies.AddAsync(currency);
+        }
+        catch (System.Exception)
+        {
+            return new ObjectResult(new ProblemDetails{
+                Status = 500,
+                Title = "Unknowerror"
+            });
+        }
+
+        return Created(nameof(Add), currency);      
     }
+
+
+    [HttpPut("update/{id:int}")]
+    public async Task<ActionResult<Currency>> Add(int id, CurrencyCreateDTO data)
+    {
+        // var currency = mapper.Map<Currency>(data);
+        var currency = await db.Currencies.FindAsync(id);
+        if(currency is null)
+            return NotFound();
+        
+        currency = mapper.Map(data, currency);
+        
+        try
+        {
+            db.Currencies.Update(currency);
+        }
+        catch (Exception){
+            return new ObjectResult(new ProblemDetails{
+                Status = 500,
+                Title = "Unknowerror"
+            });   
+        }
+        
+        return Accepted(currency);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var currency = await db.Currencies.FindAsync(id);
+        if(currency is null)
+            return NotFound();
+        
+        db.Remove(currency);
+
+        return NoContent(); 
+    }
+
 }
