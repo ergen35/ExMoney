@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="automapper.extensions.microsoft.dependencyinjection" Version="11.0.0" />
+    <PackageReference Include="Keycloak.AuthServices.Authentication" Version="1.5.1" />
+    <PackageReference Include="Keycloak.AuthServices.Authorization" Version="1.5.1" />
     <PackageReference Include="masstransit" Version="8.0.13" />
     <PackageReference Include="masstransit.grpc" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspnetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
