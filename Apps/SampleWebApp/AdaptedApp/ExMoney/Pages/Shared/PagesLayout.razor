@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
+@inject NavigationManager navManager
 
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light rounded-2 shadow-sm mx-3 mt-2 shadow-inner mb-4">
+@* <nav class="navbar navbar-expand-lg navbar-light bg-light rounded-2 shadow-sm mx-3 mt-2 shadow-inner mb-4 morphic-navbar">
     <div class="container-fluid">
         <button type="button" id="sidebarCollapse" class="btn btn-outline-primary border-0 shadow-0 rounded-0" @onclick="ShowMenu">
             <i class="fa fa-bars fs-3"></i>
@@ -10,12 +10,59 @@
             XOF 7676 <span class="fas fa-money-bill ms-1 me-1"></span>
         </span>
     </div>
-</nav>
+</nav> *@
 
-<main role="main" class="container-fluid">
+<main role="main" class="">
     @Body
 </main>
 
+<footer>
+    <div class="fixed-bottom">
+        <div class="menu-buttons-list px-3 mb-3 text-center border border-light border-2 rounded-7 mx-2 py-2">
+            
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-3" @onclick=@(() => { navManager.NavigateTo("/account/dashboard"); })>
+                <span class="fas fa-tachometer-alt text-warning fa-2x"></span>
+            </button>
+
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-3" @onclick=@(() => { navManager.NavigateTo("/account/transactions"); })>
+                <span class="fas fa-list text-warning fa-2x"></span>
+            </button>
+
+             <button class="btn btn-primary rounded-circle size-45 p-0 me-2" @onclick=@(() => { navManager.NavigateTo("/account/make-exchange"); })>
+                <span class="fas fa-plus text-light fa-2x"></span>
+            </button>
+
+            
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-2" @onclick=@(() => { navManager.NavigateTo("/account/infos"); })>
+                <span class="fas fa-user text-warning fa-2x"></span>
+            </button>
+
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-2" @onclick=@(() => { navManager.NavigateTo("/settings"); })>
+                <span class="fas fa-cogs text-warning fa-2x"></span>
+            </button>
+        </div>
+    </div>
+</footer>
+
+<style>
+    body{
+        background-image: url(images/genbg2.jpg);
+        background-position: bottom;
+    }
+    div.menu-buttons-list{
+        justify-items: center;
+        @* height: 6px; *@
+    }
+
+    .size-40{
+        height: 43px;
+        width: 43px;
+    }
+    .size-45{
+        height: 55px;
+        width: 55px;
+    }
+</style>
 
 @code{
 
