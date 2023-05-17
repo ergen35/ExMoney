@@ -1,4 +1,5 @@
 using ExMoney.Backend.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -22,6 +23,10 @@ builder.Services.AddDbContext<BackendDbContext>(options =>
     options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
 });
 
+
+//TODO: add authentication & authorization 
+
+
 //-- 
 var app = builder.Build();
 
@@ -31,8 +36,9 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.UseAuthorization();
-app.UseAuthentication();
+//TODO: add authentication & authorization 
+// app.UseAuthorization();
+// app.UseAuthentication();
 
 app.MapControllers();
 

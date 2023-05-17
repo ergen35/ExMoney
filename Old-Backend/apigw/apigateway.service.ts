@@ -1,9 +1,7 @@
 import * as ApiGateway from "moleculer-web"
 import { default as ApiGatewayOptions } from "moleculer-web"
 import Moleculer, { ServiceSchema, ServiceSettingSchema } from 'moleculer'
-
-
-//TODO: npm install jsonwebtoken
+import { verify, decode, sign } from "jsonwebtoken"
 
 
 module.exports = {
@@ -18,11 +16,12 @@ module.exports = {
 
                 aliases: {},
 
+                //TODO: enable authentication & authorization
                 //Enable authorization
-                authorize: true,
+                authorize: false,
 
                 //Enable authentication
-                authenticate: true,
+                authenticate: false,
 
                 //Enable auto aliases feature
                 autoAliases: true,

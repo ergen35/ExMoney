@@ -2,7 +2,7 @@
 
 @using Microsoft.AspNetCore.WebUtilities
 
-@inject Backend backend
+@inject IExMoneyCurrenciesApi currenciesApi
 @inject NavigationManager navManager
 
 @if(Currencies is null)
@@ -43,7 +43,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Currencies = await backend.ListCurrencies();
+        var response = await currenciesApi.List();
+        if(response.IsSuccessStatusCode)
+            Currencies = response.Content; 
     }
 
     protected override void OnParametersSet()

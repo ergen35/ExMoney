@@ -1,24 +1,39 @@
-using System;
 
 namespace ExMoney.SharedLibs
 {
+
+
+    //FIXME: Fix Date format; save Date as is in database instead of numbers
     public class User
     {
         public string Id { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string Gender { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public double BirthDate { get; set; } //FIXME: DateTime
+        public string Sex { get; set; }
+
         public string Phone { get; set; }
         public string Email { get; set; }
+
         public string Address { get; set; }
+
         public string Country { get; set; }
-        public string PreferredCurrency { get; set; }
+
         public double Balance { get; set; }
-        public DateTime RegistrationDate { get; set; }
-    
-        public bool IdentityVerified { get; set; } = false;
-        public bool EmailVerified { get; set; } =  false;
-        public bool PhoneVerified { get; set; } = false;
+
+        public double CreationDate { get; set; }  //FIXME: DateTime
+
+        public bool IdentityVerified { get; set; }
+
+        public bool EmailVerified { get; set; }
+
+        public bool PhoneVerified { get; set; }
+    }
+
+    public enum Sex
+    {
+        Male,
+        Female
     }
 }

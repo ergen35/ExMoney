@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ExMoney.Backend.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class TransactionsController: ControllerBase
     {
         private readonly IMapper mapper;

@@ -1,5 +1,5 @@
 @page "/account/infos"
-@inject Backend backend
+@inject IExMoneyUsersApi usersApi
 
 Theses are my account infos
 
@@ -25,10 +25,15 @@ Theses are my account infos
 @code{
 
     public User CurrentUser { get; set; }
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
-        CurrentUser = await backend.GetUserById(userId);
+        CurrentUser =  new User(){
+            Id = "0f31b521-f866-4442-984b-cd85a9ee7a8f",
+            FirstName = "polco",
+            LastName = "abby",
+            Email = "polcoabby@email.com"
+        };
+        
     }
 
 }

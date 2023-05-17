@@ -1,6 +1,6 @@
 @page "/account/transactions"
 
-@inject Backend backend
+@inject IExMoneyTransactionsApi transactionsApi
 
 This are my transactions
 
@@ -21,6 +21,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
-        Transactions = await backend.ListTransactions(userId);
+        var response = await transactionsApi.ListTransactions(userId);
+        if(response.IsSuccessStatusCode)
+        {
+            Transactions = response.Content!;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 @using Microsoft.AspNetCore.WebUtilities
 
-@inject Backend backend
+@inject IExMoneyCurrenciesApi currenciesApi
 @inject NavigationManager navManager
 
 This is the page to make exchanges
@@ -61,7 +61,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         //load currencies
-        Currencies = await backend.ListCurrencies(); 
+        var response = await currenciesApi.List();
+        if(response.IsSuccessStatusCode)
+            Currencies = response.Content; 
     }
 
 }
