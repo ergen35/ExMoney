@@ -7,7 +7,8 @@ namespace ExMoney.SharedLibs.Mappings
     {
         public MapperConfiguration()
         {
-            this.CreateMap<Currency, CurrencyCreateDTO>().ReverseMap();
+            this.CreateMap<CurrencyCreateDTO, Currency>().ReverseMap();
+            this.CreateMap<TransactionCreateDTO, Transaction>().ReverseMap();
         }
     }
 }

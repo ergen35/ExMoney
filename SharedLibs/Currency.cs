@@ -18,3 +18,4 @@ namespace ExMoney.SharedLibs
         public string ValueProviderUrl { get; set; } = string.Empty;
     }
 }
+

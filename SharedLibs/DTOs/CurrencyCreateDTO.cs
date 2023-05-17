@@ -10,7 +10,6 @@ namespace ExMoney.SharedLibs.DTOs
         [Required, StringLength(maximumLength: 1024, MinimumLength = 2)]
         public string Name { get; set; }
 
-        [Url]
         public string ValueProviderUrl { get; set; } = string.Empty;
     }
 }

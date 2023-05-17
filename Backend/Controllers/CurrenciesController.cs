@@ -1,13 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using ExMoney.Backend.Data;
 using ExMoney.SharedLibs;
 using ExMoney.SharedLibs.DTOs;
-using ExMoney.Backend.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CurrenciesController: ControllerBase
+public class CurrenciesController : ControllerBase
 {
     private readonly BackendDbContext db;
     private readonly IMapper mapper;
@@ -22,7 +22,7 @@ public class CurrenciesController: ControllerBase
     public async Task<ActionResult<Currency>> Get(int id)
     {
         var currency = await db.Currencies.FindAsync(id);
-        if(currency is null)
+        if (currency is null)
             return NotFound();
         return currency;
     }
@@ -41,16 +41,18 @@ public class CurrenciesController: ControllerBase
         try
         {
             await db.Currencies.AddAsync(currency);
+            await db.SaveChangesAsync();
         }
         catch (System.Exception)
         {
-            return new ObjectResult(new ProblemDetails{
+            return new ObjectResult(new ProblemDetails
+            {
                 Status = 500,
-                Title = "Unknowerror"
+                Title = "Unknow error"
             });
         }
 
-        return Created(nameof(Add), currency);      
+        return Created(nameof(Add), currency);
     }
 
 
@@ -59,22 +61,25 @@ public class CurrenciesController: ControllerBase
     {
         // var currency = mapper.Map<Currency>(data);
         var currency = await db.Currencies.FindAsync(id);
-        if(currency is null)
+        if (currency is null)
             return NotFound();
-        
+
         currency = mapper.Map(data, currency);
-        
+
         try
         {
             db.Currencies.Update(currency);
+            await db.SaveChangesAsync();
         }
-        catch (Exception){
-            return new ObjectResult(new ProblemDetails{
+        catch (Exception)
+        {
+            return new ObjectResult(new ProblemDetails
+            {
                 Status = 500,
                 Title = "Unknowerror"
-            });   
+            });
         }
-        
+
         return Accepted(currency);
     }
 
@@ -82,12 +87,13 @@ public class CurrenciesController: ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var currency = await db.Currencies.FindAsync(id);
-        if(currency is null)
+        if (currency is null)
             return NotFound();
-        
-        db.Remove(currency);
 
-        return NoContent(); 
+        db.Remove(currency);
+        await db.SaveChangesAsync();
+
+        return NoContent();
     }
 
 }
