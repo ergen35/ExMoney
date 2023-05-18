@@ -52,18 +52,3 @@
         width: 55px;
     }
 </style>
-
-@code{
-
-    [CascadingParameter] public IModalService modalService { get; set; }
-
-    public void ShowMenu()
-    {
-        var modalRef = modalService.Show<AppMenu>("", new ModalOptions(){
-            DisableBackgroundCancel = false,
-            Size = ModalSize.Automatic,
-            Class = "p-0 bg-light mx-2"   
-        });
-    }
-
-}
