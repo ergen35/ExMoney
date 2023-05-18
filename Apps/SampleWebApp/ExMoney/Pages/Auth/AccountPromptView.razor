@@ -3,9 +3,11 @@
 
 
 <center class="vh-100 h-100">
-    <div class="row mt-3">
+    <div class="row">
         <div class="col">
-            <img src="logo.png" alt="" height="80" width="80">
+            <Animate class="mt-2" Animation="BlazorAnimate.Animations.FadeIn" Duration=@TimeSpan.FromMilliseconds(1500)>
+                <img src="logo.png" alt="" height="80" width="80">
+            </Animate>
             <div class="text-center mt-2">
                 <span class="fs-1">
                     <span class="text-danger">Ex<span class="text-white fw-bolder">Money</span></span>
@@ -19,13 +21,14 @@
                 <span class="fs-2 mb-4 text-white fst-italic"> Commencer!</span>
             </div>
 
-            <div class="mt-5">
+            <div class="mt-3">
                 <a href=@GetLoginUrl() class="btn btn-dark btn-block btn-lg rounded-5 shadow-4 shadow-5-soft">
                     <span class="fas fa-user-lock me-2"></span> Connexion
                 </a>
             </div>
             <div class="mt-3">
-                <a href=@GetRegistrationUrl() class="btn btn-success btn-block btn-lg rounded-5 shadow-4 shadow-6-shadow-5-soft">
+                <a href=@GetRegistrationUrl()
+                    class="btn btn-success btn-block btn-lg rounded-5 shadow-4 shadow-6-shadow-5-soft">
                     <span class="fas fa-sign-in-alt me-2"></span> Inscription
                 </a>
             </div>
@@ -34,7 +37,7 @@
 </center>
 
 <div class="fixed-bottom text-center">
-    <a href="" class="small text-white"> Besoin d'aide <span class="fas fa-question-circle"></span></a>
+    <a href="http://exmoney.com" class="small text-white" target="_blank"> Besoin d'aide <span class="fas fa-question-circle"></span></a>
 </div>
 
 
@@ -42,9 +45,13 @@
 
     public string GetLoginUrl()
     {
-        //TODO: make login url
-        var url =
-        "http://localhost:8080/realms/exmoney/protocol/openid-connect/auth?client_id=exmoney-app&response_type=code&prompt=login&redirect_uri=http://localhost:5161/";
+        var authUrl = "";
+        var realm = "";
+        var clientId = "";
+        var redirectUri = "";
+
+        //TODO: get login url from config values
+        var url = "http://localhost:8080/realms/exmoney/protocol/openid-connect/auth?client_id=exmoney-app&response_type=code&prompt=login&redirect_uri=http://localhost:5161/";
         return url;
     }
 
