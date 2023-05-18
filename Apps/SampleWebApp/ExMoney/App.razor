@@ -1,10 +1,9 @@
 ﻿
 <CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true"
     Size="ModalSize.Automatic" Position="ModalPosition.Middle">
-    <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(App).Assembly">
             <Found Context="routeData">
-                <AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(PagesLayout)">
+                <AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)">
                     <Authorizing>
                         <center>
                             <div class="spinner-border text-primary mx-2" role="status">
@@ -14,7 +13,7 @@
                         </center>
                     </Authorizing>
                     <NotAuthorized>
-                        <ExMoney.Pages.Auth.AccountPromptView />
+                        <AccountPromptView />
                     </NotAuthorized>
                 </AuthorizeRouteView>
                 <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -28,5 +27,4 @@
                 </LayoutView>
             </NotFound>
         </Router>
-    </CascadingAuthenticationState>
 </CascadingBlazoredModal>
