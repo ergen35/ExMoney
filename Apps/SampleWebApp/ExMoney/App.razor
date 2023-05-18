@@ -1,18 +1,32 @@
 ﻿
 <CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true"
     Size="ModalSize.Automatic" Position="ModalPosition.Middle">
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(PagesLayout)" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">
-                    Il n'y a rien à voir ici, allez, <span class="fs-2 fw-bolder fst-italic">ouste</span>!
-                </p>
-            </LayoutView>
-        </NotFound>
-    </Router>
+    <CascadingAuthenticationState>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(PagesLayout)">
+                    <Authorizing>
+                        <center>
+                            <div class="spinner-border text-primary mx-2" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="text-center">Authentification En Cours</div>
+                        </center>
+                    </Authorizing>
+                    <NotAuthorized>
+                        <ExMoney.Pages.Auth.AccountPromptView />
+                    </NotAuthorized>
+                </AuthorizeRouteView>
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p role="alert">
+                        Il n'y a rien à voir ici, allez, <span class="fs-2 fw-bolder fst-italic">ouste</span>!
+                    </p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </CascadingAuthenticationState>
 </CascadingBlazoredModal>

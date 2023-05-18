@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Blazored.Modal;
 using ExMoney.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExMoney;
 
@@ -34,6 +35,7 @@ public static class MauiProgram
 
         //add blazored modal
         builder.Services.AddBlazoredModal();
+
 
 #if DEBUG
 
