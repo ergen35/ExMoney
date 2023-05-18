@@ -21,13 +21,21 @@ namespace ExMoney.Backend.Controllers
         }
 
         [HttpGet("list")]
-        public Task<List<Transaction>> List()
+        public Task<List<Transaction>> List(string userId)
         {
             return db.Transactions.ToListAsync();
         }
 
+
+        [HttpGet("ongoing")]
+        public IEnumerable<Transaction> ListOngoing(string userId, int count)
+        {
+            var ongoingTransactions = db.Transactions.Where(t => t.Status == TransactionStatus.Processing).Take(count);
+            return ongoingTransactions;
+        }
+
         [HttpPost("create")]
-        public async Task<ActionResult<Transaction>> Add(TransactionCreateDTO data)
+        public async Task<ActionResult<Transaction>> Add(string userId, TransactionCreateDTO data)
         {
             var transaction = mapper.Map<Transaction>(data);
 
