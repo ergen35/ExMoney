@@ -1,0 +1,30 @@
+@page "/account/transactions"
+
+@inject IExMoneyTransactionsApi transactionsApi
+
+This are my transactions
+
+@if(Transactions is not null)
+{
+    <span>I have @Transactions.Count Transactions</span>
+}
+else
+{
+    <span>Loadiong transactions...</span>
+}
+
+
+@code{
+
+    public List<Transaction> Transactions { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
+        var response = await transactionsApi.ListTransactions(userId);
+        if(response.IsSuccessStatusCode)
+        {
+            Transactions = response.Content!;
+        }
+    }
+}

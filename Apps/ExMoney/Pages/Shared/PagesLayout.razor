@@ -1,0 +1,69 @@
+@inherits LayoutComponentBase
+@inject NavigationManager navManager
+
+<main role="main" class="">
+    @Body
+</main>
+
+<footer>
+    <div class="fixed-bottom">
+        <div class="menu-buttons-list px-3 text-center rounded-9 border-top bg-light py-2">
+            
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-3" @onclick=@(() => { navManager.NavigateTo("/account/dashboard"); })>
+                <span class="fas fa-tachometer-alt text-warning fa-2x"></span>
+            </button>
+
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-3" @onclick=@(() => { navManager.NavigateTo("/account/transactions"); })>
+                <span class="fas fa-list text-warning fa-2x"></span>
+            </button>
+
+             <button class="btn btn-primary rounded-circle size-45 p-0 me-2" @onclick=@(() => { navManager.NavigateTo("/account/make-exchange"); })>
+                <span class="fas fa-plus text-light fa-2x"></span>
+            </button>
+
+            
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-2" @onclick=@(() => { navManager.NavigateTo("/account/infos"); })>
+                <span class="fas fa-user text-warning fa-2x"></span>
+            </button>
+
+            <button class="btn btn-dark rounded-circle size-40 p-0 me-2" @onclick=@(() => { navManager.NavigateTo("/settings"); })>
+                <span class="fas fa-cogs text-warning fa-2x"></span>
+            </button>
+        </div>
+    </div>
+</footer>
+
+<style>
+    body{
+        background-image: url(images/genbg2.jpg);
+        background-position: bottom;
+    }
+    div.menu-buttons-list{
+        justify-items: center;
+        @* height: 6px; *@
+    }
+
+    .size-40{
+        height: 43px;
+        width: 43px;
+    }
+    .size-45{
+        height: 55px;
+        width: 55px;
+    }
+</style>
+
+@code{
+
+    [CascadingParameter] public IModalService modalService { get; set; }
+
+    public void ShowMenu()
+    {
+        var modalRef = modalService.Show<AppMenu>("", new ModalOptions(){
+            DisableBackgroundCancel = false,
+            Size = ModalSize.Automatic,
+            Class = "p-0 bg-light mx-2"   
+        });
+    }
+
+}

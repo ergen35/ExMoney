@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using ExMoney.Data;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Blazored.Modal;
+using ExMoney.Services;
 
 namespace ExMoney;
 
@@ -15,10 +19,29 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
 
-		builder.Services.AddMauiBlazorWebView();
+		//-- Services
+
+        builder.Services.AddMauiBlazorWebView();
+		//Add server's config
+		builder.Configuration["AuthServer"] = "http://10.34.64.124:57575";
+		builder.Configuration["BackendServer"] = "http://api.exmoney.com";
+        //Add HttpClient
+        builder.Services.AddHttpClient();
+        //-- register refit client
+        builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyUsersApi));
+        builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurrenciesApi));
+        builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
+
+        //add blazored modal
+        builder.Services.AddBlazoredModal();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+
+        //Add debug servers' config
+        builder.Configuration["AuthServer"] = "http://localhost:8080";
+        builder.Configuration["BackendServer"] = "http://localhost:5050";
+
+        builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
 

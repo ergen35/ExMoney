@@ -1,0 +1,39 @@
+@page "/account/infos"
+@inject IExMoneyUsersApi usersApi
+
+Theses are my account infos
+
+<p>
+   @if(CurrentUser is not null)
+   {
+        <span>
+             @(System.Text.Json.JsonSerializer.Serialize(CurrentUser, new System.Text.Json.JsonSerializerOptions(){
+                WriteIndented = true
+            }))
+        </span>
+
+        <a role="button" class="btn btn-primary btn-floating">
+            <i class="fas fa-edit"></i>
+        </a>
+   }
+   else{
+        <span>Chargement...</span>
+   }
+</p>
+
+
+@code{
+
+    public User CurrentUser { get; set; }
+    protected override void OnInitialized()
+    {
+        CurrentUser =  new User(){
+            Id = "0f31b521-f866-4442-984b-cd85a9ee7a8f",
+            FirstName = "polco",
+            LastName = "abby",
+            Email = "polcoabby@email.com"
+        };
+        
+    }
+
+}

@@ -1,0 +1,164 @@
+@page "/account/dashboard"
+@page "/"
+
+@layout PagesLayout
+
+<style>
+    .gold-x {
+        background-color: gold;
+    }
+
+    #wrapper {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin-left: 0 !important;
+    }
+
+    .panels {
+        position: relative;
+        height: 100%;
+        min-height: 100%;
+        width: 100%;
+        min-width: 100%;
+        z-index: 1000;
+    }
+
+    #a {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -99;
+
+        height: 150px !important;
+        min-height: 50px !important;
+
+        background-color: var(--mdb-warning);
+        max-width: 100%;
+        color: white;
+    }
+
+    #b {
+        top: 130px;
+        background-image: url(images/genbg1.jpg);
+        min-width: 100%;
+        width: 100%;
+    }
+</style>
+
+
+
+<div id="wrapper">
+    <div id="a" class="panels">
+        <div class="fs-1 text-center mt-3">Hello, Wassi Amoussa!</div>
+        <div>
+            <div class="container-fluid">
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <span class="badge bg-dark fs-6 rounded-pill">
+                            0 <span class="mx-2 fas fa-exchange-alt"></span> 15
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="b" class="panels border-top border-dark rounded-9 shadow-lg">
+
+        <div class="text-center fs-5">Tableau de bord</div>
+
+        <div class="container-fluid mb-10">
+            <div class="row mt-5">
+                <div class="col">
+                    <div class="card bg-warning text-white mx-2 rounded-6 shadow-lg shadow-4-soft">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Statistiques</h5>
+                            <hr class="hr hr-blurry my-1" />
+                            <div class="card-text row">
+                                <div class="col text-center">
+                                    <div class="text-black">
+                                        <span class="fas fa-angle-down"></span>
+                                        <span class="fw-bold">entrant</span>
+                                    </div>
+
+                                    <div>
+                                        <span class="fst-italic">XOF 5737</span>
+                                    </div>
+                                </div>
+                                <div class="col text-center">
+                                    <div class="text-dark">
+                                        <span class="fas fa-angle-up"></span>
+                                        <span class="fw-bold">sortant</span>
+                                    </div>
+
+                                    <div>
+                                        <span class="fst-italic">N 7768</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center small fst-italic text-white">Stats. 3 derniers mois</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="progress rounded-pill" style="height: 14px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 67%" aria-valuenow="25"
+                            aria-valuemin="0" aria-valuemax="100">
+                            67%
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center small mt-1">Obtenez des taux de change plus bas
+                    <span class="ms-2 fas fa-info-circle text-primary"></span>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card bg-black rounded-7">
+                    <div class="card-body">
+                        <h5 class="card-title text-center"> <span class="fas fa-tools me-2"></span> Actions Requises</h5>  
+                        <hr class="hr-blurry mt-2">               
+                        <ul class="list-unstyled">
+                            <li> <span class="fas fa-at"></span> Vérifier email</li>
+                            <li> <span class="fas fa-id-card"></span> Passer KYC</li>
+                            <li> <span class="fas fa-exchange-alt"></span> Votre premier échange</li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="text-center fs-4 mb-1"> <span class="fas fa-stopwatch"></span> Transactions</div>
+                    <div class="card shadow-lg rounded-6">
+                        <ul class="list-group p-2">
+
+                            @for(int i = 0; i < 5; i++)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div style="width: 45px; height: 45px" class="rounded-circle">
+                                            <span class="fas fa-exchange-alt fa-rotate-90" ></span>
+                                        </div>
+                                        <div class="ms-3">
+                                            <p class="fw-bold mb-1">Alex Ray</p>
+                                            <p class="text-muted mb-0">alex.ray@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <span class="badge rounded-pill badge-success">Succès</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

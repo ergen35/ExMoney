@@ -1,27 +1,29 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">ExMoney</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+﻿<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="account/dashboard">
+                <span class="fas fa-tachometer-alt me-2" aria-hidden="true"></span> Dasboard
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="account/transactions" Match="NavLinkMatch.All">
+                <span class="fas fa-home me-2" aria-hidden="true"></span> Transactions
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="account/infos" Match="NavLinkMatch.All">
+                <span class="fas fa-user me-2" aria-hidden="true"></span> Mon Compte
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="settings">
+                <span class="fas fa-cogs me-2" aria-hidden="true"></span> Paramètres
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="about-exmoney">
+                <span class="fas fa-info-circle me-2" aria-hidden="true"></span> A Propos
             </NavLink>
         </div>
     </nav>
@@ -30,7 +32,7 @@
 @code {
     private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : "";
 
     private void ToggleNavMenu()
     {
