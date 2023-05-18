@@ -1,18 +1,41 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using ExMoney;
+using ExMoney.Services;
+using Blazored.Modal;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddHttpClient();
+builder.Services.AddLogging();
 
-builder.Services.AddOidcAuthentication(options =>
+//--register Add backend HttpClients
+
+//-- register refit client
+builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyUsersApi));
+builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurrenciesApi));
+builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
+
+//TODO: add auth httpClient
+// builder.Services.AddTransient<AuthService>();
+
+//add blazored modal
+builder.Services.AddBlazoredModal();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
 {
-    // Configure your authentication provider options here.
-    // For more information, see https://aka.ms/blazor-standalone-auth
-    builder.Configuration.Bind("Local", options.ProviderOptions);
-});
+    app.UseExceptionHandler("/Error");
+}
 
-await builder.Build().RunAsync();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
+
+app.Run();

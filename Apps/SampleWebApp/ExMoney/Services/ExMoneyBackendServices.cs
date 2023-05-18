@@ -4,14 +4,14 @@ namespace ExMoney.Services;
 
 public static class ExMoneyBackendServices
 {
-    public static WebApplicationBuilder RegisterBackendApi(this WebApplicationBuilder builder, Type backendType)
+    public static IServiceCollection RegisterBackendApi(this IServiceCollection services, IConfiguration configuration, Type backendType)
     {
         //Refit Settings
         RefitSettings settings = new() { Buffered = false };
 
-        var backendUri = new Uri(builder.Configuration["BackendBaseAddress"]);
+        var backendUri = new Uri(configuration["ServerAddresses:BackendServer"]);
 
-        builder.Services.AddRefitClient(backendType, settings)
+        services.AddRefitClient(backendType, settings)
             .ConfigureHttpClient(options =>
             {
                 options.BaseAddress = backendUri;
@@ -19,7 +19,7 @@ public static class ExMoneyBackendServices
             }
         );
 
-        return builder;
+        return services;
     }
 }
 
