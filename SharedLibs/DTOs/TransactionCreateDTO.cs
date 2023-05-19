@@ -1,18 +1,14 @@
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-
-
 
 namespace ExMoney.SharedLibs.DTOs
 {
     public class TransactionCreateDTO
     {
         [Required]
-        public string BaseCurrency { get; set; }
+        public string BaseCurrencyId { get; set; }
         
         [Required]
-        public string ChangeCurrency { get; set; }
+        public string ChangeCurrencyId { get; set; }
                 
         [Required]
         public double Amount { get; set; } = 0.0;

@@ -6,14 +6,18 @@ namespace ExMoney.SharedLibs
 {
     public class Transaction
     {
+        public Currency BaseCurrency;
+        public Currency ChangeCurrency;
+
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         [Required]
-        public string BaseCurrency { get; set; }
-        
+        public string BaseCurrencyId { get; set; }
+
         [Required]
-        public string ChangeCurrency { get; set; }
+        public string ChangeCurrencyId { get; set; }
         
         public DateTime TransactionDate { get; set; }
         
@@ -21,7 +25,7 @@ namespace ExMoney.SharedLibs
         public double Amount { get; set; } = 0.0;
 
         [Required]
-        public double rate { get; set; } = 1.0;
+        public double Rate { get; set; } = 1.0;
 
         public TransactionStatus Status { get; set; }
         

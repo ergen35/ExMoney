@@ -26,6 +26,12 @@ namespace ExMoney.Backend.Controllers
             return db.Transactions.ToListAsync();
         }
 
+        [HttpGet("latest")]
+        public IEnumerable<Transaction> ListLatests(string userId, int count)
+        {
+            var latestTransactions = db.Transactions.OrderByDescending(t => t.TransactionDate).Take(count);
+            return latestTransactions;
+        }
 
         [HttpGet("ongoing")]
         public IEnumerable<Transaction> ListOngoing(string userId, int count)
@@ -40,7 +46,7 @@ namespace ExMoney.Backend.Controllers
             var transaction = mapper.Map<Transaction>(data);
 
             //TOD0: define rate
-            transaction.rate = Random.Shared.NextDouble() * Random.Shared.Next(maxValue: 900, minValue: 1);
+            transaction.Rate = Random.Shared.NextDouble() * Random.Shared.Next(maxValue: 900, minValue: 1);
             transaction.TransactionDate = DateTime.Now;
             transaction.Status = TransactionStatus.Accepted;
 

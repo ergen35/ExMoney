@@ -21,7 +21,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
-        var response = await transactionsApi.ListTransactions(userId);
+        var response = await transactionsApi.List(userId);
         if(response.IsSuccessStatusCode)
         {
             Transactions = response.Content!;
