@@ -38,7 +38,16 @@
 
 <div id="wrapper">
 
-    <UserIdentityDisplay />
+    <UiTitleDisplay>
+        <UiTitle>
+            <div class="fs-1 text-center">Hello, Wassi Amoussa!</div>
+        </UiTitle>
+        <AdditionnalContent>
+             <span class="badge bg-light text-black fs-6 rounded-pill">
+                1 <span class="fas fa-bell"></span>
+            </span>
+        </AdditionnalContent>
+    </UiTitleDisplay>
 
     <div id="b" class="panels border-top border-dark rounded-9 shadow-lg bg-light">
 
@@ -148,7 +157,7 @@
     {
         //get 5 last transactions
         await Task.Delay(TimeSpan.FromSeconds(4));
-        var ongoingTs = await transactionsApi.ListLastest("");
+        var ongoingTs = await transactionsApi.ListLastest("767J");
         transactionReqOk = ongoingTs.IsSuccessStatusCode;
         if(ongoingTs.IsSuccessStatusCode)
         {

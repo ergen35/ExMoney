@@ -26,14 +26,14 @@ namespace ExMoney.Backend.Controllers
             return db.Transactions.ToListAsync();
         }
 
-        [HttpGet("latest")]
+        [HttpGet("latest/{userId}")]
         public IEnumerable<Transaction> ListLatests(string userId, int count)
         {
             var latestTransactions = db.Transactions.OrderByDescending(t => t.TransactionDate).Take(count);
             return latestTransactions;
         }
 
-        [HttpGet("ongoing")]
+        [HttpGet("ongoing/{userId}")]
         public IEnumerable<Transaction> ListOngoing(string userId, int count)
         {
             var ongoingTransactions = db.Transactions.Where(t => t.Status == TransactionStatus.Processing).Take(count);
