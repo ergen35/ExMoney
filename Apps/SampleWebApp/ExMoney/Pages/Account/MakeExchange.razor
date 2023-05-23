@@ -10,7 +10,7 @@ This is the page to make exchanges
 @if(Currencies is null)
 {
     <center>
-        <LoadingIndicator />
+        <ThreeDotsLoader />
     </center>
 }
 else
@@ -50,10 +50,10 @@ else
 
     public void ContinueToConfig()
     {
-        var queries = new Dictionary<string, string>()
-                .Append(new("baseCurrencyId", BaseCurrencyId.ToString()))
-                .Append(new("changeCurrencyId", ChangeCurrencyId.ToString()))
-                .Append(new("amount", Amount.ToString()));
+        var queries = new Dictionary<string, string>();
+        queries.Append(new("baseCurrencyId", BaseCurrencyId.ToString()));
+        queries.Append(new("changeCurrencyId", ChangeCurrencyId.ToString()));
+        queries.Append(new("amount", Amount.ToString()));
     
         var nextUri = QueryHelpers.AddQueryString("/account/make-exchange/configure-payment", queries);
 
@@ -68,6 +68,5 @@ else
         if(response.IsSuccessStatusCode)
             Currencies = response.Content; 
     }
-
 }
 

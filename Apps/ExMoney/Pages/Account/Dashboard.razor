@@ -3,10 +3,9 @@
 
 @layout PagesLayout
 
+@inject IExMoneyTransactionsApi transactionsApi
+
 <style>
-    .gold-x {
-        background-color: gold;
-    }
 
     #wrapper {
         position: absolute;
@@ -24,141 +23,146 @@
         z-index: 1000;
     }
 
-    #a {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -99;
-
-        height: 150px !important;
-        min-height: 50px !important;
-
-        background-color: var(--mdb-warning);
-        max-width: 100%;
-        color: white;
-    }
-
     #b {
-        top: 130px;
-        background-image: url(images/genbg1.jpg);
+        top: 115px;
         min-width: 100%;
         width: 100%;
+    }
+
+    .text-transparent{
+        color: transparent;
     }
 </style>
 
 
 
 <div id="wrapper">
-    <div id="a" class="panels">
-        <div class="fs-1 text-center mt-3">Hello, Wassi Amoussa!</div>
-        <div>
-            <div class="container-fluid">
-                <div class="row mt-4">
-                    <div class="col text-center">
-                        <span class="badge bg-dark fs-6 rounded-pill">
-                            0 <span class="mx-2 fas fa-exchange-alt"></span> 15
-                        </span>
+
+    <UiTitleDisplay>
+        <UiTitle>
+            <div class="fs-1 text-center">Hello, Wassi Amoussa!</div>
+        </UiTitle>
+        <AdditionnalContent>
+             <span class="badge bg-light text-black fs-6 rounded-pill">
+                1 <span class="fas fa-bell"></span>
+            </span>
+        </AdditionnalContent>
+    </UiTitleDisplay>
+
+    <div id="b" class="panels border-top border-dark rounded-9 shadow-lg bg-light">
+
+        <div class="text-center text-black fs-3"> <span class="fas fa-tachometer-alt me-1"></span>Tableau de bord</div>
+
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col">
+                    <StatsCard />
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="text-center small mt-1">Obtenez des taux de change plus bas
+                        <span class="ms-2 fas fa-info-circle text-primary"></span>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div id="b" class="panels border-top border-dark rounded-9 shadow-lg">
-
-        <div class="text-center fs-5">Tableau de bord</div>
-
-        <div class="container-fluid mb-10">
-            <div class="row mt-5">
+            <div class="row mt-3">
                 <div class="col">
-                    <div class="card bg-warning text-white mx-2 rounded-6 shadow-lg shadow-4-soft">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Statistiques</h5>
-                            <hr class="hr hr-blurry my-1" />
-                            <div class="card-text row">
-                                <div class="col text-center">
-                                    <div class="text-black">
-                                        <span class="fas fa-angle-down"></span>
-                                        <span class="fw-bold">entrant</span>
-                                    </div>
+                    <RequiredActionsCard />
+                </div>
+            </div>
 
-                                    <div>
-                                        <span class="fst-italic">XOF 5737</span>
-                                    </div>
-                                </div>
-                                <div class="col text-center">
-                                    <div class="text-dark">
-                                        <span class="fas fa-angle-up"></span>
-                                        <span class="fw-bold">sortant</span>
-                                    </div>
+            <div class="row mt-4 mb-6">
+                <div class="col">
+                    <div class="text-center fs-4 mb-1"> <span class="fas fa-stopwatch me-1"></span>Récentes</div>
+                    
+                    @if(OngoingTransactions is not null)
+                    {
+                        if(transactionReqOk)
+                        {
+                            <div class="card shadow-lg rounded-6">
+                                <ul class="list-group p-2">
+                                    
+                                    @if(OngoingTransactions.Any())
+                                    {
+                                        @foreach (var t in OngoingTransactions)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div style="width: 80px; height: 80px" class="rounded-circle border d-flex align-items-center justify-content-center ms-n3">
+                                                    <span class="fs-4 text-primary">23.4</span>
+                                                    </div>
+                                                    <div class="ms-3 text-black">
+                                                        <p class="mb-1"><span class="fw-bold">@t.BaseCurrency:</span> @t.Amount</p>
+                                                        <p class="mb-0"><span class="fw-bold">@t.ChangeCurrency :</span> @(t.Amount * t.Rate)</p>
+                                                    </div>
+                                                </div>
+                                                <span class="badge rounded-pill badge-warning">en cours</span>
+                                            </li>   
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item">
+                                            <div class="text-center">
+                                                <span class="text-warning">Aucune Transaction Récente.</span>
+                                            </div>
+                                        </li>
+                                    }
 
-                                    <div>
-                                        <span class="fst-italic">N 7768</span>
-                                    </div>
-                                </div>
+                                    <li class="list-group-item">
+                                        <div class="text-center">
+                                            <a href="/account/transactions"> <span class="fas fa-arrow-alt-circle-right"></span> Voir Tout</a>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
+                        }
+                        else
+                        {
+                            <div class="text-center">
+                                <span class="text-danger">
+                                    Une erreur s'est produite. 
+                                    <button class="btn btn-primary ms-2 d-inline btn-sm">
+                                        <span class="fas fa-sync"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <SpinnerLoader />
                         </div>
-                        <div class="text-center small fst-italic text-white">Stats. 3 derniers mois</div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="progress rounded-pill" style="height: 14px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 67%" aria-valuenow="25"
-                            aria-valuemin="0" aria-valuemax="100">
-                            67%
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center small mt-1">Obtenez des taux de change plus bas
-                    <span class="ms-2 fas fa-info-circle text-primary"></span>
+                    }
                 </div>
             </div>
 
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="card bg-black rounded-7">
-                    <div class="card-body">
-                        <h5 class="card-title text-center"> <span class="fas fa-tools me-2"></span> Actions Requises</h5>  
-                        <hr class="hr-blurry mt-2">               
-                        <ul class="list-unstyled">
-                            <li> <span class="fas fa-at"></span> Vérifier email</li>
-                            <li> <span class="fas fa-id-card"></span> Passer KYC</li>
-                            <li> <span class="fas fa-exchange-alt"></span> Votre premier échange</li>
-                        </ul>
-                    </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="text-center fs-4 mb-1"> <span class="fas fa-stopwatch"></span> Transactions</div>
-                    <div class="card shadow-lg rounded-6">
-                        <ul class="list-group p-2">
-
-                            @for(int i = 0; i < 5; i++)
-                            {
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div style="width: 45px; height: 45px" class="rounded-circle">
-                                            <span class="fas fa-exchange-alt fa-rotate-90" ></span>
-                                        </div>
-                                        <div class="ms-3">
-                                            <p class="fw-bold mb-1">Alex Ray</p>
-                                            <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                                        </div>
-                                    </div>
-                                    <span class="badge rounded-pill badge-success">Succès</span>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
+            <div class="row">
+                <span class="text-transparent">exmoney</span>
             </div>
         </div>
-
     </div>
 </div>
+
+@code{
+
+    public List<Transaction> OngoingTransactions { get; set; }
+    private bool transactionReqOk = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //get 5 last transactions
+        await Task.Delay(TimeSpan.FromSeconds(4));
+        var ongoingTs = await transactionsApi.ListLastest("767J");
+        transactionReqOk = ongoingTs.IsSuccessStatusCode;
+        if(ongoingTs.IsSuccessStatusCode)
+        {
+            OngoingTransactions = ongoingTs.Content;
+            StateHasChanged();
+        }
+    }
+}

@@ -48,6 +48,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="BlazorAnimate" Version="3.0.0" />
         <PackageReference Include="Microsoft.AspnetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	    <PackageReference Include="Blazored.Modal" Version="7.1.0" />

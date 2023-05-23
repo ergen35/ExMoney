@@ -6,9 +6,15 @@ namespace ExMoney.Services;
 
 public interface IExMoneyTransactionsApi
 {
-    [Get("/api/v1/transations/list/{userId}")]
-    public Task<IApiResponse<List<Transaction>>> ListTransactions(string userId);
+    [Get("/api/v1/transactions/list")]
+    public Task<IApiResponse<List<Transaction>>> List(string userId);
 
-    [Post("/api/v1/transations/create")]
-    public Task<IApiResponse<Transaction>> CreateTransaction(TransactionCreateDTO data);
+    [Post("/api/v1/transactions/create")]
+    public Task<IApiResponse<Transaction>> Create(string userId, TransactionCreateDTO data);
+
+    [Get("/api/v1/transactions/ongoing/{userId}")]
+    public Task<IApiResponse<List<Transaction>>> ListOngoing(string userId, int count = 5);
+    
+    [Get("/api/v1/transactions/latest/{userId}")]
+    public Task<IApiResponse<List<Transaction>>> ListLastest(string userId, int count = 5);
 }

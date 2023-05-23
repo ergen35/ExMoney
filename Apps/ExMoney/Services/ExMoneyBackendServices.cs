@@ -1,12 +1,11 @@
-using Refit;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Refit;
 
 namespace ExMoney.Services;
 
 public static class ExMoneyBackendServices
 {
-    public static IServiceCollection RegisterBackendApi(this IServiceCollection services, IConfiguration configuration, Type backendType)
+    public static IServiceCollection RegisterBackendApi(this IServiceCollection services, ConfigurationManager configuration, Type backendType)
     {
         //Refit Settings
         RefitSettings settings = new() { Buffered = false };

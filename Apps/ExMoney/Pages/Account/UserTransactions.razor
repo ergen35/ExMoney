@@ -1,30 +1,192 @@
 @page "/account/transactions"
+@layout PagesLayout
 
 @inject IExMoneyTransactionsApi transactionsApi
-
-This are my transactions
-
-@if(Transactions is not null)
-{
-    <span>I have @Transactions.Count Transactions</span>
-}
-else
-{
-    <span>Loadiong transactions...</span>
-}
+@inject IExMoneyUsersApi usersApi
 
 
-@code{
+
+<style>
+    #wrapper {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        margin-left: 0 !important;
+    }
+
+    .panels {
+        position: relative;
+        height: 100%;
+        min-height: 100%;
+        width: 100%;
+        min-width: 100%;
+        z-index: 1000;
+    }
+
+    #b {
+        top: 115px;
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .text-transparent {
+        color: transparent;
+    }
+</style>
+
+
+<div id="wrapper">
+
+    <UiTitleDisplay>
+        <UiTitle>
+            <div class="fs-1 text-center"> <span class="fas fa-exchange-alt me-2"></span> Transactions</div>
+        </UiTitle>
+        <AdditionnalContent>
+            @if (Transactions is null)
+            {
+                <SpinnerLoader />
+            }
+            else
+            {
+                <span class="badge bg-black text-black fs-6 rounded-pill">
+                    <div class="text-center text-white">Total: @Transactions.Count</div>
+                </span>
+            }
+        </AdditionnalContent>
+    </UiTitleDisplay>
+
+    <div id="b" class="panels border-top border-dark rounded-9 shadow-lg bg-light">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col">
+                    <div>
+                        @* Tabs navs *@
+                        <ul class="nav nav-justified nav-tabs mb-3" id="ex1" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active text-black fs-6" id="ex1-tab-1" data-mdb-toggle="tab"
+                                    href="#ex1-tabs-1" role="tab" aria-controls="ex1-tabs-1" aria-selected="true">
+                                    <span class="fas fa-fire text-warning"></span> En Cours
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link fs-6 text-black" id="ex1-tab-2" data-mdb-toggle="tab"
+                                    href="#ex1-tabs-2" role="tab" aria-controls="ex1-tabs-2" aria-selected="false">
+                                    <span class="fas fa-sort-amount-up me-2"></span> Tout
+                                </a>
+                            </li>
+                        </ul>
+                        @* Tabs navs *@
+
+                        @* Tabs content *@
+                        <div class="tab-content" id="ex1-content">
+                            <div class="tab-pane fade show active" id="ex1-tabs-1" role="tabpanel"
+                                aria-labelledby="ex1-tab-1">
+                                @if (OnGoTransactions is null)
+                                {
+                                    <div class="text-center">
+                                        <ThreeDotsLoader />
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (OnGoTransactions.Any())
+                                    {
+                                        <ul class="list-group list-group-light">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="fw-bold">John Doe</div>
+                                                    <div class="text-muted">john.doe@gmail.com</div>
+                                                </div>
+                                                <span class="badge rounded-pill badge-success">Active</span>
+                                            </li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center mt-5">
+                                            <span class="d-block fs-5 text-danger fw-bold mb-3">
+                                                Aucune Transaction En Cours
+                                            </span>
+                                            <img src="images/genmoney.svg" style="width: 50%; height: 50%;">
+                                            <a href="/account/make-exchange"
+                                                class="btn border border shadow-2 rounded-0 mt-4 btn-lg">
+                                                <span class="fas fa-plus-square me-2"></span> Faire un échange
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="tab-pane fade" id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
+                                @if (Transactions is null)
+                                {
+                                    <div class="text-center">
+                                        <ThreeDotsLoader />
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (Transactions.Any())
+                                    {
+                                        <ul class="list-group list-group-light">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="fw-bold">John Doe</div>
+                                                    <div class="text-muted">john.doe@gmail.com</div>
+                                                </div>
+                                                <span class="badge rounded-pill badge-success">Active</span>
+                                            </li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center mt-5">
+                                            <span class="d-block fs-5 text-danger fw-bold mb-3">
+                                                Aucune Transaction Trouvée
+                                            </span>
+                                            <img src="images/genbars.svg" style="width: 50%; height: 50%;">
+                                            <a href="/account/make-exchange"
+                                                class="btn border border shadow-2 rounded-0 mt-4 btn-lg">
+                                                <span class="fas fa-plus-square me-2"></span> Faire un échange
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        @* Tabs content *@
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="text-transparent">exmoney</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
 
     public List<Transaction> Transactions { get; set; }
+    public List<Transaction> OnGoTransactions { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
-        var response = await transactionsApi.ListTransactions(userId);
-        if(response.IsSuccessStatusCode)
+
+        var latests = await transactionsApi.ListLastest(userId, count: 20);
+        if (latests.IsSuccessStatusCode)
         {
-            Transactions = response.Content!;
+            Transactions = latests.Content!;
+            StateHasChanged();
         }
+
+        var ongoing = await transactionsApi.ListOngoing(userId, count: 8);
+        if (ongoing.IsSuccessStatusCode)
+        {
+            OnGoTransactions = latests.Content!;
+            StateHasChanged();
+        }
+
     }
 }

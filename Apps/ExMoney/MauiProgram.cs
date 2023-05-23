@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using ExMoney.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Blazored.Modal;
@@ -23,9 +22,13 @@ public static class MauiProgram
 		//-- Services
 
         builder.Services.AddMauiBlazorWebView();
-		//Add server's config
-		builder.Configuration["AuthServer"] = "http://10.34.64.124:57575";
-		builder.Configuration["BackendServer"] = "http://api.exmoney.com";
+        //Add server's config
+        //builder.Configuration["AuthServer"] = "http://10.34.64.124:57575";
+        builder.Configuration["AuthServer"] = "http://localhost:8080";
+        //builder.Configuration["BackendServer"] = "http://api.exmoney.com";
+        builder.Configuration["BackendServer"] = "http://localhost:5050";
+
+
         //Add HttpClient
         builder.Services.AddHttpClient();
         //-- register refit client
@@ -39,15 +42,9 @@ public static class MauiProgram
 
 #if DEBUG
 
-        //Add debug servers' config
-        builder.Configuration["AuthServer"] = "http://localhost:8080";
-        builder.Configuration["BackendServer"] = "http://localhost:5050";
-
         builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-
-		builder.Services.AddSingleton<WeatherForecastService>();
 
 		return builder.Build();
 	}
