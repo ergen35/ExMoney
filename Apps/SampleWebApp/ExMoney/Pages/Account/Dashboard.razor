@@ -5,54 +5,15 @@
 
 @inject IExMoneyTransactionsApi transactionsApi
 
-<style>
-
-    #wrapper {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        margin-left: 0 !important;
-    }
-
-    .panels {
-        position: relative;
-        height: 100%;
-        min-height: 100%;
-        width: 100%;
-        min-width: 100%;
-        z-index: 1000;
-    }
-
-    #b {
-        top: 115px;
-        min-width: 100%;
-        width: 100%;
-    }
-
-    .text-transparent{
-        color: transparent;
-    }
-</style>
-
-
-
 <div id="wrapper">
 
     <UiTitleDisplay>
         <UiTitle>
-            <div class="fs-1 text-center">Hello, Wassi Amoussa!</div>
+            <div class="fs-1 text-center"> <span class="fas fa-tachometer-alt me-2"></span> Tableau de bord </div>
         </UiTitle>
-        <AdditionnalContent>
-             <span class="badge bg-light text-black fs-6 rounded-pill">
-                1 <span class="fas fa-bell"></span>
-            </span>
-        </AdditionnalContent>
     </UiTitleDisplay>
 
     <div id="b" class="panels border-top border-dark rounded-9 shadow-lg bg-light">
-
-        <div class="text-center text-black fs-3"> <span class="fas fa-tachometer-alt me-1"></span>Tableau de bord</div>
-
         <div class="container">
             <div class="row mt-3">
                 <div class="col">

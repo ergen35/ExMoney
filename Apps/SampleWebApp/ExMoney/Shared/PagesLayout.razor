@@ -1,0 +1,26 @@
+@inherits LayoutComponentBase
+@inject NavigationManager navManager
+
+
+<AppSideBar />
+<div class="container-fluid">
+    <div class="row">
+        <div class="">
+            <!-- toggler -->
+            <button class="btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+                <i class="fas fa-bars fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
+            </button>
+            <main role="main">
+                @Body
+            </main>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    body {
+        background-image: url(images/genbg2.jpg);
+        background-position: bottom;
+    }
+</style>
