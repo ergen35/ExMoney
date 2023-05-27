@@ -5,6 +5,7 @@
 
 @inject IExMoneyTransactionsApi transactionsApi
 @inject IExMoneyUsersApi usersApi
+@inject NavigationManager navManager
 
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
@@ -15,10 +16,14 @@
         <hr>
         <div class="row">
             <div class="col text-center">
-                <a class="btn btn-outline-warning"> <span class="ti ti-flame me-1"></span>En cours</a>
+                <a class='btn btn-@(showFiltered ?  "" : selectorVisualEffectCss )warning' @onclick=@(() => { showFiltered = true; })> 
+                  <span class="ti ti-flame me-1"></span>En cours
+                </a>
             </div>
             <div class="col text-center">
-                <a class="btn btn-outline-dark"> <span class="ti ti-exchange me-1"></span>Toutes</a>
+                <a class='btn btn-@(!showFiltered ?  "" : selectorVisualEffectCss )dark'  @onclick=@(() => { showFiltered = false; })> 
+                    <span class="ti ti-exchange me-1"></span> Toutes
+                </a>
             </div>
         </div>
         <div class="row mt-5">
@@ -65,7 +70,9 @@
 
 
 @code {
-    public  bool showFiltered = false;
+    public bool showFiltered = false;
+    
+    public const string selectorVisualEffectCss = "outline-";
 
     public List<Transaction> Transactions { get; set; }
     public List<Transaction> OnGoTransactions { get; set; }
@@ -81,7 +88,6 @@
             if (latests.IsSuccessStatusCode)
             {
                 Transactions = latests.Content!;
-                @* Displayed = latests.Content!; *@
                 StateHasChanged();
                 OnGoTransactions = latests.Content!.Where(t => t.Status == TransactionStatus.Processing).ToList();
                 StateHasChanged();

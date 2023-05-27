@@ -71,7 +71,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-lg-4 d-flex align-items-stretch">
+  <div class="col-12 d-flex align-items-stretch">
     <div class="card w-100">
       <div class="card-body p-4">
         <div class="mb-4">
@@ -86,7 +86,7 @@
             {
               @foreach (var transaction in OngoingTransactions)
               {
-                <EchangeRecord Status="transaction.Status" BaseCurrency="transaction.BaseCurrencyId"
+                <ExchangeRecord Status="transaction.Status" BaseCurrency="transaction.BaseCurrencyId"
                   ChangeCurrency="transaction.ChangeCurrencyId" Amount="transaction.Amount" Rate="transaction.Rate"
                   Date="transaction.TransactionDate" />
               }
@@ -100,7 +100,7 @@
 
 
             <li class="d-block text-center mt-3">
-              <a href="/exchanges" class="btn btn-outline-primary"> <span class="ti ti-arrow-right"></span> Liste Complète
+              <a href="/exchanges" class="btn btn-primary"> <span class="ti ti-arrow-right"></span> Liste Complète
               </a>
             </li>
           }
@@ -114,7 +114,7 @@
   </div>
 </div>
 <div class="row mt-5">
-  <div class="col-sm-6 col-xl-3">
+  <div class="col-12">
     <div class="card overflow-hidden rounded-2">
       <div class="position-relative">
         <span class="d-block text-center fw-semibold text-secondary-emphasis fs-5">
