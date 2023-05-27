@@ -31,28 +31,6 @@
 
 /* App */
 
-#wrapper {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    margin-left: 0 !important;
-}
-
-.panels {
-    position: relative;
-    height: 100%;
-    min-height: 100%;
-    width: 100%;
-    min-width: 100%;
-    z-index: 1000;
-}
-
-#b {
-    top: 115px;
-    min-width: 100%;
-    width: 100%;
-}
-
 .text-transparent {
     color: transparent;
 }

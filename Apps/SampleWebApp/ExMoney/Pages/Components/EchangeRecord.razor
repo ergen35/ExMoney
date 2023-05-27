@@ -27,7 +27,6 @@
                                         Status == TransactionStatus.Finished ? "success" : "danger";
     
     [Parameter] public TransactionStatus Status { get; set; } = TransactionStatus.Accepted;
-    [Parameter] public string DetailsMessage { get; set; }
     [Parameter] public string BaseCurrency { get; set; }
     [Parameter] public string ChangeCurrency { get; set; }
     [Parameter] public double Rate { get; set; }

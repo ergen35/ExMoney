@@ -1,0 +1,91 @@
+@page "/exchanges"
+@page "/account/transactions"
+
+@layout PagesLayout
+
+@inject IExMoneyTransactionsApi transactionsApi
+@inject IExMoneyUsersApi usersApi
+
+
+<div class="card w-100 h-100 position-relative overflow-hidden">
+    <div class="card-body px-2">
+        <h5 class="card-title fw-semibold mb-4 text-center">
+            <span class="ti ti-timeline"></span> Mes Echanges
+        </h5>
+        <hr>
+        <div class="row">
+            <div class="col text-center">
+                <a class="btn btn-outline-warning"> <span class="ti ti-flame me-1"></span>En cours</a>
+            </div>
+            <div class="col text-center">
+                <a class="btn btn-outline-dark"> <span class="ti ti-exchange me-1"></span>Toutes</a>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col" style="overflow-y: scroll; max-height: calc(100vh - 40px);">
+                <div>
+                    @if (Displayed is null)
+                    {
+                        <div class="text-center">
+                            <SpinnerLoader />
+                        </div>
+                    }
+                    else
+                    {
+                        if (Displayed.Any())
+                        {
+                            <ul class="list-group list-group-light">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="fw-bold">John Doe</div>
+                                        <div class="text-muted">john.doe@gmail.com</div>
+                                    </div>
+                                    <span class="badge rounded-pill badge-success">Active</span>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <div class="text-center mt-5">
+                                <span class="d-block fs-5 text-danger fw-bold mb-3">
+                                    Aucune Transaction Trouvée
+                                </span>
+                                <a href="/account/make-exchange" class="btn btn-outline-primary rounded-0 mt-4 btn-lg">
+                                    <span class="fas fa-plus-square me-2"></span> Faire un échange
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    public  bool showFiltered = false;
+
+    public List<Transaction> Transactions { get; set; }
+    public List<Transaction> OnGoTransactions { get; set; }
+    public List<Transaction>? Displayed => showFiltered ? OnGoTransactions : Transactions;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
+
+            var latests = await transactionsApi.ListLastest(userId, count: 20);
+            if (latests.IsSuccessStatusCode)
+            {
+                Transactions = latests.Content!;
+                @* Displayed = latests.Content!; *@
+                StateHasChanged();
+                OnGoTransactions = latests.Content!.Where(t => t.Status == TransactionStatus.Processing).ToList();
+                StateHasChanged();
+            }
+        }
+    }
+}
