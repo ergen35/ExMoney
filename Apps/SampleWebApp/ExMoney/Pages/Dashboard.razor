@@ -79,7 +79,7 @@
             Transactions En Cours</h5>
           <hr class="divider">
         </div>
-        <ul class="timeline-widget mb-0 position-relative mb-n5">
+        <ul>
           @if (OngoingTransactions is not null)
           {
             if (OngoingTransactions.Any())
@@ -106,14 +106,16 @@
           }
           else
           {
-            <SpinnerLoader />
+            <div class="text-center">
+              <SpinnerLoader />
+            </div>
           }
         </ul>
       </div>
     </div>
   </div>
 </div>
-<div class="row mt-5">
+<div class="row mt-3">
   <div class="col-12">
     <div class="card overflow-hidden rounded-2">
       <div class="position-relative">
