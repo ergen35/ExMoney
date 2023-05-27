@@ -1,38 +1,86 @@
-<style>
-.nav-link.menu-link{
-    font-size: 20px;
-}
-.border-light{
-    border-color: rgb(236, 233, 233)!important;
-}
-</style>
+@inject ExMoneyJsInterop jSInterop
 
-<nav>
-    <div class="nav-item ps-1 mb-1 border border-light rounded-3 border-1">
-        <NavLink class="nav-link menu-link text-dark" href="account/dashboard">
-            <span class="fas fa-fw fa-tachometer-alt me-3" aria-hidden="true"></span> Dasboard
-        </NavLink>
-    </div>
-    <div class="nav-item ps-1 mb-1 border border-light rounded-3 border-1">
-        <NavLink class="nav-link menu-link text-dark" href="account/transactions" Match="NavLinkMatch.All">
-            <span class="fas fa-fw fa-chart-area me-3 text-warning" aria-hidden="true"></span> Transactions
-        </NavLink>
-    </div>
+<nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+    <ul id="sidebarnav">
+        <li class="nav-small-cap">
+            <span class="hide-menu text-black">Accueil</span>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/account/dashboard" aria-expanded="false">
+                <span>
+                    <i class="ti ti-layout-dashboard text-primary"></i>
+                </span>
+                <span class="hide-menu">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-small-cap">
+            <span class="hide-menu text-black">Mes Echanges</span>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/account/transactions?filter=ongoing"
+                aria-expanded="false">
+                <span>
+                    <i class="fas fa-stopwatch fa-fw text-danger"></i>
+                </span>
+                <span class="hide-menu">En Cours</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/account/transactions" aria-expanded="false">
+                <span>
+                    <i class="ti ti-timeline"></i>
+                </span>
+                <span class="hide-menu">Toutes</span>
+            </a>
+        </li>
 
-    <div class="nav-item ps-1 mb-1 border border-light rounded-3 border-1">
-        <NavLink class="nav-link menu-link text-dark" href="account/infos" Match="NavLinkMatch.All">
-            <span class="fas fa-fw fa-user me-3" aria-hidden="true"></span> Mon Compte
-        </NavLink>
-    </div>
-    <div class="nav-item ps-1 mb-1 border border-light rounded-3 border-1">
-        <NavLink class="nav-link menu-link text-dark" href="settings">
-            <span class="fas fa-fw fa-cogs me-3" aria-hidden="true"></span> Paramètres
-        </NavLink>
-    </div>
+        <li class="nav-small-cap">
+            <span class="hide-menu text-black">Mon Compte</span>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/account/infos" aria-expanded="false">
+                <span>
+                    <i class="ti ti-user-circle"></i>
+                </span>
+                <span class="hide-menu">Mon Profil</span>
+            </a>
+        </li>
 
-    <div class="nav-item ps-1 mb-1 border border-light rounded-3 border-1">
-        <NavLink class="nav-link menu-link text-dark" href="about-exmoney">
-            <span class="fas fa-fw fa-info-circle me-3 text-primary" aria-hidden="true"></span> A Propos
-        </NavLink>
-    </div>
+        <li class="nav-small-cap">
+            <span class="hide-menu text-black">EXTRA</span>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/settings" aria-expanded="false">
+                <span>
+                    <i class="ti ti-settings text-black"></i>
+                </span>
+                <span class="hide-menu">Paramètres</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/notifications" aria-expanded="false">
+                <span>
+                    <i class="ti ti-bell"></i>
+                </span>
+                <span class="hide-menu">Notifications</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/about-exmoney" aria-expanded="false">
+                <span>
+                    <i class="ti ti-info-circle text-primary"></i>
+                </span>
+                <span class="hide-menu">A Propos</span>
+            </a>
+        </li>
+    </ul>
 </nav>
+
+@code {
+
+    private void OnSidebarLinkClicked()
+    {
+        jSInterop.OnSidebarLinkClicked();
+    }
+
+}

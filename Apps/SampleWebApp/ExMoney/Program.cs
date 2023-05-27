@@ -21,6 +21,7 @@ builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransa
 
 //add blazored modal
 builder.Services.AddBlazoredModal();
+builder.Services.AddScoped<ExMoneyJsInterop>();
 
 var app = builder.Build();
 

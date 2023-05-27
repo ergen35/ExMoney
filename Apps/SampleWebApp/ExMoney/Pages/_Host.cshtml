@@ -5,23 +5,26 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="~/" />
-    @* MDB *@
-    <link href="~/bs/css/bootstrap.min.css" rel="stylesheet" />
+    @* template assets *@
+    <link rel="shortcut icon" type="image/png" href="assets/images/logos/favicon.png" />
+    <link rel="stylesheet" href="assets/css/styles.min.css" />
     @* Font awesome *@
-    <link href="~/fa/css/fontawesome.min.css" rel="stylesheet" />
-    <link href="~/fa/css/brands.min.css" rel="stylesheet" />
-    <link href="~/fa/css/regular.min.css" rel="stylesheet" />
-    <link href="~/fa/css/solid.min.css" rel="stylesheet" />
+    <link href="fa/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="fa/css/brands.min.css" rel="stylesheet" />
+    <link href="fa/css/regular.min.css" rel="stylesheet" />
+    <link href="fa/css/solid.min.css" rel="stylesheet" />
+
     @* App Assets *@
-    <link rel="icon" type="image/png" href="favicon.png"/>
     <link href="css/site.css" rel="stylesheet" />
     <link href="ExMoney.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
+
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
 
@@ -36,8 +39,15 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="~/bs/js/bootstrap.min.js"></script>
+    @* js *@
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="assets/libs/simplebar/dist/simplebar.js"></script>
+    @* interop *@
+    <script src="js/exmoney.interop.js"></script>
     <script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
     <script src="_framework/blazor.server.js"></script>
 </body>
+
 </html>

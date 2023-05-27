@@ -1,26 +1,36 @@
 @inherits LayoutComponentBase
-@inject NavigationManager navManager
+@inject ExMoneyJsInterop jsInterop
 
+<PageTitle>Dashboard</PageTitle>
 
-<AppSideBar />
-<div class="container-fluid">
-    <div class="row">
-        <div class="">
-            <!-- toggler -->
-            <button class="btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
-                <i class="fas fa-bars fs-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"></i>
-            </button>
-            <main role="main">
-                @Body
-            </main>
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <aside class="left-sidebar">
+        <div>
+            <div class="brand-logo d-flex align-items-center justify-content-between">
+                <a class="text-nowrap logo-img">
+                    <img src="assets/images/logos/dark-logo.svg" width="180" alt="" />
+                </a>
+                <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse" @onclick="CloseSidebarNav">
+                    <i class="ti ti-x fs-8"></i>
+                </div>
+            </div>
+            <AppMenu />
+        </div>
+    </aside>
+    <div class="body-wrapper">
+        <HeaderNavMenu />
+        <div class="container-fluid">
+            @Body
         </div>
     </div>
 </div>
 
 
-<style>
-    body {
-        background-image: url(images/genbg2.jpg);
-        background-position: bottom;
+@code{
+
+    private void CloseSidebarNav()
+    {
+        jsInterop.CloseSidebarNav();
     }
-</style>
+}

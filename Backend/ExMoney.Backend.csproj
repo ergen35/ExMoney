@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="aspnet.security.oauth.keycloak" Version="6.0.14" />
     <PackageReference Include="automapper.extensions.microsoft.dependencyinjection" Version="12.0.0" />
+    <PackageReference Include="IdentityModel.OidcClient" Version="5.2.1" />
+    <PackageReference Include="IdentityModel.OidcClient.IdentityTokenValidator" Version="5.2.1" />
     <PackageReference Include="Keycloak.AuthServices.Authentication" Version="1.5.1" />
     <!-- <PackageReference Include="Keycloak.AuthServices.Authorization" Version="1.5.1" /> -->
     <!-- <PackageReference Include="masstransit" Version="8.0.13" /> -->
