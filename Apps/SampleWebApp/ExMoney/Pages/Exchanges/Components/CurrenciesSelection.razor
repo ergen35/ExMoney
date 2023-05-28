@@ -1,0 +1,122 @@
+@inject IMemoryCache memCache
+@inject IExMoneyCurrenciesApi currenciesApi
+
+
+<form>
+    @if (Currencies is null)
+    {
+        <center>
+            <SpinnerLoader />
+        </center>
+    }
+    else
+    {
+        <div class="mb-3">
+            <label for="baseCurrencySelect" class="form-label">Devise de Base</label>
+
+            <select id="baseCurrencySelect" class="form-select" @bind=BaseCurrencyId>
+                <option> select</option>
+                @foreach (var c in Currencies)
+                {
+                    <option value="@c.Id">@c.Name (@c.Symbol)</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="CcurrencySelect" class="form-label">Devise de Change</label>
+            <select id="CcurrencySelect" class="form-select" @bind=ChangeCurrencyId>
+                <option> select</option>
+                @foreach (var c in Currencies)
+                {
+                    <option value="@c.Id">@c.Name (@c.Symbol)</option>
+                }
+            </select>
+        </div>
+    }
+
+    <div class='mb-3 @(Currencies is null ? "invisible": "visible")'>
+        <label for="amount" class="form-label">Montant A Convertir</label>
+        <input type="number" @bind-value=@Amount id="amount" class='form-control' placeholder=" input">
+    </div>
+</form>
+
+@code {
+
+    private int changeCurrencyId;
+    private int baseCurrencyId;
+    private double amount = 0.0;
+
+    public List<Currency> Currencies { get; set; }
+
+    [Parameter] public EventCallback<int> BaseCurrencyIdChanged { get; set; }
+    [Parameter] public EventCallback<int> ChangeCurrencyIdChanged { get; set; }
+    [Parameter] public EventCallback<double> AmountChanged { get; set; }
+
+
+    [Parameter]
+    public double Amount
+    {
+        get { return amount; }
+        set
+        {
+            if (amount != value)
+            {
+                AmountChanged.InvokeAsync(value);
+                amount = value;
+            }
+        }
+    }
+    [Parameter]
+    public int ChangeCurrencyId
+    {
+        get { return changeCurrencyId; }
+        set
+        {
+            if (changeCurrencyId != value)
+            {
+                ChangeCurrencyIdChanged.InvokeAsync(value);
+                changeCurrencyId = value;
+            }
+        }
+    }
+    [Parameter]
+    public int BaseCurrencyId
+    {
+        get { return baseCurrencyId; }
+        set
+        {
+            if (baseCurrencyId != value)
+            {
+                BaseCurrencyIdChanged.InvokeAsync(value);
+                BaseCurrencyId = value;
+            }
+        }
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            //load currencies
+            var cachedCurrencies = await memCache.GetOrCreateAsync<List<Currency>>("currencies", async (ce) =>
+            {
+                var response = await currenciesApi.List();
+                if (response.IsSuccessStatusCode)
+                {
+                    ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
+                    return response.Content!;
+                }
+                else
+                    return default;
+
+            });
+
+            if (cachedCurrencies is not null)
+            {
+                Currencies = cachedCurrencies;
+                StateHasChanged();
+            }
+        }
+    }
+}

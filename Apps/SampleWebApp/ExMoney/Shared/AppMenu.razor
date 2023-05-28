@@ -17,6 +17,15 @@
             <span class="hide-menu text-black">Mes Echanges</span>
         </li>
         <li class="sidebar-item">
+            <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/make-exchange"
+                aria-expanded="false">
+                <span>
+                    <i class="ti ti-exchange fa-fw text-success"></i>
+                </span>
+                <span class="hide-menu">Echanger</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
             <a class="sidebar-link" @onclick="OnSidebarLinkClicked" href="/account/transactions"
                 aria-expanded="false">
                 <span>

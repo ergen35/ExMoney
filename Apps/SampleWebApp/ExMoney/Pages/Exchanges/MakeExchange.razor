@@ -1,74 +1,21 @@
-@page "/account/make-exchange"
+@page "/make-exchange"
 
 @layout PagesLayout
 
-@using Microsoft.AspNetCore.WebUtilities
 
-@inject IExMoneyCurrenciesApi currenciesApi
-@inject NavigationManager navManager
+<div class="card w-100 h-100 position-relative overflow-hidden">
+    <div class="card-body px-3">
+        <h5 class="card-title fw-semibold mb-4 fs-5 text-center"> <span class="ti ti-exchange me-2"></span> @UiTitle
+        </h5>
+        <div class="row">
+            <div class="col">
+                <DynamicComponent Type="DynamicViewType" Parameters=@ComponentParams @key=DynamicView />
 
-This is the page to make exchanges
-
-@if(Currencies is null)
-{
-    <center>
-        <ThreeDotsLoader />
-    </center>
-}
-else
-{
-    <div>
-        select base currency : 
-        <select name="baseCurency" id="baseCurency" @bind=@BaseCurrencyId>
-            @foreach(var c in Currencies)
-            {
-                <option value="@c.Id">@c.Name (@c.Symbol)</option>
-            }
-        </select> <br>
-
-        select change currency
-        <select name="changeCurrency" id="changeCurrency" @bind=@ChangeCurrencyId>
-            @foreach(var c in Currencies)
-            {
-                <option value="@c.Id">@c.Name (@c.Symbol)</option>
-            }
-        </select> <br>
-
-        Entrer le montant: <input type="number" @bind-value=@Amount name="" id="" step="0.1"> <br>
-
-
-        <button class="btn btn-outline-secondary" @onclick="ContinueToConfig">Continuer</button>
+                <div class='text-center @(Currencies is null ? "invisible": "visible")'>
+                    <button type="button" @onclick="ContinueToConfig" class="btn btn-dark">Continuer <span
+                            class="ti ti-arrow-big-right"></span></button>
+                </div>
+            </div>
+        </div>
     </div>
-}
-
-@code {
-
-    public List<Currency> Currencies { get; set; }
-
-    public int BaseCurrencyId { get; set; }
-    public int ChangeCurrencyId { get; set; }
-
-    public double Amount { get; set; } = 0.0;
-
-    public void ContinueToConfig()
-    {
-        var queries = new Dictionary<string, string>();
-        queries.Append(new("baseCurrencyId", BaseCurrencyId.ToString()));
-        queries.Append(new("changeCurrencyId", ChangeCurrencyId.ToString()));
-        queries.Append(new("amount", Amount.ToString()));
-    
-        var nextUri = QueryHelpers.AddQueryString("/account/make-exchange/configure-payment", queries);
-
-        navManager.NavigateTo(nextUri);
-    }
-    
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Delay(TimeSpan.FromSeconds(10));
-        //load currencies
-        var response = await currenciesApi.List();
-        if(response.IsSuccessStatusCode)
-            Currencies = response.Content; 
-    }
-}
-
+</div>

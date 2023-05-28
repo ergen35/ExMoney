@@ -1,5 +1,6 @@
 using ExMoney.Services;
 using Blazored.Modal;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransa
 //TODO: add auth httpClient
 // builder.Services.AddTransient<AuthService>();
 
+builder.Services.AddMemoryCache();
+
 //add blazored modal
 builder.Services.AddBlazoredModal();
 builder.Services.AddScoped<ExMoneyJsInterop>();
@@ -26,10 +29,8 @@ builder.Services.AddScoped<ExMoneyJsInterop>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-}
+
+app.UseDeveloperExceptionPage();
 
 app.UseStaticFiles();
 

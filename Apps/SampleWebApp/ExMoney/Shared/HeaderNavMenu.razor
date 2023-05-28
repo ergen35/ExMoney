@@ -18,7 +18,7 @@
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <a href="/account/make-exchange" class="btn btn-info rounded-1">
+                <a href="/make-exchange" class="btn btn-info rounded-1">
                     <span class="ti ti-plus fw-bolder"></span>
                 </a>
                 <li class="nav-item dropdown">
@@ -49,7 +49,7 @@
 
 
 @code {
-    private async void toggleSidebarMenu()
+    private void toggleSidebarMenu()
     {
         jsInterop.ToggleSidebarNav();
     }
