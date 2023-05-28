@@ -1,30 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using BlazorAnimate;
-using Blazored.Modal;
-using Blazored.Modal.Services;
-using ExMoney;
-using ExMoney.Data;
-using ExMoney.Pages.Auth;
-using ExMoney.Pages.Components;
 using ExMoney.Pages.Exchanges.Components;
-using ExMoney.Services;
-using ExMoney.Shared;
-using ExMoney.SharedLibs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.JSInterop;
 
 namespace ExMoney.Pages.Exchanges
 {
@@ -34,13 +10,13 @@ namespace ExMoney.Pages.Exchanges
         [Inject] public NavigationManager navManager { get; set; }
 
 
-        private readonly int BaseCurrencyId = 0;
-        private readonly int ChangeCurrencyId = 0;
-        private readonly double Amount = 0.0;
+        private readonly int BaseCurrencyId;
+        private readonly int ChangeCurrencyId;
+        private readonly double Amount;
 
         public string UiTitle { get; set; } = "Effectuer un Echange";
 
-        public Type DynamicViewType  { get; set; } = typeof(CurrenciesSelection);
+        public Type DynamicViewType { get; set; } = typeof(CurrenciesSelection);
 
         public Dictionary<string, object> ComponentParams { get; set; }
         public DynamicComponent DynamicView { get; set; }
@@ -57,9 +33,22 @@ namespace ExMoney.Pages.Exchanges
             };
         }
 
+        public void GoToCurrenciesSelectionStep()
+        {
+            CheckoutView instance = DynamicView.Instance as CheckoutView;
+            ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
+            ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
+            ComponentParams[nameof(Amount)] = instance.Amount;
+
+            DynamicViewType = typeof(CurrenciesSelection);
+            stepOrder = 1;
+            UiTitle = "Effectuer un Echange";
+            StateHasChanged();
+        }
+
         public void GoToRateCalculationStep()
         {
-            var instance = (DynamicView.Instance as CurrenciesSelection);
+            CurrenciesSelection instance = DynamicView.Instance as CurrenciesSelection;
             ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
             ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
             ComponentParams[nameof(Amount)] = instance.Amount;
@@ -70,11 +59,16 @@ namespace ExMoney.Pages.Exchanges
             StateHasChanged();
         }
 
-        public void ContinueToConfig()
+        public void GoToNextStep()
         {
-            if(stepOrder == 1)
+            if (stepOrder == 1)
                 GoToRateCalculationStep();
-            // StateHasChanged();
+        }
+
+        public void GotoPreviousStep()
+        {
+            if(stepOrder == 2)
+                GoToCurrenciesSelectionStep();
         }
     }
 }

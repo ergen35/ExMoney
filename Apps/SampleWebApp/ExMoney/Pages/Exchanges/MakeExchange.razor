@@ -5,19 +5,31 @@
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
     <div class="card-body px-3">
-        <h5 class="card-title fw-semibold mb-4 fs-5 text-center"> <span class="ti ti-exchange me-2"></span> @UiTitle
+        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> 
+            <span class="ti ti-exchange me-2"></span> @UiTitle
         </h5>
+        <hr class="mt-2">
         <div class="row">
             <div class="col">
 
                 <DynamicComponent Type="DynamicViewType" Parameters=@ComponentParams @ref=@DynamicView />
+                
+                @if(stepOrder <= 1)
+                {
+                    <div class='text-center mt-3'>
+                        <button type="button" @onclick="GoToNextStep" class="btn btn-dark">
+                            Continuer
+                            <span class="ti ti-arrow-big-right"></span>
+                        </button>
+                    </div>
+                }
 
-                <div class='text-center'>
-                    <button type="button" @onclick="ContinueToConfig" class="btn btn-dark">
-                        Continuer 
-                        <span class="ti ti-arrow-big-right"></span>
-                    </button>
-                </div>
+                @if(stepOrder > 1)
+                {
+                    <div class="text-center mt-3">
+                        <button class="btn btn-dark btn-sm" @onclick="GotoPreviousStep"> <span class="ti ti-arrow-big-left"></span> Retour</button>
+                    </div>
+                }
             </div>
         </div>
     </div>
