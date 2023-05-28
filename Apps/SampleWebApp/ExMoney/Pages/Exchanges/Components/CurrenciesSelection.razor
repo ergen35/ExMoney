@@ -41,82 +41,34 @@
 </form>
 
 @code {
-
-    private int changeCurrencyId;
-    private int baseCurrencyId;
-    private double amount = 0.0;
-
     public List<Currency> Currencies { get; set; }
 
-    [Parameter] public EventCallback<int> BaseCurrencyIdChanged { get; set; }
-    [Parameter] public EventCallback<int> ChangeCurrencyIdChanged { get; set; }
-    [Parameter] public EventCallback<double> AmountChanged { get; set; }
+    [Parameter] public int BaseCurrencyId { get; set; }
+    [Parameter] public int ChangeCurrencyId { get; set; }
+    [Parameter] public double Amount { get; set; }
 
-
-    [Parameter]
-    public double Amount
+    protected override async Task OnInitializedAsync()
     {
-        get { return amount; }
-        set
+        await base.OnInitializedAsync();
+        //load currencies
+        var cachedCurrencies = await memCache.GetOrCreateAsync<List<Currency>>("currencies", async (ce) =>
         {
-            if (amount != value)
+            var response = await currenciesApi.List();
+            if (response.IsSuccessStatusCode)
             {
-                AmountChanged.InvokeAsync(value);
-                amount = value;
+                ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
+                return response.Content!;
             }
-        }
-    }
-    [Parameter]
-    public int ChangeCurrencyId
-    {
-        get { return changeCurrencyId; }
-        set
+            else
+                return default;
+
+        });
+
+        if (cachedCurrencies is not null)
         {
-            if (changeCurrencyId != value)
-            {
-                ChangeCurrencyIdChanged.InvokeAsync(value);
-                changeCurrencyId = value;
-            }
+            Currencies = cachedCurrencies;
+            StateHasChanged();
         }
-    }
-    [Parameter]
-    public int BaseCurrencyId
-    {
-        get { return baseCurrencyId; }
-        set
-        {
-            if (baseCurrencyId != value)
-            {
-                BaseCurrencyIdChanged.InvokeAsync(value);
-                BaseCurrencyId = value;
-            }
-        }
-    }
-
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            //load currencies
-            var cachedCurrencies = await memCache.GetOrCreateAsync<List<Currency>>("currencies", async (ce) =>
-            {
-                var response = await currenciesApi.List();
-                if (response.IsSuccessStatusCode)
-                {
-                    ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
-                    return response.Content!;
-                }
-                else
-                    return default;
-
-            });
-
-            if (cachedCurrencies is not null)
-            {
-                Currencies = cachedCurrencies;
-                StateHasChanged();
-            }
-        }
+        
     }
 }

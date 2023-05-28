@@ -31,56 +31,39 @@ namespace ExMoney.Pages.Exchanges
     public partial class MakeExchange
     {
         [Inject] public IMemoryCache memCache { get; set; }
-        [Inject] public IExMoneyCurrenciesApi currenciesApi { get; set; }
         [Inject] public NavigationManager navManager { get; set; }
 
 
-        public List<Currency> Currencies { get; set; }
-        public int BaseCurrencyId { get; set; }
-        public int ChangeCurrencyId { get; set; }
-        public double Amount { get; set; } = 0.0;
+        private readonly int BaseCurrencyId = 0;
+        private readonly int ChangeCurrencyId = 0;
+        private readonly double Amount = 0.0;
 
         public string UiTitle { get; set; } = "Effectuer un Echange";
 
         public Type DynamicViewType  { get; set; } = typeof(CurrenciesSelection);
 
-        public Dictionary<string, object> ComponentParams { get; set; } = new();
+        public Dictionary<string, object> ComponentParams { get; set; }
         public DynamicComponent DynamicView { get; set; }
 
         private int stepOrder = 1;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnInitialized()
         {
-            if (firstRender)
+            ComponentParams = new()
             {
-                //load currencies
-                var cachedCurrencies = await memCache.GetOrCreateAsync<List<Currency>>("currencies", async (ce) =>
-                {
-                    var response = await currenciesApi.List();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        ce.SetSlidingExpiration(TimeSpan.FromMinutes(2));
-                        return response.Content!;
-                    }
-                    else
-                        return default;
-                });
-
-                if (cachedCurrencies is not null)
-                {
-                    Currencies = cachedCurrencies;
-
-                    ComponentParams.Add("BaseCurrencyId", BaseCurrencyId);
-                    ComponentParams.Add("ChangeCurrencyId", ChangeCurrencyId);
-                    ComponentParams.Add("Amount", Amount);
-
-                    StateHasChanged();
-                }
-            }
+                { nameof(BaseCurrencyId), BaseCurrencyId },
+                { nameof(ChangeCurrencyId), ChangeCurrencyId },
+                { nameof(Amount), Amount }
+            };
         }
 
         public void GoToRateCalculationStep()
         {
+            var instance = (DynamicView.Instance as CurrenciesSelection);
+            ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
+            ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
+            ComponentParams[nameof(Amount)] = instance.Amount;
+
             DynamicViewType = typeof(CheckoutView);
             stepOrder = 2;
             UiTitle = "Check Out";
@@ -91,7 +74,7 @@ namespace ExMoney.Pages.Exchanges
         {
             if(stepOrder == 1)
                 GoToRateCalculationStep();
-            StateHasChanged();
+            // StateHasChanged();
         }
     }
 }
