@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col text-center">
+       <span class="d-block">
+         <span class="fas fa-exclamation-triangle text-warning fs-3x me-3"></span> @Msg
+       </span>
+       
+       <button class="btn btn-outline-secondary" @onclick='CloseMe'>Ok</button>
+    </div>
+</div>
+
+@code {
+
+    [CascadingParameter] public BlazoredModalInstance Instance { get; set; }
+    public string Msg { get; set; }
+
+    public async void CloseMe()
+    {
+        await Instance.CloseAsync();
+    }
+}

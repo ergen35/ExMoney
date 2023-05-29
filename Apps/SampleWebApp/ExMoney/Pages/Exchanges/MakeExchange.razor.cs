@@ -1,3 +1,5 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using ExMoney.Pages.Exchanges.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
@@ -8,7 +10,7 @@ namespace ExMoney.Pages.Exchanges
     {
         [Inject] public IMemoryCache memCache { get; set; }
         [Inject] public NavigationManager navManager { get; set; }
-
+        [Inject] public IModalService modalService { get; set; }
 
         private readonly int BaseCurrencyId;
         private readonly int ChangeCurrencyId;
@@ -35,6 +37,7 @@ namespace ExMoney.Pages.Exchanges
 
         public void GoToCurrenciesSelectionStep()
         {
+
             CheckoutView instance = DynamicView.Instance as CheckoutView;
             ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
             ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;

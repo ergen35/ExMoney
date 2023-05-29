@@ -83,7 +83,7 @@ public class CurrenciesController : ControllerBase
         return Accepted(currency);
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete]
     public async Task<IActionResult> Delete(int id)
     {
         var currency = await db.Currencies.FindAsync(id);

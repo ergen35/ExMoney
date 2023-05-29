@@ -14,22 +14,17 @@ else
 
         <div class="border-3 border-start border-primary ps-3">
             <span class="d-block">
-                <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c => c.Id ==
-            BaseCurrencyId).Name
+                <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name
             </span>
             <span class="d-block">
-                <span class="fw-semibold text-black">Devise de Change</span>: @Currencies.FirstOrDefault(c => c.Id ==
-            ChangeCurrencyId).Name
-            </span>
-            <span class="d-block">
-                <span class="fw-semibold text-black">Montant</span>: @Amount
+                <span class="fw-semibold text-black">Devise de Change</span>: @Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name
             </span>
         </div>
 
         <div class="text-center border rounded-3 my-4 bg-light-indigo shadow-sm shadow">
-            <span class="ti ti-currency-naira" style="font-size: 30px"></span>
+            <span class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name))" style="font-size: 30px"></span>
             <span class="mx-4 ti ti-arrow-right" style="font-size: 30px; color: green;"></span>
-            <span class="ti ti-currency-frank" style="font-size: 30px"></span>
+            <span class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name))" style="font-size: 30px"></span>
 
             <span class="d-block">
                 <span class="fs-4">@Amount</span>
