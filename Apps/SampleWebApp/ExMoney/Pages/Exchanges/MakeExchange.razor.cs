@@ -38,11 +38,11 @@ namespace ExMoney.Pages.Exchanges
         public void GoToCurrenciesSelectionStep()
         {
 
-            CheckoutView instance = DynamicView.Instance as CheckoutView;
+            var instance = DynamicView.Instance as CheckoutView;
             ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
             ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
             ComponentParams[nameof(Amount)] = instance.Amount;
-
+            
             DynamicViewType = typeof(CurrenciesSelection);
             stepOrder = 1;
             UiTitle = "Effectuer un Echange";
@@ -55,6 +55,10 @@ namespace ExMoney.Pages.Exchanges
             ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
             ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
             ComponentParams[nameof(Amount)] = instance.Amount;
+
+            if((double)ComponentParams[nameof(Amount)] <= 0 || (int)ComponentParams[nameof(BaseCurrencyId)] == 0 ){
+                return;
+            }
 
             DynamicViewType = typeof(CheckoutView);
             stepOrder = 2;

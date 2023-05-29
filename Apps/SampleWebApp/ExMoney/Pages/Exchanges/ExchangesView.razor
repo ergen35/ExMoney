@@ -55,7 +55,7 @@
                                 <span class="d-block fs-5 text-danger fw-bold mb-3">
                                     Aucune Transaction Trouvée
                                 </span>
-                                <a href="/make-exchange" class="btn btn-outline-primary rounded-0 mt-4 btn-lg">
+                                <a href="/make-exchange" class="btn btn-primary mt-4 btn-md">
                                     <span class="fas fa-plus-square me-2"></span> Faire un échange
                                 </a>
                             </div>
@@ -76,7 +76,7 @@
 
     public List<Transaction> Transactions { get; set; }
     public List<Transaction> OnGoTransactions { get; set; }
-    public List<Transaction>? Displayed => showFiltered ? OnGoTransactions : Transactions;
+    public List<Transaction> Displayed => showFiltered ? OnGoTransactions : Transactions;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
 
 //---- Add services to the container.
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -21,6 +22,10 @@ var conStr = builder.Configuration.GetConnectionString("exmoney-db");
 builder.Services.AddDbContext<BackendDbContext>(options =>
 {
     options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
+});
+
+builder.Services.AddLogging(logger => {
+    logger.ClearProviders();
 });
 
 
