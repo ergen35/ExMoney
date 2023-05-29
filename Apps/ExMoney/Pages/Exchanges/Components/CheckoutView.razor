@@ -1,0 +1,81 @@
+@inject IExMoneyCurrenciesApi currenciesApi
+@inject IMemoryCache memCache
+
+
+@if (Currencies is null)
+{
+    <div class="text-center">
+        <SpinnerLoader />
+    </div>
+}
+else
+{
+    <Animate Animation="Animations.FadeIn" DurationMs="500">
+
+        <div class="border-3 border-start border-primary ps-3">
+            <span class="d-block">
+                <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name
+            </span>
+            <span class="d-block">
+                <span class="fw-semibold text-black">Devise de Change</span>: @Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name
+            </span>
+        </div>
+
+        <div class="text-center border rounded-3 my-4 bg-light-indigo shadow-sm shadow">
+            <span class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name))" style="font-size: 30px"></span>
+            <span class="mx-4 ti ti-arrow-right" style="font-size: 30px; color: green;"></span>
+            <span class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name))" style="font-size: 30px"></span>
+
+            <span class="d-block">
+                <span class="fs-4">@Amount</span>
+            </span>
+        </div>
+
+        <ul>
+            <li><span class="fas fa-hand-point-right me-2"></span> Calculer le taux</li>
+            <li><span class="fas fa-hand-point-right me-2"></span> Calculer la commission</li>
+            <li><span class="fas fa-hand-point-right me-2"></span> Montrer montant à perçevoir</li>
+        </ul>
+
+        <div class="text-center mt-5">
+            <button class="btn btn-primary btn-lg"> <span class="ti ti-report-money"></span> Proceder au
+                paiment</button>
+        </div>
+    </Animate>
+
+}
+
+
+@code {
+
+    [Parameter] public int BaseCurrencyId { get; set; }
+    [Parameter] public int ChangeCurrencyId { get; set; }
+    [Parameter] public double Amount { get; set; }
+
+    public List<Currency> Currencies { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        //load currencies
+        var cachedCurrencies = await memCache.GetOrCreateAsync<List<Currency>>("currencies", async (ce) =>
+        {
+            var response = await currenciesApi.List();
+            if (response.IsSuccessStatusCode)
+            {
+                ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
+                return response.Content!;
+            }
+            else
+                return default;
+
+        });
+
+        if (cachedCurrencies is not null)
+        {
+            Currencies = cachedCurrencies;
+            StateHasChanged();
+        }
+    }
+}

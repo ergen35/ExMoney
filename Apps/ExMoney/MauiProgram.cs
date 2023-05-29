@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Blazored.Modal;
 using ExMoney.Services;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ExMoney
 {
@@ -31,6 +32,9 @@ namespace ExMoney
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyUsersApi));
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurrenciesApi));
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
+
+            builder.Services.AddMemoryCache();
+            builder.Services.AddScoped<ExMoneyJsInterop>();
 
             //add blazored modal
             builder.Services.AddBlazoredModal();

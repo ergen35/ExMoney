@@ -1,0 +1,71 @@
+@page "/account/infos"
+
+@layout PagesLayout
+
+@inject IExMoneyUsersApi usersApi
+
+
+<div class="card w-100 h-100 position-relative overflow-hidden">
+    <div class="card-body px-2">
+        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> <span class="ti ti-user-circle ti"></span> Mon Compte
+        </h5>
+
+
+        <div class="shadow shadow-sm border-1 border-start border-primary text-start py-2 fs-3 ps-3">
+            <span class="d-block">
+               <span class="fw-semibold">Id</span>: @CurrentUser.Id
+            </span> 
+            <span class="d-block">
+               <span class="fw-semibold">Prénoms</span>: @CurrentUser.FirstName
+            </span> 
+            <span class="d-block">
+               <span class="fw-semibold">Nom</span>: @CurrentUser.LastName
+            </span> 
+            <span class="d-block">
+               <span class="fw-semibold">Email</span>: @CurrentUser.Email
+            </span> 
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <div class="list-group list-group-light fs-5">
+                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+                        <span class="ti ti-user-check me-2 text-primary"></span> Informations
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+                        <span>
+                            <span class="ti ti-id-badge me-2 text-primary"></span> Vérification d'Identité
+                        </span>
+                        <span class="badge rounded-pill badge-success ms-3">
+                            <span class="ti ti-x text-danger"></span>
+                        </span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+                        <span class="ti ti-at me-2 text-primary"></span> Adresse e-mail
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+                        <span class="ti ti-key me-2 text-primary"></span> Mot de passe
+                    </a>
+                    <a href=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    public User CurrentUser { get; set; }
+    protected override void OnInitialized()
+    {
+        CurrentUser = new User()
+            {
+                Id = "0f31b521-f866-4442-984b-cd85a9ee7a8f",
+                FirstName = "polco",
+                LastName = "abby",
+                Email = "polcoabby@email.com"
+            };
+    }
+
+}

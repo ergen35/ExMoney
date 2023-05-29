@@ -1,0 +1,35 @@
+<li class="mx-n3">
+    <div class="alert alert-light shadow-sm" role="alert">
+        <span class="position-absolute bg-white border-secondary-subtle border rounded-circle d-flex justify-content-center align-items-center" 
+                style="height: 50px!important; width: 50px!important;" >
+            <span class="fs-5 text-success" >
+                @Rate
+            </span>
+        </span>
+        
+        <span class="d-block text-center">
+            @BaseCurrency <span class="mx-1 text-black ti ti-arrow-big-right"></span> @ChangeCurrency
+        </span>
+        <span class="d-block text-center">
+            @Date.ToShortDateString() à @Date.ToShortTimeString()
+        </span>
+
+        <span class="d-block text-center mt-2">
+            <span class="badge rounded-pill text-white bg-@statusBadgeColor text-dark">@Status.ToString()</span>
+        </span>
+    </div>
+</li>
+
+@code{
+
+    private string statusBadgeColor => Status == TransactionStatus.Accepted ? "primary" : 
+                                        Status == TransactionStatus.Processing ? "warning" :
+                                        Status == TransactionStatus.Finished ? "success" : "danger";
+    
+    [Parameter] public TransactionStatus Status { get; set; } = TransactionStatus.Accepted;
+    [Parameter] public string BaseCurrency { get; set; }
+    [Parameter] public string ChangeCurrency { get; set; }
+    [Parameter] public double Rate { get; set; }
+    [Parameter] public double Amount { get; set; }
+    [Parameter] public DateTime Date { get; set; }
+}

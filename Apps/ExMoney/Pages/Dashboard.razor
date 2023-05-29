@@ -1,0 +1,164 @@
+@page "/"
+@page "/account/dashboard"
+
+@* @attribute [Authorize] *@
+
+@layout PagesLayout
+
+@inject ExMoneyJsInterop jsInterop
+@inject IExMoneyTransactionsApi transactionsApi
+
+
+<div class="row">
+  <div class="col-12">
+    <!-- Yearly Breakup -->
+    <div class="card overflow-hidden">
+      <div class="card-body p-4">
+        <h5 class="card-title mb-9 fw-semibold text-center">Statistiques Anuelles</h5>
+        <div class="row align-items-center">
+          <div class="col-8">
+            <h4 class="fw-semibold mb-3"><span class="ti ti-currency-frank fs-8 text-black"></span> 36358</h4>
+            <div class="d-flex align-items-center mb-3">
+              <span
+                class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                <i class="ti ti-arrow-up-left text-success"></i>
+              </span>
+              <p class="text-dark me-1 fs-3 mb-0">+27.48%</p>
+              <p class="fs-3 mb-0">année dernière</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="me-4">
+                <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
+                <span class="fs-2">2022</span>
+                <span class="fas fa-long-arrow-alt-right ms-3 text-success"></span>
+              </div>
+              <div>
+                <span class="round-8 bg-danger rounded-circle me-2 d-inline-block"></span>
+                <span class="fs-2">2023</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="d-flex justify-content-center">
+              <div id="breakup"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <!-- Monthly Earnings -->
+    <div class="card">
+      <div class="card-body">
+        <div class="row alig n-items-start">
+          <div class="col-12">
+            <h5 class="card-title mb-9 fw-semibold"> Ce Mois </h5>
+            <h4 class="fw-semibold mb-3"><span class="ti ti-currency-frank fs-8 text-black"></span> 6820</h4>
+            <div class="d-flex align-items-center pb-1">
+              <span
+                class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                <i class="ti ti-arrow-down-right text-danger"></i>
+              </span>
+              <p class="text-dark me-1 fs-3 mb-0">-2.2%</p>
+              <p class="fs-3 mb-0">Ce Mois</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="earning"></div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <div class="mb-4">
+          <h5 class="card-title fw-semibold text-center"> <span class="ti ti-timeline text-warning-emphasis"></span>
+            Transactions En Cours</h5>
+          <hr class="divider">
+        </div>
+        <ul>
+          @if (OngoingTransactions is not null)
+          {
+            if (OngoingTransactions.Any())
+            {
+              @foreach (var transaction in OngoingTransactions)
+              {
+                <ExchangeRecord Status="transaction.Status" BaseCurrency="transaction.BaseCurrencyId"
+                  ChangeCurrency="transaction.ChangeCurrencyId" Amount="transaction.Amount" Rate="transaction.Rate"
+                  Date="transaction.TransactionDate" />
+              }
+            }
+            else
+            {
+              <li class="d-block text-center">
+                Aucune Transaction Trouvée
+              </li>
+            }
+
+
+            <li class="d-block text-center mt-3">
+              <a href="/exchanges" class="btn btn-primary"> <span class="ti ti-arrow-right"></span> Liste Complète
+              </a>
+            </li>
+          }
+          else
+          {
+            <div class="text-center">
+              <SpinnerLoader />
+            </div>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-12">
+    <div class="card overflow-hidden rounded-2">
+      <div class="position-relative">
+        <span class="d-block text-center fw-semibold text-secondary-emphasis fs-5">
+          <span class="ti ti-tools"></span> Actions requises
+        </span>
+        <a class="bg-dark rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+          <i class="ti ti-arrow-big-right fs-4"></i>
+        </a>
+      </div>
+      <div class="card-body pt-3 p-4">
+        <div class="d-flex align-items-center justify-content-between">
+          <ul class="list-unstyled align-items-center mb-0">
+            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-danger"></span> Vérifier email</li>
+            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-dark"></span> Passer KYC</li>
+            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-dark"></span> Votre premier échange</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@code {
+  public List<Transaction> OngoingTransactions { get; set; }
+  private bool transactionReqOk = true;
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      jsInterop.InitDashboardCharts();
+
+      //get 5 latest transactions
+      var ongoingTs = await transactionsApi.ListLastest("767J");
+      transactionReqOk = ongoingTs.IsSuccessStatusCode;
+      if (ongoingTs.IsSuccessStatusCode)
+      {
+        OngoingTransactions = ongoingTs.Content;
+        StateHasChanged();
+      }
+    }
+  }
+}
