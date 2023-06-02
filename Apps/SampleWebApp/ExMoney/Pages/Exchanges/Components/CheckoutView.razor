@@ -1,6 +1,11 @@
+@using ExMoney.SharedLibs
+@using ExMoney.SharedLibs.DTOs
+
+
 @inject IExMoneyCurrenciesApi currenciesApi
 @inject IMemoryCache memCache
-
+@inject IExMoneyRatesApi ratesApi
+@inject IModalService modalService
 
 @if (Currencies is null)
 {
@@ -14,33 +19,58 @@ else
 
         <div class="border-3 border-start border-primary ps-3">
             <span class="d-block">
-                <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name
+                <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c => c.Id ==
+            BaseCurrencyId).Name
             </span>
             <span class="d-block">
-                <span class="fw-semibold text-black">Devise de Change</span>: @Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name
+                <span class="fw-semibold text-black">Devise de Change</span>: @Currencies.FirstOrDefault(c => c.Id ==
+            ChangeCurrencyId).Name
             </span>
         </div>
 
         <div class="text-center border rounded-3 my-4 bg-light-indigo shadow-sm shadow">
-            <span class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Name))" style="font-size: 30px"></span>
+            <span
+                class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Symbol))"
+                style="font-size: 30px"></span>
             <span class="mx-4 ti ti-arrow-right" style="font-size: 30px; color: green;"></span>
-            <span class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Name))" style="font-size: 30px"></span>
+            <span
+                class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Symbol))"
+                style="font-size: 30px"></span>
 
             <span class="d-block">
                 <span class="fs-4">@Amount</span>
             </span>
         </div>
 
-        <ul>
-            <li><span class="fas fa-hand-point-right me-2"></span> Calculer le taux</li>
-            <li><span class="fas fa-hand-point-right me-2"></span> Calculer la commission</li>
-            <li><span class="fas fa-hand-point-right me-2"></span> Montrer montant à perçevoir</li>
-        </ul>
+        @if (!isCalculated)
+        {
+            <div class="text-center">
+                <SpinnerLoader />
+                <span class="d-block">Calcul...</span>                
+            </div>
+        }
+        else
+        {
+            <ul>
+                <li><span class="ti ti-exchange me-2"></span> Taux: @Math.Round(ExchangeRateData.Rate, 2)</li>
+                <li><span class="ti ti-run me-2"></span> Commission: @Math.Round(ExchangeRateData.Commission)</li>
+                <li><span class="ti ti-pig-money me-2"></span> A Payer: <span class="text-danger fs-6 fst-italic font-monospace"> @Math.Round(ExchangeRateData.AmountToPay)</span></li>
+            </ul>
+        }
 
-        <div class="text-center mt-5">
-            <button class="btn btn-primary btn-lg"> <span class="ti ti-report-money"></span> Proceder au
-                paiment</button>
-        </div>
+       @if(isCalculated)
+       {
+            @* <button @onclick="SetPhone">Pay</button> *@
+            <div class="text-center mt-5">
+                @* url="<url-vers-votre-logo>" *@
+                <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)" 
+                    key="7e1c6d50fdba11ed976703e23fcc8506"
+                    position="center"
+                    sandbox="true"
+                    data=""
+                    callback="http://api.exmoney.xyz/payment-callback" />
+            </div>
+       }
     </Animate>
 
 }
@@ -52,12 +82,43 @@ else
     [Parameter] public int ChangeCurrencyId { get; set; }
     [Parameter] public double Amount { get; set; }
 
+    public string PayPhoneNumber { get; set; }
+    public ExchangeRate ExchangeRateData { get; set; } = new();
     public List<Currency> Currencies { get; set; }
+
+    public bool isCalculated = false;
+
+    public async Task SetPhone()
+    {
+        var modalOptions = new ModalOptions(){
+            Size = ModalSize.Automatic,
+            DisableBackgroundCancel = false
+        };
+        var curr = Currencies.FirstOrDefault(c =>  c.Id == BaseCurrencyId).Symbol;
+        modalService.Show<PhoneNumberValidation>("", new ModalParameters().Add("CurrencySymbol", curr) ,modalOptions);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ExchangeRateData.Amount = Amount;
+            ExchangeRateData.BaseCurrencySymbol = Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Symbol;
+            ExchangeRateData.ChangeCurrencySymbol = Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Symbol;
+
+            var rateResponse = await ratesApi.GetExchangeData(ExchangeRateData);
+
+            if (rateResponse.IsSuccessStatusCode)
+            {
+                ExchangeRateData = rateResponse.Content!;
+                isCalculated = true;
+                StateHasChanged();
+            }
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-
         //load currencies
         var cachedCurrencies = await memCache.GetOrCreateAsync<List<Currency>>("currencies", async (ce) =>
         {

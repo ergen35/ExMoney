@@ -3,7 +3,7 @@
     Size="ModalSize.Automatic" Position="ModalPosition.Middle">
         <Router AppAssembly="@typeof(Main).Assembly">
             <Found Context="routeData">
-                <AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)">
+                @*<AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)">
                     <Authorizing>
                         <center>
                             <div class="spinner-border text-primary mx-2" role="status">
@@ -15,7 +15,8 @@
                     <NotAuthorized>
                         <AccountPromptView />
                     </NotAuthorized>
-                </AuthorizeRouteView>
+                </AuthorizeRouteView>*@
+                <RouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)" />
             </Found>
             <NotFound>
                 <PageTitle>Not found</PageTitle>

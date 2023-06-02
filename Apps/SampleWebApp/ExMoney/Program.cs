@@ -16,6 +16,7 @@ builder.Services.AddLogging();
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyUsersApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurrenciesApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
+builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
 
 //TODO: add auth httpClient
 // builder.Services.AddTransient<AuthService>();

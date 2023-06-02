@@ -1,0 +1,42 @@
+<style>
+    span.textbox {
+	    background-color: #FFF;
+	    color: #888;
+	    line-height:20px;
+	    height:20px;
+	    padding:3px;
+	    border:1px #888 solid;
+	    font-size:9pt;
+}
+    
+span.textbox input {
+      border: 0px;
+	    background-color: #FFF;
+  }
+</style>
+
+@if(!string.IsNullOrWhiteSpace(CurrencySymbol))
+{
+    <div class="text-center">
+    @* <span class="textbox"> 
+        http://
+        <input type="text" name="url" autofocus />
+    </span> *@
+    <span class="d-block fw-bold fs-4">
+        Numéro de Réception
+    </span>
+    <div class="my-3">
+        <span class="textbox">
+            <span>@ExMoney.Data.Utilities.GetTableIconCss(CurrencySymbol)</span>
+            <input type="text" class="form-control" id="exampleInputtext1" style="width: 280px!important; text-align: center;" placeholder="Numéro Téléphone" aria-describedby="textHelp">
+        </span>
+    </div>
+    <div class="mb-3">
+        <input type="text" class="form-control" id="exampleInputtext1" placeholder="Confirmer Téléphone"  style="width: 280px!important; text-align: center;" aria-describedby="textHelp">
+    </div>
+</div>
+}
+
+@code{
+    [Parameter] public string CurrencySymbol { get; set; }
+}
