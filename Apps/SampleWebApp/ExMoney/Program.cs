@@ -18,9 +18,6 @@ builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurren
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
 
-//TODO: add auth httpClient
-// builder.Services.AddTransient<AuthService>();
-
 builder.Services.AddMemoryCache();
 
 //add blazored modal

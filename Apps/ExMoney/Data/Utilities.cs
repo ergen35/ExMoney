@@ -4,12 +4,12 @@ namespace ExMoney.Data
 {
     public static class Utilities
     {
-        public static string GetTableIconCss(string currency)
+        public static string GetTableIconCss(string symbol)
         {
-            if(currency.Contains("naira", StringComparison.OrdinalIgnoreCase))
+            if(symbol.Contains("ngn", StringComparison.OrdinalIgnoreCase))
                 return "ti ti-currency-naira";
             
-            if(currency.Contains("fran", StringComparison.OrdinalIgnoreCase))
+            if(symbol.Contains("xof", StringComparison.OrdinalIgnoreCase))
                 return "ti ti-currency-frank";
 
             return string.Empty;
