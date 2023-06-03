@@ -8,13 +8,13 @@ namespace ExMoney.Pages.Exchanges
 {
     public partial class MakeExchange
     {
-        [Inject] public IMemoryCache memCache { get; set; }
-        [Inject] public NavigationManager navManager { get; set; }
-        [Inject] public IModalService modalService { get; set; }
+        [Inject] public IMemoryCache MemCache { get; set; }
+        [Inject] public NavigationManager NavManager { get; set; }
+        [Inject] public IModalService ModalService { get; set; }
 
-        private readonly int BaseCurrencyId;
-        private readonly int ChangeCurrencyId;
-        private readonly double Amount;
+        private readonly int BaseCurrencyId = 0;
+        private readonly int ChangeCurrencyId = 0;
+        private readonly double Amount = 0d;
 
         public string UiTitle { get; set; } = "Effectuer un Echange";
 
