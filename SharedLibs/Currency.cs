@@ -8,14 +8,11 @@ namespace ExMoney.SharedLibs
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required, StringLength(maximumLength: 6)]
+        [Required, StringLength(maximumLength: 3, MinimumLength = 3)]
         public string Symbol { get; set; }
 
-        [Required, StringLength(maximumLength: 1024, MinimumLength = 2)]
+        [Required, StringLength(maximumLength: 1024, MinimumLength = 5)]
         public string Name { get; set; }
-
-        [Url]
-        public string ValueProviderUrl { get; set; } = string.Empty;
     }
 }
 

@@ -1,19 +1,29 @@
 
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace ExMoney.SharedLibs
 {
-
-
-    //FIXME: Fix Date format; save Date as is in database instead of numbers
     public class User
     {
         public string Id { get; set; }
 
+        [Required]
         public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public double BirthDate { get; set; } //FIXME: DateTime
-        public string Sex { get; set; }
 
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
+        
+        [EnumDataType(typeof(Sex))]
+        public Sex Sex { get; set; }
+
+        [Required]
         public string Phone { get; set; }
+
+        [Required]
         public string Email { get; set; }
 
         public string Address { get; set; }
@@ -22,9 +32,9 @@ namespace ExMoney.SharedLibs
 
         public double Balance { get; set; }
 
-        public double CreationDate { get; set; }  //FIXME: DateTime
+        public DateTime CreationDate { get; set; }
 
-        public bool IdentityVerified { get; set; }
+        public KycVerification KycVerification { get; set; }
 
         public bool EmailVerified { get; set; }
 
