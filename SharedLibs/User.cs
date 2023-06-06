@@ -40,10 +40,4 @@ namespace ExMoney.SharedLibs
 
         public bool PhoneVerified { get; set; }
     }
-
-    public enum Sex
-    {
-        Male,
-        Female
-    }
 }

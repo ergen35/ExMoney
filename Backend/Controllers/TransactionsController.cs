@@ -29,7 +29,7 @@ namespace ExMoney.Backend.Controllers
         [HttpGet("latest/{userId}")]
         public IEnumerable<Transaction> ListLatests(string userId, int count)
         {
-            var latestTransactions = db.Transactions.OrderByDescending(t => t.TransactionDate).Take(count);
+            var latestTransactions = db.Transactions.OrderByDescending(t => t.Date).Take(count);
             return latestTransactions;
         }
 
@@ -47,7 +47,7 @@ namespace ExMoney.Backend.Controllers
 
             //TOD0: define rate
             transaction.Rate = Random.Shared.NextDouble() * Random.Shared.Next(maxValue: 900, minValue: 1);
-            transaction.TransactionDate = DateTime.Now;
+            transaction.Date = DateTime.Now;
             transaction.Status = TransactionStatus.Accepted;
 
             try
