@@ -3,6 +3,7 @@ using System;
 using ExMoney.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExMoney.Backend.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class BackendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230606093406_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,29 +119,6 @@ namespace ExMoney.Backend.Migrations
                     b.ToTable("KycVerifications");
                 });
 
-            modelBuilder.Entity("ExMoney.SharedLibs.PaymentOperation", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Hash")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ParentTransactionId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PaymentId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PaymentOperations");
-                });
-
             modelBuilder.Entity("ExMoney.SharedLibs.PaymentProcessor", b =>
                 {
                     b.Property<string>("Id")
@@ -191,12 +170,6 @@ namespace ExMoney.Backend.Migrations
                     b.Property<int?>("ChangeCurrencyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PayInId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("PayOutId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<double>("Rate")
                         .HasColumnType("double");
 
@@ -215,10 +188,6 @@ namespace ExMoney.Backend.Migrations
                     b.HasIndex("BaseCurrencyId");
 
                     b.HasIndex("ChangeCurrencyId");
-
-                    b.HasIndex("PayInId");
-
-                    b.HasIndex("PayOutId");
 
                     b.ToTable("Transactions");
                 });
@@ -270,21 +239,9 @@ namespace ExMoney.Backend.Migrations
                         .WithMany()
                         .HasForeignKey("ChangeCurrencyId");
 
-                    b.HasOne("ExMoney.SharedLibs.PaymentOperation", "PayIn")
-                        .WithMany()
-                        .HasForeignKey("PayInId");
-
-                    b.HasOne("ExMoney.SharedLibs.PaymentOperation", "PayOut")
-                        .WithMany()
-                        .HasForeignKey("PayOutId");
-
                     b.Navigation("BaseCurrency");
 
                     b.Navigation("ChangeCurrency");
-
-                    b.Navigation("PayIn");
-
-                    b.Navigation("PayOut");
                 });
 #pragma warning restore 612, 618
         }

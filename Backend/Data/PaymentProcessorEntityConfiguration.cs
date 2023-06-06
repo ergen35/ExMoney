@@ -9,12 +9,14 @@ namespace ExMoney.Backend.Data
         public void Configure(EntityTypeBuilder<PaymentProcessor> builder)
         {
             var kkiapay = new PaymentProcessor{
-                Id = "", //TODO: Constant
+                Id = "8ce50226-1307-4de8-aff7-d839042dec53",
                 ApiKey = "k",
                 Name = "KkiaPay",
                 SecretKey = "",
                 SupportedCurrencies = "xof"
             };
+
+            builder.HasData(kkiapay);
         }
     }
 }

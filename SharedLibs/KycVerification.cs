@@ -20,18 +20,4 @@ namespace ExMoney.SharedLibs
         [Required]
         public KycVerificationResult VerificationResult { get; set; } = KycVerificationResult.NoStatus;
     }
-
-    public enum IdDocumentType
-    {
-        IdCard,
-        Passport,
-        DriverLicense
-    }
-
-    public enum KycVerificationResult
-    {
-        NoStatus,
-        Ok,
-        Failed
-    }
 }

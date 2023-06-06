@@ -10,8 +10,7 @@ namespace ExMoney.SharedLibs
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [Required] public string Name { get; set; }
 
         [Required] public string ApiKey { get; set; }
 

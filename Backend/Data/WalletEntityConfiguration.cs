@@ -10,7 +10,7 @@ namespace ExMoney.Backend.Data
         {
             Wallet nairaWallet = new Wallet
             {
-                Id = "", //TODO: Define constant Guid
+                Id = "001066c3-457b-4b3c-a942-b4ebca1afeb2",
                 Balance = 26400,
                 CurrencyId = 2,
                 Name = "Réserve Naira"
@@ -18,7 +18,7 @@ namespace ExMoney.Backend.Data
 
             Wallet cfaWallet = new Wallet
             {
-                Id = "", //TODO: Define constant Guid
+                Id = "bab8e547-7f6e-4955-976f-80b9c4a2298e",
                 Balance = 13674,
                 CurrencyId = 1,
                 Name = "Réserve CFA"

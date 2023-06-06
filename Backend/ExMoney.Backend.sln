@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExMoney.Backend", "ExMoney.Backend.csproj", "{8C0BD4C9-3AB0-41D6-9BC8-F264C014AB61}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExMoney.SharedLibs", "..\SharedLibs\ExMoney.SharedLibs.csproj", "{F6EABCB4-FFDC-4383-9B30-A968C09E7729}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C0BD4C9-3AB0-41D6-9BC8-F264C014AB61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C0BD4C9-3AB0-41D6-9BC8-F264C014AB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C0BD4C9-3AB0-41D6-9BC8-F264C014AB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C0BD4C9-3AB0-41D6-9BC8-F264C014AB61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6EABCB4-FFDC-4383-9B30-A968C09E7729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6EABCB4-FFDC-4383-9B30-A968C09E7729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6EABCB4-FFDC-4383-9B30-A968C09E7729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6EABCB4-FFDC-4383-9B30-A968C09E7729}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2BB6448F-436A-4967-8615-BD4A496F099E}
+	EndGlobalSection
+EndGlobal

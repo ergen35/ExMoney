@@ -13,6 +13,7 @@ namespace ExMoney.Backend.Data
         public DbSet<KycVerification> KycVerifications { get; set; }
         public DbSet<PaymentProcessor> PaymentProcessors { get; set; }
         public DbSet<Wallet> ExMoneyWallets { get; set; }
+        public DbSet<PaymentOperation> PaymentOperations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

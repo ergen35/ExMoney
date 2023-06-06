@@ -18,7 +18,8 @@ namespace ExMoney.Backend.Data
             var cfaCurrency = new Currency 
             {  
                 Id = 1,
-                Name = "FCFA"
+                Name = "FCFA",
+                Symbol = "XOF"
             };
 
             builder.HasData(nairaCurrency, cfaCurrency);
