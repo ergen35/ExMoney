@@ -3,6 +3,7 @@ using System;
 using ExMoney.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExMoney.Backend.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class BackendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230606110159_v3")]
+    partial class v3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,14 +65,6 @@ namespace ExMoney.Backend.Migrations
                     b.Property<double>("CommissionPercentage")
                         .HasColumnType("double");
 
-                    b.Property<string>("CurrencyEcxhangeBaseUrl")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CurrencyExchangeApiKey")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<bool>("EmailVerificationEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -89,8 +83,6 @@ namespace ExMoney.Backend.Migrations
                         {
                             Id = 1,
                             CommissionPercentage = 0.050000000000000003,
-                            CurrencyEcxhangeBaseUrl = "http://currencyapi.com",
-                            CurrencyExchangeApiKey = "STNcvlsyq6QpULgJhQYKqKqym6YI5MjrdPBalf5x",
                             EmailVerificationEnabled = false,
                             IdentityVerificationEnabled = false,
                             PhoneVerificationEnabled = false

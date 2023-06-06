@@ -10,6 +10,8 @@ namespace ExMoney.SharedLibs
         [Required] public string PaymentId { get; set; }
         public string Hash { get; set; }
 
+        public PaymentOperationStatus Status { get; set; } = PaymentOperationStatus.NoStatus;
+
         //Parent transaction
         public string ParentTransactionId { get; set; }
     }

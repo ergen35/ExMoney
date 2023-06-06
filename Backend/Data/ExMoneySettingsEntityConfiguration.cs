@@ -10,8 +10,10 @@ namespace ExMoney.Backend.Data
         {
             var settings = new ExMoneySettings
             {
-                CommissionPercentage = 0.05,
                 Id = 1,
+                CurrencyExchangeApiKey = "STNcvlsyq6QpULgJhQYKqKqym6YI5MjrdPBalf5x",
+                CurrencyEcxhangeBaseUrl = "http://currencyapi.com",
+                CommissionPercentage = 0.05,
                 EmailVerificationEnabled = false,
                 IdentityVerificationEnabled = false,
                 PhoneVerificationEnabled = false
