@@ -33,7 +33,7 @@
                     {
                         <Animate Animation="Animations.FadeIn" DurationMs="500">
 
-                            <div class="border-3 border-start border-primary ps-3">
+                            @* <div class="border-3 border-start border-primary ps-3">
                                 <span class="d-block">
                                     <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c
                                 => c.Id ==
@@ -44,7 +44,7 @@
                                     @Currencies.FirstOrDefault(c => c.Id ==
                                 ChangeCurrencyId).Name
                                 </span>
-                            </div>
+                            </div> *@
 
                             <div class="text-center border rounded-3 my-4 bg-light-indigo shadow-sm shadow">
                                 <span
@@ -102,6 +102,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="text-center">
+    <a href="/make-exchange" class="btn btn-dark"> <span class="ti ti-arrow-big-left me-1"></span>Retour</a>
 </div>
 
 
