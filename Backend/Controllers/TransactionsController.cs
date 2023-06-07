@@ -54,7 +54,7 @@ namespace ExMoney.Backend.Controllers
             {
                 db.Transactions.Add(transaction);
                 await db.SaveChangesAsync();
-                //TODO: propagate transaction created, prompt for payment 
+                //TODO: propagate transaction created, prompt for payment  
             }
             catch (System.Exception)
             {
