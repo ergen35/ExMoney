@@ -2,7 +2,6 @@
 
 @layout PagesLayout
 
-
 @using ExMoney.SharedLibs
 @using ExMoney.SharedLibs.DTOs
 @using Microsoft.AspNetCore.WebUtilities
@@ -14,71 +13,96 @@
 @inject IModalService modalService
 @inject NavigationManager navManager
 
-@if (Currencies is null)
-{
-    <div class="text-center">
-        <SpinnerLoader />
+
+<div class="card w-100 h-100 position-relative overflow-hidden">
+    <div class="card-body px-3">
+        <h5 class="card-title fw-semibold mb-4 fs-6 text-center">
+            <span class="ti ti-exchange me-2"></span> Checkout
+        </h5>
+        <hr class="mt-2">
+        <div class="row">
+            <div class="col">
+                <form>
+                    @if (Currencies is null)
+                    {
+                        <div class="text-center">
+                            <SpinnerLoader />
+                        </div>
+                    }
+                    else
+                    {
+                        <Animate Animation="Animations.FadeIn" DurationMs="500">
+
+                            <div class="border-3 border-start border-primary ps-3">
+                                <span class="d-block">
+                                    <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c
+                                => c.Id ==
+                                BaseCurrencyId).Name
+                                </span>
+                                <span class="d-block">
+                                    <span class="fw-semibold text-black">Devise de Change</span>:
+                                    @Currencies.FirstOrDefault(c => c.Id ==
+                                ChangeCurrencyId).Name
+                                </span>
+                            </div>
+
+                            <div class="text-center border rounded-3 my-4 bg-light-indigo shadow-sm shadow">
+                                <span
+                                    class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Symbol))"
+                                    style="font-size: 30px"></span>
+                                <span class="mx-4 ti ti-arrow-right" style="font-size: 30px; color: green;"></span>
+                                <span
+                                    class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Symbol))"
+                                    style="font-size: 30px"></span>
+
+                                <span class="d-block">
+                                    <span class="fs-4">@Amount</span>
+                                </span>
+                            </div>
+
+                            @if (!isCalculated)
+                            {
+                                <div class="text-center">
+                                    <SpinnerLoader />
+                                    <span class="d-block">Calcul...</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <ul>
+                                    <li>
+                                        <span class="ti ti-exchange me-2"></span> Taux: @Math.Round(ExchangeRateData.Rate, 2)
+                                    </li>
+                                    <li>
+                                        <span class="ti ti-run me-2"></span> Commission:
+                                        @Math.Round(ExchangeRateData.Commission)
+                                    </li>
+                                    <li>
+                                        <span class="ti ti-pig-money me-2"></span> A Payer: <span
+                                            class="text-danger fs-6 fst-italic font-monospace">
+                                            @Math.Round(ExchangeRateData.AmountToPay*1.019)</span>
+                                    </li>
+                                </ul>
+                            }
+
+                            @if (isCalculated)
+                            {
+                                @* <button @onclick="SetPhone">Pay</button> *@
+                                <div class="text-center mt-5">
+                                    @* url="<url-vers-votre-logo>" *@
+                                    <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)"
+                                        key="7e1c6d50fdba11ed976703e23fcc8506" position="center" sandbox="true" data=""
+                                        callback="http://api.exmoney.xyz/payment-callback" />
+                                </div>
+                            }
+                        </Animate>
+                    }
+
+                </form>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <Animate Animation="Animations.FadeIn" DurationMs="500">
-
-        <div class="border-3 border-start border-primary ps-3">
-            <span class="d-block">
-                <span class="fw-semibold text-black">Devise de Base</span>: @Currencies.FirstOrDefault(c => c.Id ==
-            BaseCurrencyId).Name
-            </span>
-            <span class="d-block">
-                <span class="fw-semibold text-black">Devise de Change</span>: @Currencies.FirstOrDefault(c => c.Id ==
-            ChangeCurrencyId).Name
-            </span>
-        </div>
-
-        <div class="text-center border rounded-3 my-4 bg-light-indigo shadow-sm shadow">
-            <span
-                class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == BaseCurrencyId).Symbol))"
-                style="font-size: 30px"></span>
-            <span class="mx-4 ti ti-arrow-right" style="font-size: 30px; color: green;"></span>
-            <span
-                class="@(ExMoney.Data.Utilities.GetTableIconCss(Currencies.FirstOrDefault(c => c.Id == ChangeCurrencyId).Symbol))"
-                style="font-size: 30px"></span>
-
-            <span class="d-block">
-                <span class="fs-4">@Amount</span>
-            </span>
-        </div>
-
-        @if (!isCalculated)
-        {
-            <div class="text-center">
-                <SpinnerLoader />
-                <span class="d-block">Calcul...</span>
-            </div>
-        }
-        else
-        {
-            <ul>
-                <li><span class="ti ti-exchange me-2"></span> Taux: @Math.Round(ExchangeRateData.Rate, 2)</li>
-                <li><span class="ti ti-run me-2"></span> Commission: @Math.Round(ExchangeRateData.Commission)</li>
-                <li><span class="ti ti-pig-money me-2"></span> A Payer: <span
-                        class="text-danger fs-6 fst-italic font-monospace"> @Math.Round(ExchangeRateData.AmountToPay)</span>
-                </li>
-            </ul>
-        }
-
-        @if (isCalculated)
-        {
-            @* <button @onclick="SetPhone">Pay</button> *@
-            <div class="text-center mt-5">
-                @* url="<url-vers-votre-logo>" *@
-                <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)" key="7e1c6d50fdba11ed976703e23fcc8506"
-                    position="center" sandbox="true" data="" callback="http://api.exmoney.xyz/payment-callback" />
-            </div>
-        }
-    </Animate>
-
-}
+</div>
 
 
 
@@ -157,7 +181,7 @@ else
         BaseCurrencyId = string.IsNullOrWhiteSpace(values["bcid"]) ? 0 : Convert.ToInt32(values["bcid"]);
         ChangeCurrencyId = string.IsNullOrWhiteSpace(values["ccid"]) ? 0 : Convert.ToInt32(values["ccid"]);
         Amount = string.IsNullOrWhiteSpace(values["amount"]) ? 0d : Convert.ToDouble(values["amount"]);
-        
+
         StateHasChanged();
     }
 }

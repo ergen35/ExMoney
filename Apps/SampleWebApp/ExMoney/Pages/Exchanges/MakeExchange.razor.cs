@@ -2,8 +2,6 @@ using Blazored.Modal.Services;
 using ExMoney.Services;
 using ExMoney.SharedLibs;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ExMoney.Pages.Exchanges
@@ -26,19 +24,19 @@ namespace ExMoney.Pages.Exchanges
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-             List<Currency> cachedCurrencies = await memCache.GetOrCreateAsync("currencies", async (ce) =>
-            {
-                Refit.IApiResponse<List<Currency>> response = await currenciesApi.List();
-                if (response.IsSuccessStatusCode)
-                {
-                    _ = ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
-                    return response.Content!;
-                }
-                else
-                {
-                    return default;
-                }
-            });
+            List<Currency> cachedCurrencies = await memCache.GetOrCreateAsync("currencies", async (ce) =>
+           {
+               Refit.IApiResponse<List<Currency>> response = await currenciesApi.List();
+               if (response.IsSuccessStatusCode)
+               {
+                   _ = ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
+                   return response.Content!;
+               }
+               else
+               {
+                   return default;
+               }
+           });
 
             if (cachedCurrencies is not null)
             {
@@ -72,13 +70,13 @@ namespace ExMoney.Pages.Exchanges
 
         public void GoToNextStep()
         {
-            var qs = QueryString.Create(new List<KeyValuePair<string, string>>()
+            QueryString qs = QueryString.Create(new List<KeyValuePair<string, string>>()
             {
                 new("bcid", BaseCurrencyId.ToString()),
                 new("ccid", ChangeCurrencyId.ToString()),
                 new("amount", Amount.ToString())
             });
-            
+
             NavManager.NavigateTo("/make-exchange/checkout" + qs.Value);
         }
     }
