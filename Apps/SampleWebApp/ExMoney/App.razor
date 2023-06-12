@@ -1,9 +1,9 @@
-﻿
-<CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true"
+﻿<CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true"
     Size="ModalSize.Automatic" Position="ModalPosition.Middle">
+    <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(App).Assembly">
             <Found Context="routeData">
-                <AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(SimpleLayout)">
                     <Authorizing>
                         <center>
                             <div class="spinner-border text-primary mx-2" role="status">
@@ -26,4 +26,5 @@
                 </LayoutView>
             </NotFound>
         </Router>
+    </CascadingAuthenticationState>
 </CascadingBlazoredModal>

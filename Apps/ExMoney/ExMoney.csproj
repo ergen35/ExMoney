@@ -49,6 +49,7 @@
 
     <ItemGroup>
         <PackageReference Include="BlazorAnimate" Version="3.0.0" />
+        <PackageReference Include="IdentityModel.OidcClient" Version="5.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspnetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
@@ -62,6 +63,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\SharedLibs\ExMoney.SharedLibs.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Auth\" />
     </ItemGroup>
 
 </Project>

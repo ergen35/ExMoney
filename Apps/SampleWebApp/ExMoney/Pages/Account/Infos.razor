@@ -1,16 +1,13 @@
 @page "/account/infos"
 
 @layout PagesLayout
-
+@attribute [Authorize]
 @inject IExMoneyUsersApi usersApi
 
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
     <div class="card-body px-2">
-        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> <span class="ti ti-user-circle ti"></span> Mon Compte
-        </h5>
-
-
+        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> <span class="ti ti-user-circle ti"></span> Mon Compte</h5>
         <div class="shadow shadow-sm border-1 border-start border-primary text-start py-2 fs-3 ps-3">
             <span class="d-block">
                <span class="fw-semibold">Id</span>: @CurrentUser.Id

@@ -2,9 +2,17 @@
 @inject IConfiguration config
 
 <div>
-    <div>
-        <center class="vh-100 h-100">
+    <div class="container">
+        <center class="">
+            <div class="row">
+                <div class="col"></div>
+                <span>Vous n'êtes pas connecté</span>
+            </div>
 
+            <div class="row">
+                <a href="/auth/login"  class="d-block btn btn-primary btn-lg mt">Se connecter</a>
+                <a href="/auth/register" class="d-block btn btn-primary btn-lg">S'inscrire</a>
+            </div>
         </center>
     </div>
 

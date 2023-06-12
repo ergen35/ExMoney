@@ -1,29 +1,79 @@
 @page "/auth/login"
+@inject AppAuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
 
 @layout AuthLayout
 
 <div class="card mb-0">
     <div class="card-body">
-        <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-            <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">
-        </a>
-        <p class="text-center">Your Social Campaigns</p>
-        <form>
+       
+        <div class="brand-logo d-flex justify-content-center">
+            <a class="text-nowrap logo-img">
+                <img src="assets/images/logos/logo.jpg" width="100" height="100" alt="" />
+                <span class="fw-bolder d-block fst-italic text-info font-monospace" style="font-size: 25px;"> <span class="text-dark">Ex</span>Money</span>
+            </a>
+        </div>
+        
+        <hr class="mb-4">
+
+        <div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Adresse e-mail</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" class="form-control" @bind-value=@Username id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-4">
                 <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+                <input type="password" @bind-value=@Password class="form-control" id="exampleInputPassword1">
             </div>
-            <div class="d-flex align-items-center justify-content-between mb-4">
+            <div class="text-center mb-4">
                 <a class="text-primary fw-bold" href="./index.html">Mot de passe oublié ?</a>
             </div>
-            <a href="/account/dashboard" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Connexion</a>
+            
+            <button type="button"  @onclick="UserLogin" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
+               @if(isAuthenticating)
+               {
+                    <SpinnerLoader ColorClass="text-white" />
+               }
+               else
+               {
+                    <span>Connexion</span>
+               }
+            </button>
+
             <div class="d-flex align-items-center justify-content-center">
                 <a class="text-primary fw-bold ms-2" href="/auth/register">Inscription</a>
             </div>
-        </form>
+        </div>
     </div>
 </div>
+
+
+@code{
+    public string Username { get; set; }
+    public string Password { get; set; }
+
+    public bool isAuthenticating = false;
+    public bool authFailed = false;
+
+    public async void UserLogin()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(3));
+
+        isAuthenticating = true;
+        StateHasChanged();
+        
+        var result = await authStateProvider.LogInAsync(Username, Password);
+        
+        authStateProvider.NotifyAuthStateChanged();
+
+
+        isAuthenticating = false;
+        StateHasChanged();
+
+        if(result)
+        {
+            navManager.NavigateTo("/dashboard");
+        }
+    }
+
+}
