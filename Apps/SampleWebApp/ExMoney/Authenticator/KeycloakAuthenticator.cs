@@ -54,8 +54,7 @@ namespace ExMoney.Authenticator
                     var claimsIdentity = new ClaimsIdentity(claims, "oidc", ClaimTypes.Name, ClaimTypes.Role);
                     
 
-                    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { claimsIdentity.Name, claimsIdentity.AuthenticationType, claimsIdentity.IsAuthenticated, claimsIdentity.Label }));
-
+                    // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { claimsIdentity.Name, claimsIdentity.AuthenticationType, claimsIdentity.IsAuthenticated, claimsIdentity.Label }));
                     // Console.WriteLine("Access Token {0}", response.AccessToken);
                     // Console.WriteLine("Id Token {0}", response.IdentityToken);
                     // Console.WriteLine("Refresh Token {0}", response.RefreshToken);

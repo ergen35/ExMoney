@@ -14,10 +14,6 @@ namespace ExMoney.Authenticator
         {
             this.authClient = authClient;
             this.logger = logger;
-
-            ClaimsPrincipal.PrimaryIdentitySelector = (identity) => {
-                return identity.FirstOrDefault();
-            };
         }
 
         public override Task<AuthenticationState> GetAuthenticationStateAsync()

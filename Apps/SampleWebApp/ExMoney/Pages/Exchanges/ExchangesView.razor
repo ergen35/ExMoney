@@ -2,6 +2,7 @@
 @page "/account/transactions"
 
 @layout PagesLayout
+@attribute [Authorize]
 
 @inject IExMoneyTransactionsApi transactionsApi
 @inject IExMoneyUsersApi usersApi

@@ -21,6 +21,7 @@ builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransa
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
 
 builder.Services.AddMemoryCache();
+builder.Services.AddAuthorizationCore();
 builder.Services.AddAuthenticationCore();
 
 //add blazored modal
@@ -67,7 +68,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapBlazorHub();
