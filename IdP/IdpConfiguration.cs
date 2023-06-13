@@ -1,9 +1,9 @@
-using System;
 using System.Security.Claims;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Test;
 using IdentityModel;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace IdP
 {
@@ -13,14 +13,29 @@ namespace IdP
         {
             return new(){
 
-                new TestUser{
+                new TestUser
+                {
                     SubjectId = "9fce8cc5-4017-4920-ab4c-1ff0ff06f4af",
-                    Username = "wassi-harif",
+                    Username = "wassi@gmail.com",
                     Password = "wassi-harif",
+
                     Claims = new List<Claim>(){
-                        new Claim(ClaimTypes.Email, "wassi@gmail.com"),
-                        new Claim(ClaimTypes.Role, "app_user"),
+                        new Claim(JwtClaimTypes.Email, "wassi@gmail.com"),
+                        new Claim(JwtClaimTypes.Role, "app-user"),
+                        new Claim(JwtClaimTypes.PreferredUserName, "wassi@gmail.com"),
+                        new Claim(JwtClaimTypes.Address, "Porto-Novo, Bénin"),
+                        new Claim(JwtClaimTypes.Name, "amoussa wassi"),
+                        new Claim(JwtClaimTypes.FamilyName, "amoussa"),
+                        new Claim(JwtClaimTypes.GivenName, "wassi"),
+                        new Claim(JwtClaimTypes.EmailVerified, "true"),
+                        new Claim(JwtClaimTypes.PhoneNumber, "+22990210790"),
+                        new Claim(JwtClaimTypes.PhoneNumberVerified, "true"),
+                        new Claim(JwtClaimTypes.Locale, "fr-Fr"),
+                        
+                        //TODO: Add Custom props
+                        new Claim("kyc_verified", "true"),
                     },
+
                     IsActive = true
                 }
             };
@@ -40,6 +55,7 @@ namespace IdP
                 new IdentityResources.OpenId(),
                 new IdentityResources.Email(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Phone(),
 
                 new IdentityResource()
                 {
@@ -48,8 +64,20 @@ namespace IdP
                     Enabled = true,
                     ShowInDiscoveryDocument = true,
                     UserClaims = new List<string>{ "role" },
-                    Description = "Roles access for Role Based Authorization"
-                }
+                    Description = "Roles For RBAC"
+                },
+
+                new IdentityResource()
+                {
+                    Name = "kyc_verified",
+                    DisplayName = "Whether KYC passed",
+                    Enabled = true,
+                    UserClaims = new List<string>{ "kyc_verified" },
+                    ShowInDiscoveryDocument = true,
+
+                    Required = true,
+                    Description = "Kyc Params",
+                },
             };
         }
 
@@ -72,7 +100,7 @@ namespace IdP
 
                     Enabled = true,
                     ShowInDiscoveryDocument = true,
-                    
+
                     UserClaims = new List<string>(){
                         "role"
                     }
@@ -104,6 +132,31 @@ namespace IdP
                     },
 
                     Enabled = true
+                },
+
+                new Client()
+                {
+                    ClientId = "exmoney-mobile-app",
+                    ClientName = "ExMoney",
+
+                    RequireClientSecret = false,
+
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+                    AllowedScopes = new List<string>{
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Phone,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+
+                        //TODO: Map custom claims
+                        "kyc_verified"
+                    },
+
+                    Enabled = true,
+                    AllowOfflineAccess= true,
+                    RequireConsent = false,
                 }
             };
         }

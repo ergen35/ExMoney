@@ -1,9 +1,15 @@
 using IdP;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration().WriteTo
+                                        .Console()
+                                            .CreateBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Logging.ClearProviders().AddSerilog();
 
 //add services to the container
+builder.Services.AddLogging(l => l.ClearProviders().AddSerilog());
 builder.Services.AddMvc();
 builder.Services.AddRazorPages();
 
