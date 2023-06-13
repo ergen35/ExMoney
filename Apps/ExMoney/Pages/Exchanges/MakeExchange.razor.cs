@@ -1,6 +1,6 @@
-using Blazored.Modal;
 using Blazored.Modal.Services;
-using ExMoney.Pages.Exchanges.Components;
+using ExMoney.Services;
+using ExMoney.SharedLibs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -8,74 +8,76 @@ namespace ExMoney.Pages.Exchanges
 {
     public partial class MakeExchange
     {
-        [Inject] public IMemoryCache MemCache { get; set; }
         [Inject] public NavigationManager NavManager { get; set; }
         [Inject] public IModalService ModalService { get; set; }
-
-        private readonly int BaseCurrencyId = 0;
-        private readonly int ChangeCurrencyId = 0;
-        private readonly double Amount = 0d;
+        [Inject] public IExMoneyCurrenciesApi currenciesApi { get; set; }
+        [Inject] public IMemoryCache memCache { get; set; }
 
         public string UiTitle { get; set; } = "Effectuer un Echange";
+        private bool NtoFselected;
+        private bool FtoNselected;
+        public List<Currency> Currencies { get; set; }
 
-        public Type DynamicViewType { get; set; } = typeof(CurrenciesSelection);
+        public int BaseCurrencyId { get; set; }
+        public int ChangeCurrencyId { get; set; }
+        public double Amount { get; set; }
 
-        public Dictionary<string, object> ComponentParams { get; set; }
-        public DynamicComponent DynamicView { get; set; }
-
-        private int stepOrder = 1;
-
-        protected override void OnInitialized()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            ComponentParams = new()
+            List<Currency> cachedCurrencies = await memCache.GetOrCreateAsync("currencies", async (ce) =>
+           {
+               Refit.IApiResponse<List<Currency>> response = await currenciesApi.List();
+               if (response.IsSuccessStatusCode)
+               {
+                   _ = ce.SetSlidingExpiration(TimeSpan.FromMinutes(3));
+                   return response.Content!;
+               }
+               else
+               {
+                   return default;
+               }
+           });
+
+            if (cachedCurrencies is not null)
             {
-                { nameof(BaseCurrencyId), BaseCurrencyId },
-                { nameof(ChangeCurrencyId), ChangeCurrencyId },
-                { nameof(Amount), Amount }
-            };
-        }
+                Currencies = cachedCurrencies;
+            }
 
-        public void GoToCurrenciesSelectionStep()
-        {
-
-            var instance = DynamicView.Instance as CheckoutView;
-            ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
-            ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
-            ComponentParams[nameof(Amount)] = instance.Amount;
-            
-            DynamicViewType = typeof(CurrenciesSelection);
-            stepOrder = 1;
-            UiTitle = "Effectuer un Echange";
             StateHasChanged();
         }
 
-        public void GoToRateCalculationStep()
+        public void SelectNtoF()
         {
-            CurrenciesSelection instance = DynamicView.Instance as CurrenciesSelection;
-            ComponentParams[nameof(BaseCurrencyId)] = instance.BaseCurrencyId;
-            ComponentParams[nameof(ChangeCurrencyId)] = instance.ChangeCurrencyId;
-            ComponentParams[nameof(Amount)] = instance.Amount;
+            FtoNselected = false;
+            NtoFselected = true;
 
-            if((double)ComponentParams[nameof(Amount)] <= 0 || (int)ComponentParams[nameof(BaseCurrencyId)] == 0 ){
-                return;
-            }
+            BaseCurrencyId = Currencies.FirstOrDefault(c => c.Symbol.ToLower() == "ngn").Id;
+            ChangeCurrencyId = Currencies.FirstOrDefault(c => c.Symbol.ToLower() == "xof").Id;
 
-            DynamicViewType = typeof(CheckoutView);
-            stepOrder = 2;
-            UiTitle = "Check Out";
+            StateHasChanged();
+        }
+
+        public void SelectFtoN()
+        {
+            FtoNselected = true;
+            NtoFselected = false;
+
+            BaseCurrencyId = Currencies.FirstOrDefault(c => c.Symbol.ToLower() == "xof").Id;
+            ChangeCurrencyId = Currencies.FirstOrDefault(c => c.Symbol.ToLower() == "ngn").Id;
+
             StateHasChanged();
         }
 
         public void GoToNextStep()
         {
-            if (stepOrder == 1)
-                GoToRateCalculationStep();
-        }
+            QueryString qs = QueryString.Create(new List<KeyValuePair<string, string>>()
+            {
+                new("bcid", BaseCurrencyId.ToString()),
+                new("ccid", ChangeCurrencyId.ToString()),
+                new("amount", Amount.ToString())
+            });
 
-        public void GotoPreviousStep()
-        {
-            if(stepOrder == 2)
-                GoToCurrenciesSelectionStep();
+            NavManager.NavigateTo("/make-exchange/checkout" + qs.Value);
         }
     }
 }

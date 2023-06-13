@@ -54,7 +54,7 @@
         <PackageReference Include="Microsoft.AspnetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-	    <PackageReference Include="Blazored.Modal" Version="7.1.0" />
+	      <PackageReference Include="Blazored.Modal" Version="7.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Refit" Version="6.1.15" />
         <PackageReference Include="Refit.HttpClientFactory" Version="6.1.15" />
@@ -64,9 +64,5 @@
     <ItemGroup>
       <ProjectReference Include="..\..\SharedLibs\ExMoney.SharedLibs.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Auth\" />
-    </ItemGroup>
-
+    
 </Project>

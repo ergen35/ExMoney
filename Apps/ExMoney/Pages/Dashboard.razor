@@ -1,52 +1,37 @@
 @page "/"
+@page "/dashboard"
 @page "/account/dashboard"
 
-@* @attribute [Authorize] *@
+@attribute [Authorize]
 
 @layout PagesLayout
 
 @inject ExMoneyJsInterop jsInterop
 @inject IExMoneyTransactionsApi transactionsApi
 
+<style>
+  .horizontal-scrollable>.row {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+</style>
 
-<div class="row">
-  <div class="col-12">
-    <!-- Yearly Breakup -->
-    <div class="card overflow-hidden">
-      <div class="card-body p-4">
-        <h5 class="card-title mb-9 fw-semibold text-center">Statistiques Anuelles</h5>
-        <div class="row align-items-center">
-          <div class="col-8">
-            <h4 class="fw-semibold mb-3"><span class="ti ti-currency-frank fs-8 text-black"></span> 36358</h4>
-            <div class="d-flex align-items-center mb-3">
-              <span
-                class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                <i class="ti ti-arrow-up-left text-success"></i>
-              </span>
-              <p class="text-dark me-1 fs-3 mb-0">+27.48%</p>
-              <p class="fs-3 mb-0">année dernière</p>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="me-4">
-                <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                <span class="fs-2">2022</span>
-                <span class="fas fa-long-arrow-alt-right ms-3 text-success"></span>
-              </div>
-              <div>
-                <span class="round-8 bg-danger rounded-circle me-2 d-inline-block"></span>
-                <span class="fs-2">2023</span>
-              </div>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="d-flex justify-content-center">
-              <div id="breakup"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="container">
+  <span class="d-block fw-bolder text-center text-black fs-8">
+    <span class="ti ti-wallet"></span>
+    Portefeuilles
+  </span>
+  <div class="row">
+    <div class="col-6">
+      <WalletCard CurrencySymbol="NGN" Balance="26700" />
+    </div>
+    <div class="col-6">
+      <WalletCard CurrencySymbol="XOF" Balance="0" />
     </div>
   </div>
+</div>
+
+<div class="row">
   <div class="col-12">
     <!-- Monthly Earnings -->
     <div class="card">
@@ -54,7 +39,7 @@
         <div class="row alig n-items-start">
           <div class="col-12">
             <h5 class="card-title mb-9 fw-semibold"> Ce Mois </h5>
-            <h4 class="fw-semibold mb-3"><span class="ti ti-currency-frank fs-8 text-black"></span> 6820</h4>
+            <h4 class="fw-semibold mb-3"><span class="ti ti-affiliate fs-8 text-black"></span> 6820 Pts.</h4>
             <div class="d-flex align-items-center pb-1">
               <span
                 class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
@@ -88,7 +73,7 @@
               {
                 <ExchangeRecord Status="transaction.Status" BaseCurrency="transaction.BaseCurrencyId"
                   ChangeCurrency="transaction.ChangeCurrencyId" Amount="transaction.Amount" Rate="transaction.Rate"
-                  Date="transaction.TransactionDate" />
+                  Date="transaction.Date" />
               }
             }
             else
@@ -100,7 +85,7 @@
 
 
             <li class="d-block text-center mt-3">
-              <a href="/exchanges" class="btn btn-primary"> <span class="ti ti-arrow-right"></span> Liste Complète
+              <a href="/exchanges" class="btn btn-dark"> <span class="ti ti-arrow-right"></span> Liste Complète
               </a>
             </li>
           }

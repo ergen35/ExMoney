@@ -1,39 +1,76 @@
 @page "/account-prompt"
-@inject IConfiguration config
 
-<div>
-    <div>
-        <center class="vh-100 h-100">
 
-        </center>
+<center class="">
+    <div class="row mt-5">
+        <div class="col">
+            @* <Animate class="mt-2" Animation="BlazorAnimate.Animations.FadeIn" Duration=@TimeSpan.FromMilliseconds(1500)> *@
+                <img src="logo.jpg" alt="" height="150" width="150" loading="lazy">
+                <span class="d-block fs-5">ExMoney</span>
+            @* </Animate> *@
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <div class="my-4">
+                <span class="fs-8 mb-4 text-black fst-italic" style="font-stretch: extra-expanded;"> Commencer</span>
+            </div>
+
+            <Animate Animation="Animations.FadeUp" DurationMs="500" DelayMs="150">
+                <div class="mt-3">
+                    <a href="/auth/login" class="btn w-75 btn-indigo btn-block btn-lg rounded-5 shadow shadow-lg">
+                        <span class="fas fa-user-lock me-2"></span> Connexion
+                    </a>
+                </div>
+            </Animate>
+
+            <Animate Animation="Animations.FadeUp" DurationMs="500" DelayMs="250">
+                <div class="mt-3">
+                    <a href="/auth/register" class="btn btn-dark w-75 btn-block btn-lg rounded-5 shadow shadow-lg">
+                        <span class="fas fa-sign-in-alt me-2"></span> Inscription
+                    </a>
+                </div>
+            </Animate>
+        </div>
     </div>
 
-    <div class="fixed-bottom text-center">
-        <a href="http://exmoney.com" class="small text-white" target="_blank"> Besoin d'aide <span
-                class="fas fa-question-circle"></span></a>
+    <div class="row mt-5">
+       <div class="col">
+            <div class="text-center">
+                @if(isLoading)
+                {
+                    <SpinnerLoader ColorClass="text-black"/>
+                }
+            </div>
+       </div>
     </div>
+</center>
+
+<div class="fixed-bottom text-center">
+    <a href="http://exmoney.com" class="small text-black" target="_blank"> Besoin d'aide <span class="fas fa-question-circle"></span></a>
 </div>
 
 
 @code {
+    private bool isLoading = false;
 
-    public string GetLoginUrl()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // var authUrl = "";
-        // var realm = "";
-        // var clientId = "";
-        // var redirectUri = "";
-
-        //TODO: get login url from config values
-        var url =
-        "http://localhost:8080/realms/exmoney/protocol/openid-connect/auth?client_id=exmoney-app&response_type=code&prompt=login&redirect_uri=http://localhost:5161/";
-        return url;
+        if(firstRender)
+        {
+            LoadSomething();
+        }
     }
 
-    public string GetRegistrationUrl()
+    public async void LoadSomething()
     {
-        //TODO: make registration url
-        var url = "";
-        return url;
+        isLoading = true;
+        StateHasChanged();
+
+        await Task.Delay(TimeSpan.FromMilliseconds(850));
+
+        isLoading = false;
+        StateHasChanged();
     }
+    
 }

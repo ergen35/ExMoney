@@ -1,35 +1,74 @@
 @page "/make-exchange"
 
 @layout PagesLayout
+@attribute [Authorize]
 
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
     <div class="card-body px-3">
-        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> 
-            <span class="ti ti-exchange me-2"></span> @UiTitle
+        <h5 class="card-title fw-semibold mb-4 fs-6 text-center">
+            <span class="ti ti-exchange me-2"></span> Effectuer une Transaction
         </h5>
         <hr class="mt-2">
         <div class="row">
             <div class="col">
+                <form>
+                    @if (Currencies is null)
+                    {
+                        <center>
+                            <SpinnerLoader />
+                        </center>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class='card mx-5 @(NtoFselected ? "border-dark" : "border-light-secondary") border' @onclick="SelectNtoF" id="N2F">
+                                    <div class="card-body p-2 pb-0">
+                                        <span class="ti ti-currency-naira"
+                                            style="font-size: 30px; color: rgb(63, 157, 219);"></span>
+                                        <span class="mx-1 ti ti-arrows-exchange-2" style="font-size: 30px;"></span>
+                                        <span class="ti ti-currency-frank"
+                                            style="font-size: 30px; color: rgb(0, 0, 0);"></span>
+                                    </div>
+                                    <hr />
+                                    <span class='text-black'>Naira vers FCFA</span>
+                                </div>
+                            </div>
 
-                <DynamicComponent Type="DynamicViewType" Parameters=@ComponentParams @ref=@DynamicView />
-                
-                @if(stepOrder <= 1)
-                {
-                    <div class='text-center mt-3'>
-                        <button type="button" @onclick="GoToNextStep" class="btn btn-dark">
-                            Continuer
-                            <span class="ti ti-arrow-big-right"></span>
-                        </button>
-                    </div>
-                }
+                            <div class="col-12 text-center">
+                                <div class='card mx-5 @(FtoNselected ? "border-dark" : "border-light-secondary") border' @onclick="SelectFtoN" id="F2N">
+                                    <div class="card-body p-2 pb-0">
+                                        <span class="ti ti-currency-frank"
+                                            style="font-size: 30px; color: rgb(63, 157, 219);"></span>
+                                        <span class="mx-1 ti ti-arrows-exchange-2" style="font-size: 30px;"></span>
+                                        <span class="ti ti-currency-naira"
+                                            style="font-size: 30px; color: rgb(0, 0, 0);"></span>
+                                    </div>
+                                    <hr />
+                                    <span class='text-black'>FCFA vers Naira</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
 
-                @if(stepOrder > 1)
-                {
-                    <div class="text-center mt-3">
-                        <button class="btn btn-dark btn-sm" @onclick="GotoPreviousStep"> <span class="ti ti-arrow-big-left"></span> Retour</button>
-                    </div>
-                }
+                    @if (BaseCurrencyId != 0)
+                    {
+                        <div class='mb-3 @(Currencies is null ? "invisible": "visible")'>
+                            <label for="amount" class="form-label text-center d-block">Montant à Convertir</label>
+                            <input type="number" @bind-value=@Amount id="amount"
+                                class='form-control text-center fs-6 text-dark' inputmode="numeric"
+                                placeholder="Montant à Changer">
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a class="btn btn-dark" @onclick="GoToNextStep"> 
+                                Continuer
+                                <span class="ti ti-arrow-big-right"></span> 
+                            </a>
+                        </div>
+                    }
+                </form>
             </div>
         </div>
     </div>

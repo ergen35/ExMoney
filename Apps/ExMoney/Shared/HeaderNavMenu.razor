@@ -1,4 +1,6 @@
 @inject ExMoneyJsInterop jsInterop
+@inject AppAuthenticationStateProvider authStateProvider
+@inject IModalService modalService
 
 
 <header class="app-header">
@@ -12,15 +14,12 @@
             <li class="nav-item">
                 <a href="/notifications" class="nav-link nav-icon-hover">
                     <i class="ti ti-bell-ringing"></i>
-                    <div class="notification bg-primary rounded-circle"></div>
+                    <div class="notification bg-success rounded-circle"></div>
                 </a>
             </li>
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <a href="/make-exchange" class="btn btn-info rounded-1">
-                    <span class="ti ti-plus fw-bolder"></span>
-                </a>
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" id="drop2" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="assets/images/profile/user-1.jpg" alt="" width="35" height="35"
@@ -36,9 +35,11 @@
                                 <i class="ti ti-help fs-6"></i>
                                 <p class="mb-0 fs-3">Aide</p>
                             </a>
-                            <a href="/logout" class="btn btn-outline-danger mx-3 mt-2 d-block">
-                                <span class="ti ti-power me-1"></span>Déconnexion
-                            </a>
+                            <div class="text-center">
+                                <button class="btn btn-outline-danger mx-3 mt-2 w-50 btn-block" @onclick="Logout">
+                                    <span class="ti ti-power me-1"></span>Déconnexion
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -52,5 +53,28 @@
     private void toggleSidebarMenu()
     {
         jsInterop.ToggleSidebarNav();
+    }
+
+    public async void Logout()
+    {
+        var modalOptions = new ModalOptions {
+            DisableBackgroundCancel = true,
+            Size = ModalSize.Small,
+            Position = ModalPosition.Middle,
+            HideCloseButton = true,
+            AnimationType = ModalAnimationType.FadeInOut,
+            HideHeader = true,
+            Class = "text-center"
+        };
+
+        var modalParams = new ModalParameters().Add("Msg", "Déconnexion...");
+
+        var modalRef = modalService.Show<ThreeDotsLoader>(string.Empty, modalParams, modalOptions);
+
+        await Task.Delay(TimeSpan.FromSeconds(5));
+        authStateProvider.LogOut();
+        authStateProvider.NotifyAuthStateChanged();
+
+        modalRef.Close();
     }
 }

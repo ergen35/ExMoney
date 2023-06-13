@@ -10,10 +10,8 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddHttpClient();
 builder.Services.AddLogging();
-
-//--register Add backend HttpClients
+builder.Services.AddHttpClient();
 
 //-- register refit client
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyUsersApi));

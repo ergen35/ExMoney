@@ -1,0 +1,43 @@
+<div class="card overflow-hidden ms-0">
+    <div class="card-body p-4">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="fw-semibold mb-3 text-black text-nowrap"><span
+                        class="@currencySymbol fs-8 text-black"></span> @Balance</h4>
+                <div class="d-flex align-items-center mb-3">
+                    <span
+                        class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
+                        @if (rateOverview >= 0)
+                        {
+                            <i class="ti ti-arrow-up-right text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="ti ti-arrow-down-right text-danger"></i>
+                        }
+                    </span>
+                    <p class="fs-3 mb-0">Taux</p>
+                    <p class="text-dark text-nowrap mx-1 fs-3 mb-0"> @rateOverview </p>
+
+                    @if (Balance > 0)
+                    {
+                        <span
+                            class="position-absolute top-50 start-0 translate-middle p-2 bg-primary border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    public string currencySymbol => ExMoney.Data.Utilities.GetTableIconCss(CurrencySymbol);
+    public double rateOverview => Math.Round((double)Random.Shared.Next(maxValue: 3, minValue: -6) *
+    Random.Shared.NextDouble(), 3);
+
+    [Parameter] public string CurrencySymbol { get; set; }
+    [Parameter] public double Balance { get; set; }
+}
