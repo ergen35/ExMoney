@@ -40,13 +40,11 @@
         jsInterop.CloseSidebarNav();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(lastUpdate.AddMinutes(20) < DateTime.Now)
         {
-            #warning disable "CS4014"
-            authenticator.RefreshAllTokens();
-
+            await authenticator.RefreshAllTokens();
             StateHasChanged();
         }
     }

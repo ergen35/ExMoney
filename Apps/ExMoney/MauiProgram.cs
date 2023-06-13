@@ -4,7 +4,6 @@ using ExMoney.Services;
 using IdentityModel.Client;
 using IdentityModel.OidcClient.Infrastructure;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace ExMoney

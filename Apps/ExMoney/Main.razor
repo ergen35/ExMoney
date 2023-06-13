@@ -1,22 +1,21 @@
 ﻿<CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true"
-    Size="ModalSize.Automatic" Position="ModalPosition.Middle">
-     <CascadingAuthenticationState>
+                        Size="ModalSize.Automatic" Position="ModalPosition.Middle">
+    <CascadingAuthenticationState>
         <Router AppAssembly="@typeof(Main).Assembly">
             <Found Context="routeData">
-                <AuthorizeRouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)">
+                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(SimpleLayout)">
                     <Authorizing>
-                        <center>
-                            <div class="spinner-border text-primary mx-2" role="status">
+                        <center class="mt-5">
+                            <div class="spinner-border text-primary mx-2 mt-5 mb-2" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <div class="text-center">Authentification En Cours</div>
+                            <div class="text-center text-center">Vérification de la Session</div>
                         </center>
                     </Authorizing>
                     <NotAuthorized>
                         <AccountPromptView />
                     </NotAuthorized>
                 </AuthorizeRouteView>
-                <RouteView  RouteData="@routeData"  DefaultLayout="@typeof(SimpleLayout)" />
             </Found>
             <NotFound>
                 <PageTitle>Not found</PageTitle>
