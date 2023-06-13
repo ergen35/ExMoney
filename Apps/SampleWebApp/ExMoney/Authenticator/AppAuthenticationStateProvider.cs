@@ -27,13 +27,8 @@ namespace ExMoney.Authenticator
             (ClaimsIdentity identity, bool isAuthenticated) = await LoginWithIdPAsync(username, password);
             currentUser = new ClaimsPrincipal(identity);
             currentUser.AddIdentity(identity);
-
-
-            //notify
-            // NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(currentUser)));
             
-            logger.LogError("Current User Claims {user}", JsonSerializer.Serialize(currentUser.Identity));
-
+            // logger.LogError("Current User Claims {user}", JsonSerializer.Serialize(currentUser.Identity));
             return isAuthenticated;
         }
 

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace ExMoney.Authenticator
 {
-    public class KeycloakAuthenticator : IDisposable
+    public class KeycloakAuthenticator
     {
         private readonly IdpAuthenticationOptions options;
         private readonly IDiscoveryCache discoveryCache;
@@ -137,11 +137,6 @@ namespace ExMoney.Authenticator
             });
 
             await Task.CompletedTask;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

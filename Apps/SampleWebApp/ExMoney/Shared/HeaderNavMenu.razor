@@ -1,4 +1,6 @@
 @inject ExMoneyJsInterop jsInterop
+@inject AppAuthenticationStateProvider authStateProvider
+@inject IModalService modalService
 
 
 <header class="app-header">
@@ -33,9 +35,11 @@
                                 <i class="ti ti-help fs-6"></i>
                                 <p class="mb-0 fs-3">Aide</p>
                             </a>
-                            <button class="btn btn-outline-danger mx-3 mt-2 d-block">
-                                <span class="ti ti-power me-1"></span>Déconnexion
-                            </button>
+                            <div class="text-center">
+                                <button class="btn btn-outline-danger mx-3 mt-2 w-50 btn-block" @onclick="Logout">
+                                    <span class="ti ti-power me-1"></span>Déconnexion
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -49,5 +53,28 @@
     private void toggleSidebarMenu()
     {
         jsInterop.ToggleSidebarNav();
+    }
+
+    public async void Logout()
+    {
+        var modalOptions = new ModalOptions {
+            DisableBackgroundCancel = true,
+            Size = ModalSize.Small,
+            Position = ModalPosition.Middle,
+            HideCloseButton = true,
+            AnimationType = ModalAnimationType.FadeInOut,
+            HideHeader = true,
+            Class = "text-center"
+        };
+
+        var modalParams = new ModalParameters().Add("Msg", "Déconnexion...");
+
+        var modalRef = modalService.Show<ThreeDotsLoader>(string.Empty, modalParams, modalOptions);
+
+        await Task.Delay(TimeSpan.FromSeconds(5));
+        authStateProvider.LogOut();
+        authStateProvider.NotifyAuthStateChanged();
+
+        modalRef.Close();
     }
 }

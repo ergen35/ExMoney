@@ -2,7 +2,7 @@
     .three-body {
         --uib-size: 35px;
         --uib-speed: 0.8s;
-        --uib-color: #c5840c;
+        --uib-color: #0c18c5;
         position: relative;
         display: inline-block;
         height: var(--uib-size);
@@ -110,6 +110,10 @@
     <div class="three-body__dot"></div>
 </div>
 <div class="text-white fs-5">
-    Chargement
+    @Msg
 </div>
+
+@code{
+    [Parameter] public string Msg { get; set; } = "Chargement..";
+}
 
