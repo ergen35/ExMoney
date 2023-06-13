@@ -46,7 +46,7 @@ namespace ExMoney.Authenticator
         {
             ClaimsIdentity claimsIdentity = new();
 
-            (bool isSusscess, string _, string _, string _, ClaimsIdentity identity) = await authClient.LoginAsync(username, password);
+            (bool isSusscess, ClaimsIdentity identity) = await authClient.LoginAsync(username, password);
 
             if (isSusscess)
             {

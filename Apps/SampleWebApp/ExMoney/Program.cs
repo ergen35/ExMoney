@@ -28,8 +28,6 @@ builder.Services.AddAuthenticationCore();
 builder.Services.AddBlazoredModal();
 builder.Services.AddScoped<ExMoneyJsInterop>();
 
-builder.Services.AddHttpClient();
-
 //add authentication state provider
 builder.Services.AddScoped<AppAuthenticationStateProvider>();
 

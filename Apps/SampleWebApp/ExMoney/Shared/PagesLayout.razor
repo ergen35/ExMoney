@@ -1,5 +1,9 @@
 @inherits LayoutComponentBase
+
+@attribute [Authorize]
+
 @inject ExMoneyJsInterop jsInterop
+@inject KeycloakAuthenticator authenticator
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -29,9 +33,21 @@
 
 
 @code {
+    public DateTime lastUpdate = DateTime.Now;
 
     private void CloseSidebarNav()
     {
         jsInterop.CloseSidebarNav();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(lastUpdate.AddMinutes(20) < DateTime.Now)
+        {
+            #warning disable CS4014
+            authenticator.RefreshAllTokens();
+
+            StateHasChanged();
+        }
     }
 }
