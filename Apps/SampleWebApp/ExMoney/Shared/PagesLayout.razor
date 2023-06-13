@@ -44,7 +44,7 @@
     {
         if(lastUpdate.AddMinutes(20) < DateTime.Now)
         {
-            #warning disable CS4014
+            #warning disable "CS4014"
             authenticator.RefreshAllTokens();
 
             StateHasChanged();

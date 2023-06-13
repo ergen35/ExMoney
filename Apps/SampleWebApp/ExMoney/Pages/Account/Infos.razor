@@ -10,9 +10,10 @@
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
     <div class="card-body px-2">
-        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> <span class="ti ti-user-circle ti"></span> Mon Compte</h5>
-        
-        @if(CurrentUser is null)
+        <h5 class="card-title fw-semibold mb-4 fs-6 text-center"> <span class="ti ti-user-circle ti"></span> Mon Compte
+        </h5>
+
+        @if (CurrentUser is null)
         {
             <div class="text-center">
                 <SpinnerLoader />
@@ -22,38 +23,98 @@
         {
             <div class="shadow shadow-sm border-1 border-start border-primary text-start py-2 fs-3 ps-3">
                 <span class="d-block text-wrap">
-                <span class="fw-semibold">Id</span>: @CurrentUser.Id
-                </span> 
+                    <span class="fw-semibold">Id</span>: @CurrentUser.Id
+                </span>
                 <span class="d-block">
-                <span class="fw-semibold">Prénoms</span>: @CurrentUser.FirstName
-                </span> 
+                    <span class="fw-semibold">Prénoms</span>: @CurrentUser.FirstName
+                </span>
                 <span class="d-block">
-                <span class="fw-semibold">Nom</span>: @CurrentUser.LastName
-                </span> 
+                    <span class="fw-semibold">Nom</span>: @CurrentUser.LastName
+                </span>
                 <span class="d-block">
-                <span class="fw-semibold">Email</span>: @CurrentUser.Email
-                </span> 
+                    <span class="fw-semibold">Email</span>: @CurrentUser.Email
+                </span>
             </div>
         }
 
         <div class="row mt-3">
             <div class="col">
                 <div class="list-group list-group-light fs-5">
-                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+                    <a class="list-group-item list-group-item-action px-3 border mb-1">
                         <span class="ti ti-user-check me-2 text-primary"></span> Informations
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+                    <a class="list-group-item list-group-item-action px-3 border mb-1">
+                        <span>
+                            <span class="ti ti-phone me-2 text-primary"></span> Téléphone
+                        </span>
+
+                        @if (CurrentUser is not null)
+                        {
+                            @if (CurrentUser.PhoneVerified)
+                            {
+                                <span class="badge rounded-pill badge-success ms-3">
+                                    <span class="ti ti-circle-check text-success"></span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill badge-danger ms-3">
+                                    <span class="ti ti-x text-danger"></span>
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge rounded-pill badge-danger ms-3">
+                                <span class="ti ti-x text-danger"></span>
+                            </span>
+                        }
+                    </a>
+                    <a class="list-group-item list-group-item-action px-3 border mb-1">
+                        <span>
+                            <span class="ti ti-at me-2 text-primary"></span> Adresse e-mail
+                        </span>
+                        @if (CurrentUser is not null)
+                        {
+                            @if (CurrentUser.EmailVerified)
+                            {
+                                <span class="badge rounded-pill badge-success ms-3">
+                                    <span class="ti ti-circle-check text-success"></span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill badge-danger ms-3">
+                                    <span class="ti ti-x text-danger"></span>
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge rounded-pill badge-danger ms-3">
+                                <span class="ti ti-x text-danger"></span>
+                            </span>
+                        }
+                    </a>
+                    <a class="list-group-item list-group-item-action px-3 border mb-1">
                         <span>
                             <span class="ti ti-id-badge me-2 text-primary"></span> Vérification d'Identité
                         </span>
-                        <span class="badge rounded-pill badge-success ms-3">
-                            <span class="ti ti-x text-danger"></span>
-                        </span>
+                        @if (KycVerified)
+                        {
+                            <span class="badge rounded-pill badge-success ms-3">
+                                <span class="ti ti-circle-check text-success"></span>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge rounded-pill badge-danger ms-3">
+                                <span class="ti ti-x text-danger"></span>
+                            </span>
+                        }
                     </a>
-                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
-                        <span class="ti ti-at me-2 text-primary"></span> Adresse e-mail
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action px-3 border mb-1">
+
+                    <a class="list-group-item list-group-item-action px-3 border mb-1">
                         <span class="ti ti-key me-2 text-primary"></span> Mot de passe
                     </a>
                     <a href=""></a>
@@ -67,23 +128,30 @@
 @code {
 
     public User CurrentUser { get; set; }
+    public bool KycVerified = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             var userInfos = await authenticator.GetUserInfosAsync();
             Dictionary<string, string> infos = userInfos.ToDictionary((s) => s.Type, (t) => t.Value);
-            
+
             CurrentUser = new();
 
             CurrentUser.Id = infos["sub"];
+            CurrentUser.Address = "Porto, Bénin";
             CurrentUser.LastName = infos["family_name"];
             CurrentUser.FirstName = infos["given_name"];
             CurrentUser.Email = infos["email"];
+            CurrentUser.Phone = Convert.ToString(infos["phone_number"]);
             CurrentUser.EmailVerified = bool.Parse(infos["email_verified"]);
+            CurrentUser.PhoneVerified = bool.Parse(infos["phone_number_verified"]);
 
-            StateHasChanged(); 
+            KycVerified = bool.Parse(infos["kyc_verified"]);
+
+
+            StateHasChanged();
 
             @* Console.WriteLine(JsonSerializer.Serialize(userInfos)); *@
         }

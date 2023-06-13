@@ -1,11 +1,10 @@
 using System.Security.Claims;
-using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
 
 namespace ExMoney.Authenticator
 {
-    public class KeycloakAuthenticator
+    public class KeycloakAuthenticator : IDisposable
     {
         private readonly IdpAuthenticationOptions options;
         private readonly IDiscoveryCache discoveryCache;
@@ -19,12 +18,12 @@ namespace ExMoney.Authenticator
         {
             options = IdpOptions.Value;
             this.discoveryCache = discoveryCache;
-            this.httpClient = new HttpClient();
+            httpClient = new HttpClient();
         }
 
         public async Task<(bool isSusscess, ClaimsIdentity claims)> LoginAsync(string username, string password)
         {
-            var disco = await discoveryCache.GetAsync();
+            DiscoveryDocumentResponse disco = await discoveryCache.GetAsync();
             httpClient = new();
 
             TokenResponse response = await httpClient.RequestPasswordTokenAsync(new PasswordTokenRequest
@@ -56,18 +55,16 @@ namespace ExMoney.Authenticator
                 //get user identity
                 if (!idResponse.IsError)
                 {
-                    var claims = idResponse.Claims.ToList();
-                    
+                    List<Claim> claims = idResponse.Claims.ToList();
+
                     claims.Add(new Claim(ClaimTypes.Name, username));
                     claims.Add(new Claim(ClaimTypes.Role, "app-user"));
 
-                    var claimsIdentity = new ClaimsIdentity(claims, "oidc", ClaimTypes.Name, ClaimTypes.Role);
-                    
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "oidc", ClaimTypes.Name, ClaimTypes.Role);
 
+
+                    // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(claims));
                     // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { claimsIdentity.Name, claimsIdentity.AuthenticationType, claimsIdentity.IsAuthenticated, claimsIdentity.Label }));
-                    // Console.WriteLine("Access Token {0}", response.AccessToken);
-                    // Console.WriteLine("Id Token {0}", response.IdentityToken);
-                    // Console.WriteLine("Refresh Token {0}", response.RefreshToken);
 
                     //TODO: Map Roles
                     return (!response.IsError, claimsIdentity);
@@ -83,52 +80,68 @@ namespace ExMoney.Authenticator
 
         public async Task<(string accessToken, string idToken)> RefreshAllTokens()
         {
-            var discoDoc = await discoveryCache.GetAsync();
+            DiscoveryDocumentResponse discoDoc = await discoveryCache.GetAsync();
             httpClient = new();
 
-            var response = await httpClient.RequestRefreshTokenAsync(new RefreshTokenRequest{
+            TokenResponse response = await httpClient.RequestRefreshTokenAsync(new RefreshTokenRequest
+            {
                 Address = discoDoc.TokenEndpoint,
-                
+
                 ClientId = options.ClientId,
 
-                RefreshToken = this.RefreshToken,
+                RefreshToken = RefreshToken,
 
                 Scope = options.Scope
             });
 
-            if(response.IsError)
+            if (response.IsError)
+            {
                 return (null, null);
-            
+            }
+
             RefreshToken = response.RefreshToken;
             AccessToken = response.AccessToken;
             IdToken = response.IdentityToken;
 
             return (response.AccessToken, response.IdentityToken);
         }
-        
+
         public async Task<List<Claim>> GetUserInfosAsync()
         {
-            var discoDoc = await discoveryCache.GetAsync();
+            DiscoveryDocumentResponse discoDoc = await discoveryCache.GetAsync();
             httpClient = new();
 
             // Console.WriteLine("Access Token {0}", AccessToken);
 
-            var response = await httpClient.GetUserInfoAsync(new UserInfoRequest{
+            UserInfoResponse response = await httpClient.GetUserInfoAsync(new UserInfoRequest
+            {
                 Address = discoDoc.UserInfoEndpoint,
                 Token = AccessToken
             });
 
-            if(!response.IsError)
-            {
-                return response.Claims.ToList();
-            }
-
-            return default;
+            return !response.IsError ? response.Claims.ToList() : default;
         }
-        
+
         public async Task LogoutAsync()
         {
+            discoveryCache.Refresh();
+            DiscoveryDocumentResponse discoDoc = await discoveryCache.GetAsync();
+
+            httpClient = new();
+
+            _ = httpClient.RevokeTokenAsync(new TokenRevocationRequest
+            {
+                Address = discoDoc.RevocationEndpoint,
+                ClientId = options.ClientId,
+                Token = AccessToken, 
+            });
+
             await Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

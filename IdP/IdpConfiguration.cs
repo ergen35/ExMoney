@@ -33,7 +33,11 @@ namespace IdP
                         new Claim(JwtClaimTypes.Locale, "fr-Fr"),
                         
                         //TODO: Add Custom props
+
+                        //FIXME: Prefer using userid to fetch these infos from the database
                         new Claim("kyc_verified", "true"),
+                        new Claim("ngn-balance", "27500"),
+                        new Claim("xof-balance", "0"),
                     },
 
                     IsActive = true
@@ -78,6 +82,8 @@ namespace IdP
                     Required = true,
                     Description = "Kyc Params",
                 },
+
+                
             };
         }
 
@@ -151,7 +157,9 @@ namespace IdP
                         IdentityServerConstants.StandardScopes.OfflineAccess,
 
                         //TODO: Map custom claims
-                        "kyc_verified"
+                        "kyc_verified",
+                        "ngn-balance",
+                        "xof-balance"
                     },
 
                     Enabled = true,
