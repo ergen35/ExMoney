@@ -5,10 +5,11 @@
 @inject ExMoneyJsInterop jsInterop
 @inject IExMoneyUsersApi usersApi
 @inject KeycloakAuthenticator authenticator
+@inject NavigationManager navManager
 
 <PageTitle>Dashboard</PageTitle>
 
-<CascadingValue Value="CurrentUserData" IsFixed=false>
+<CascadingValue Value="CurrentUserData" TValue="User">
 
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
@@ -48,28 +49,40 @@
         jsInterop.CloseSidebarNav();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (lastUpdate.AddMinutes(20) < DateTime.Now)
         {
-            authenticator.RefreshAllTokens();
+            await authenticator.RefreshAllTokens();
             StateHasChanged();
         }
 
-        if (firstRender)
+        if(firstRender)
         {
-            //fetch user id
+            CurrentUserData = await GetUserInfos();
+            StateHasChanged();
+
+            if(CurrentUserData is null){
+                navManager.NavigateTo("/account-prompt", forceLoad: true);
+            }
         }
     }
 
-    private async Task<User> GetUserInfos(string id)
+    private async Task<User> GetUserInfos()
     {
-        var response = await usersApi.GetUserById(id);
-        if(response.IsSuccessStatusCode)
+        var userInfos = await authenticator.GetUserInfosAsync();
+        Dictionary<string, string> infos = userInfos.ToDictionary((s) => s.Type, (t) => t.Value);
+        
+        var id = infos["sub"];
+        
+        if(!string.IsNullOrWhiteSpace(id))
         {
-            return response.Content;
-        }
+            var response = await usersApi.GetUserById(id);
 
+            if(response.IsSuccessStatusCode)
+                return response.Content;
+        }
+        
         return null;
     }
 }
