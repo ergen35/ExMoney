@@ -52,6 +52,7 @@ builder.Services.AddSingleton<KeycloakAuthenticator>();
 //add discovery document
 builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
 {
+    
     IHttpClientFactory factory = sp.GetRequiredService<IHttpClientFactory>();
     return new DiscoveryCache("http://localhost:8050", () => factory.CreateClient());
 });
