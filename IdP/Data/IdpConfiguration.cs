@@ -114,11 +114,12 @@ namespace IdP
             };
         }
 
-        public static List<Client> GetClients()
+        public static IEnumerable<Client> GetClients()
         {
-            return new(){
+            return new List<Client>(){
 
                 new Client {
+                    
                     ClientId = "backend-api-client",
                     ClientName = "Backend Api Client",
 
