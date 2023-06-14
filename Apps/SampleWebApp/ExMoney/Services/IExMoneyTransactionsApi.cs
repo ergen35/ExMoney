@@ -12,9 +12,9 @@ public interface IExMoneyTransactionsApi
     [Post("/api/v1/transactions/create")]
     public Task<IApiResponse<Transaction>> Create(string userId, TransactionCreateDTO data);
 
-    [Get("/api/v1/transactions/ongoing/{userId}")]
+    [Get("/api/v1/transactions/ongoing")]
     public Task<IApiResponse<List<Transaction>>> ListOngoing(string userId, int count = 5);
     
-    [Get("/api/v1/transactions/latest/{userId}")]
+    [Get("/api/v1/transactions/latest")]
     public Task<IApiResponse<List<Transaction>>> ListLastest(string userId, int count = 5);
 }

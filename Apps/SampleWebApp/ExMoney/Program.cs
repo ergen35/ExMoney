@@ -18,6 +18,7 @@ builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyUsersA
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurrenciesApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
+builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyWalletsApi));
 
 builder.Services.AddMemoryCache();
 builder.Services.AddAuthorizationCore();

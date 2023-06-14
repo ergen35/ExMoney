@@ -23,21 +23,20 @@ namespace ExMoney.Backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Wallet>> GetById(string id)
         {
-            Wallet wallet = await db.Wallets.FindAsync(id);
+            var wallet = await db.Wallets.FindAsync(id);
             return wallet is null ? (ActionResult<Wallet>)NotFound() : (ActionResult<Wallet>)wallet;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<Wallet>>> List()
+        [HttpGet("user-wallets")]
+        public ActionResult<IEnumerable<Wallet>> GetUserWallets([FromQuery] string userId)
         {
-            List<Wallet> wallets = db.Wallets.ToList();
-            if (wallets is null)
-            {
-                return NotFound();
-            }
+            return db.Wallets.Where(w => w.OwnerId == userId).ToList();
+        }
 
-            await Task.CompletedTask;
-            return wallets;
+        [HttpGet]
+        public ActionResult<IEnumerable<Wallet>> List()
+        {
+            return db.Wallets.ToList();
         }
 
         [HttpPost]

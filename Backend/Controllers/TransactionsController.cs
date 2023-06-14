@@ -21,28 +21,30 @@ namespace ExMoney.Backend.Controllers
         }
 
         [HttpGet("list")]
-        public Task<List<Transaction>> List(string userId)
+        public IEnumerable<Transaction> List(string userId)
         {
-            return db.Transactions.ToListAsync();
+            return db.Transactions.Where(t => t.UserId == userId);
+
         }
 
-        [HttpGet("latest/{userId}")]
+        [HttpGet("latest")]
         public IEnumerable<Transaction> ListLatests(string userId, int count)
         {
-            var latestTransactions = db.Transactions.OrderByDescending(t => t.Date).Take(count);
+            var latestTransactions = db.Transactions.Where(t => t.UserId == userId).OrderByDescending(t => t.Date).Take(count);
             return latestTransactions;
         }
 
-        [HttpGet("ongoing/{userId}")]
+        [HttpGet("ongoing")]
         public IEnumerable<Transaction> ListOngoing(string userId, int count)
         {
-            var ongoingTransactions = db.Transactions.Where(t => t.Status == TransactionStatus.Processing).Take(count);
+            var ongoingTransactions = db.Transactions.Where(t => t.UserId == userId && t.Status == TransactionStatus.Processing).Take(count);
             return ongoingTransactions;
         }
 
         [HttpPost("create")]
         public async Task<ActionResult<Transaction>> Add(string userId, TransactionCreateDTO data)
         {
+            //TODO: Do check user's existence
             var transaction = mapper.Map<Transaction>(data);
 
             //TOD0: define rate
