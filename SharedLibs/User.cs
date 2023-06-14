@@ -30,7 +30,7 @@ namespace ExMoney.SharedLibs
 
         public string Country { get; set; }
 
-        public double Balance { get; set; }
+        public int Points { get; set; }
 
         public DateTime CreationDate { get; set; }
 

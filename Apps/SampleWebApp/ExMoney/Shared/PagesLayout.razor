@@ -3,37 +3,45 @@
 @attribute [Authorize]
 
 @inject ExMoneyJsInterop jsInterop
+@inject IExMoneyUsersApi usersApi
 @inject KeycloakAuthenticator authenticator
 
 <PageTitle>Dashboard</PageTitle>
 
-<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-    data-sidebar-position="fixed" data-header-position="fixed">
-    <aside class="left-sidebar">
-        <div>
-            <div class="brand-logo d-flex align-items-center justify-content-between">
-                <a class="text-nowrap logo-img">
-                    <img src="assets/images/logos/logo.jpg" width="80" height="80" alt="" />
-                    <span class="fw-bolder fst-italic text-info font-monospace" style="font-size: 25px;"> <span class="text-dark">Ex</span>Money</span>
-                </a>
-                <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse" @onclick="CloseSidebarNav">
-                    <i class="ti ti-x fs-8"></i>
+<CascadingValue Value="CurrentUserData" IsFixed=false>
+
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        <aside class="left-sidebar">
+            <div>
+                <div class="brand-logo d-flex align-items-center justify-content-between">
+                    <a class="text-nowrap logo-img">
+                        <img src="assets/images/logos/logo.jpg" width="80" height="80" alt="" />
+                        <span class="fw-bolder fst-italic text-info font-monospace" style="font-size: 25px;"> <span
+                                class="text-dark">Ex</span>Money</span>
+                    </a>
+                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse"
+                        @onclick="CloseSidebarNav">
+                        <i class="ti ti-x fs-8"></i>
+                    </div>
                 </div>
+                <AppMenu />
             </div>
-            <AppMenu />
-        </div>
-    </aside>
-    <div class="body-wrapper">
-        <HeaderNavMenu />
-        <div class="container-fluid">
-            @Body
+        </aside>
+        <div class="body-wrapper">
+            <HeaderNavMenu />
+            <div class="container-fluid">
+                @Body
+            </div>
         </div>
     </div>
-</div>
+</CascadingValue>
 
 
 @code {
     public DateTime lastUpdate = DateTime.Now;
+
+    public User CurrentUserData { get; set; }
 
     private void CloseSidebarNav()
     {
@@ -42,12 +50,26 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if(lastUpdate.AddMinutes(20) < DateTime.Now)
+        if (lastUpdate.AddMinutes(20) < DateTime.Now)
         {
-            #warning disable "CS4014"
             authenticator.RefreshAllTokens();
-
             StateHasChanged();
         }
+
+        if (firstRender)
+        {
+            //fetch user id
+        }
+    }
+
+    private async Task<User> GetUserInfos(string id)
+    {
+        var response = await usersApi.GetUserById(id);
+        if(response.IsSuccessStatusCode)
+        {
+            return response.Content;
+        }
+
+        return null;
     }
 }

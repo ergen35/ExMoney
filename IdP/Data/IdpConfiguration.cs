@@ -20,24 +20,24 @@ namespace IdP
                     Password = "wassi-harif",
 
                     Claims = new List<Claim>(){
-                        new Claim(JwtClaimTypes.Email, "wassi@gmail.com"),
+                        // new Claim(JwtClaimTypes.Email, "wassi@gmail.com"),
                         new Claim(JwtClaimTypes.Role, "app-user"),
                         new Claim(JwtClaimTypes.PreferredUserName, "wassi@gmail.com"),
-                        new Claim(JwtClaimTypes.Address, "Porto-Novo, Bénin"),
-                        new Claim(JwtClaimTypes.Name, "amoussa wassi"),
-                        new Claim(JwtClaimTypes.FamilyName, "amoussa"),
-                        new Claim(JwtClaimTypes.GivenName, "wassi"),
-                        new Claim(JwtClaimTypes.EmailVerified, "true"),
-                        new Claim(JwtClaimTypes.PhoneNumber, "+22990210790"),
-                        new Claim(JwtClaimTypes.PhoneNumberVerified, "true"),
-                        new Claim(JwtClaimTypes.Locale, "fr-Fr"),
+                        // new Claim(JwtClaimTypes.Address, "Porto-Novo, Bénin"),
+                        // new Claim(JwtClaimTypes.Name, "amoussa wassi"),
+                        // new Claim(JwtClaimTypes.FamilyName, "amoussa"),
+                        // new Claim(JwtClaimTypes.GivenName, "wassi"),
+                        // new Claim(JwtClaimTypes.EmailVerified, "true"),
+                        // new Claim(JwtClaimTypes.PhoneNumber, "+22990210790"),
+                        // new Claim(JwtClaimTypes.PhoneNumberVerified, "true"),
+                        // new Claim(JwtClaimTypes.Locale, "fr-Fr"),
                         
                         //TODO: Add Custom props
 
                         //FIXME: Prefer using userid to fetch these infos from the database
-                        new Claim("kyc_verified", "true"),
-                        new Claim("ngn-balance", "27500"),
-                        new Claim("xof-balance", "0"),
+                        // new Claim("kyc_verified", "true"),
+                        // new Claim("ngn-balance", "27500"),
+                        // new Claim("xof-balance", "0"),
                     },
 
                     IsActive = true

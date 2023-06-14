@@ -9,7 +9,7 @@ namespace ExMoney.Backend.Controllers
     [ApiController]
     [Route("api/v1/[controller]")]
 
-    public class WalletsController: ControllerBase
+    public class WalletsController : ControllerBase
     {
         private readonly BackendDbContext db;
         private readonly IMapper mapper;
@@ -18,23 +18,24 @@ namespace ExMoney.Backend.Controllers
         {
             this.db = db;
             this.mapper = mapper;
-        } 
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Wallet>> GetById(string id)
         {
-            var wallet = await db.ExMoneyWallets.FindAsync(id);
-            if(wallet is null)
-                return NotFound();
-            return wallet;
-        }  
+            Wallet wallet = await db.Wallets.FindAsync(id);
+            return wallet is null ? (ActionResult<Wallet>)NotFound() : (ActionResult<Wallet>)wallet;
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<Wallet>>> List()
         {
-            var wallets = db.ExMoneyWallets.ToList();
-            if(wallets is null)
+            List<Wallet> wallets = db.Wallets.ToList();
+            if (wallets is null)
+            {
                 return NotFound();
+            }
+
             await Task.CompletedTask;
             return wallets;
         }
@@ -42,17 +43,22 @@ namespace ExMoney.Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Wallet>> Create(WalletCreateDTO data)
         {
-            var currency = await db.Currencies.FindAsync(data.CurrencyId);
-            if(currency is null)
-                return BadRequest(new  { Error = "" });
-            var existingWallet = db.ExMoneyWallets.FirstOrDefault(w => w.CurrencyId == currency.Id);
-            if(existingWallet is not null)
+            Currency currency = await db.Currencies.FindAsync(data.CurrencyId);
+            if (currency is null)
+            {
+                return BadRequest(new { Error = "" });
+            }
+
+            Wallet existingWallet = db.Wallets.FirstOrDefault(w => w.CurrencyId == currency.Id);
+            if (existingWallet is not null)
+            {
                 return BadRequest(new { Error = "Un portefeuille avec la devise spécifiée existe déja." });
+            }
 
-            var wallet = mapper.Map<Wallet>(data);
+            Wallet wallet = mapper.Map<Wallet>(data);
 
-            var addResult = await db.ExMoneyWallets.AddAsync(wallet);
-            await db.SaveChangesAsync();
+            Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Wallet> addResult = await db.Wallets.AddAsync(wallet);
+            _ = await db.SaveChangesAsync();
 
             return wallet;
         }

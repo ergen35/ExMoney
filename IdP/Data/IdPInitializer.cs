@@ -13,7 +13,8 @@ namespace IdP.Data
             using (var servicesScope = sp.CreateScope())
             {
                 //migrate persistedgrant db
-                servicesScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                var pbdb = servicesScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>();
+                pbdb.Database.Migrate();
 
                 var context = servicesScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();

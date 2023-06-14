@@ -11,5 +11,8 @@ namespace ExMoney.SharedLibs
         public bool EmailVerificationEnabled { get; set; } = false;
         public bool IdentityVerificationEnabled { get; set; } = false;
         public bool PhoneVerificationEnabled { get; set; } = false;
+
+        public double LatestN2FRate { get; set; }
+        public double LatestF2NRate { get; set; }
     }
 }

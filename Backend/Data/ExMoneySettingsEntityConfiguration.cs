@@ -16,7 +16,10 @@ namespace ExMoney.Backend.Data
                 CommissionPercentage = 0.05,
                 EmailVerificationEnabled = false,
                 IdentityVerificationEnabled = false,
-                PhoneVerificationEnabled = false
+                PhoneVerificationEnabled = false,
+
+                LatestF2NRate = 1.32,
+                LatestN2FRate = 0.85
             };
 
             builder.HasData(settings);

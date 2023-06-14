@@ -3,6 +3,7 @@ using System;
 using ExMoney.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExMoney.Backend.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    partial class BackendDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614133800_settingsUpdate")]
+    partial class settingsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,6 +259,9 @@ namespace ExMoney.Backend.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext");
 
+                    b.Property<double>("Balance")
+                        .HasColumnType("double");
+
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
 
@@ -288,33 +293,12 @@ namespace ExMoney.Backend.Migrations
                     b.Property<bool>("PhoneVerified")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
                     b.Property<int>("Sex")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "9fce8cc5-4017-4920-ab4c-1ff0ff06f4af",
-                            Address = "Porto-Novo, Bénin",
-                            BirthDate = new DateTime(2000, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Country = "Bénin",
-                            CreationDate = new DateTime(2023, 4, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "wassi@gmail.com",
-                            EmailVerified = true,
-                            FirstName = "wassi",
-                            LastName = "harif",
-                            Phone = "+22990210790",
-                            PhoneVerified = true,
-                            Points = 45,
-                            Sex = 0
-                        });
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ExMoney.SharedLibs.Wallet", b =>
@@ -339,7 +323,7 @@ namespace ExMoney.Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Wallets");
+                    b.ToTable("ExMoneyWallets");
 
                     b.HasData(
                         new
@@ -357,22 +341,6 @@ namespace ExMoney.Backend.Migrations
                             CurrencyId = 1,
                             Name = "Réserve CFA",
                             OwnerId = "exmoney-system"
-                        },
-                        new
-                        {
-                            Id = "b4bca84f-0520-4c99-97d1-433d4df7d802",
-                            Balance = 0.0,
-                            CurrencyId = 2,
-                            Name = "NGN Wallet",
-                            OwnerId = "9fce8cc5-4017-4920-ab4c-1ff0ff06f4af"
-                        },
-                        new
-                        {
-                            Id = "f07ce690-336e-45dd-aee7-11dac71b37e4",
-                            Balance = 27000.0,
-                            CurrencyId = 1,
-                            Name = "XOF Wallet",
-                            OwnerId = "9fce8cc5-4017-4920-ab4c-1ff0ff06f4af"
                         });
                 });
 

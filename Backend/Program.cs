@@ -1,9 +1,8 @@
 using ExMoney.Backend.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 
 //---- Add services to the container.
@@ -17,10 +16,10 @@ builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(typeof(ExMoney.SharedLibs.Mappings.MapperConfiguration));
 
-var conStr = builder.Configuration.GetConnectionString("exmoney-db");
+string conStr = builder.Configuration.GetConnectionString("exmoney-db");
 builder.Services.AddDbContext<BackendDbContext>(options =>
 {
-    options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
+    _ = options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
 });
 
 
@@ -31,7 +30,11 @@ builder.Services.AddHttpClient();
 
 
 //-- 
-var app = builder.Build();
+WebApplication app = builder.Build();
+
+//Apply EF Core migrations
+
+MigrationsUpdater.ApplyPendingMigrations(app.Services);
 
 //--- Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

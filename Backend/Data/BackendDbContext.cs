@@ -8,11 +8,12 @@ namespace ExMoney.Backend.Data
         public BackendDbContext(DbContextOptions<BackendDbContext> options) : base(options) { }
 
         public DbSet<ExMoneySettings> ExMoneySettings { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<KycVerification> KycVerifications { get; set; }
         public DbSet<PaymentProcessor> PaymentProcessors { get; set; }
-        public DbSet<Wallet> ExMoneyWallets { get; set; }
+        public DbSet<Wallet> Wallets { get; set; }
         public DbSet<PaymentOperation> PaymentOperations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +28,8 @@ namespace ExMoney.Backend.Data
             new PaymentProcessorEntityConfiguration().Configure(modelBuilder.Entity<PaymentProcessor>());
 
             new WalletEntityConfiguration().Configure(modelBuilder.Entity<Wallet>());
+
+            new TestUserEntityConfigurations().Configure(modelBuilder.Entity<User>());
         }
     }
 }

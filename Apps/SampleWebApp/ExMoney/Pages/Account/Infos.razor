@@ -6,6 +6,7 @@
 
 @inject IExMoneyUsersApi usersApi
 @inject KeycloakAuthenticator authenticator
+@inject IExMoneyUsersApi usersApi
 
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
@@ -138,23 +139,44 @@
             Dictionary<string, string> infos = userInfos.ToDictionary((s) => s.Type, (t) => t.Value);
 
             CurrentUser = new();
-
             CurrentUser.Id = infos["sub"];
-            CurrentUser.Address = "Porto, Bénin";
-            CurrentUser.LastName = infos["family_name"];
-            CurrentUser.FirstName = infos["given_name"];
-            CurrentUser.Email = infos["email"];
-            CurrentUser.Phone = Convert.ToString(infos["phone_number"]);
-            CurrentUser.EmailVerified = bool.Parse(infos["email_verified"]);
-            CurrentUser.PhoneVerified = bool.Parse(infos["phone_number_verified"]);
 
-            KycVerified = bool.Parse(infos["kyc_verified"]);
+            if(string.IsNullOrWhiteSpace(CurrentUser.Id))
+            {
+                throw new ArgumentNullException(nameof(CurrentUser.Id));
+            }
+
+            //fetch user infos
+            CurrentUser = await GetUserInfos(CurrentUser.Id);
+
+            if(CurrentUser is null)
+                throw new Exception("User does not exist");
+
+            @* CurrentUser.Address = "Porto, Bénin"; *@
+            @* CurrentUser.LastName = infos["family_name"]; *@
+            @* CurrentUser.FirstName = infos["given_name"]; *@
+            @* CurrentUser.Email = infos["email"]; *@
+            @* CurrentUser.Phone = Convert.ToString(infos["phone_number"]); *@
+            @* CurrentUser.EmailVerified = bool.Parse(infos["email_verified"]); *@
+            @* CurrentUser.PhoneVerified = bool.Parse(infos["phone_number_verified"]); *@
+            @* KycVerified = bool.Parse(infos["kyc_verified"]); *@
 
 
             StateHasChanged();
 
             @* Console.WriteLine(JsonSerializer.Serialize(userInfos)); *@
         }
+    }
+
+    private async Task<User> GetUserInfos(string id)
+    {
+        var response = await usersApi.GetUserById(id);
+        if(response.IsSuccessStatusCode)
+        {
+            return response.Content;
+        }
+
+        return null;
     }
 
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using ExMoney.Backend.Data;
+using ExMoney.SharedLibs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExMoney.Backend.Controllers
@@ -20,5 +21,14 @@ namespace ExMoney.Backend.Controllers
         }  
 
 
+        [HttpGet("get-user")]
+        public ActionResult<User> GetUserById([FromQuery] string id)
+        {
+            var user = db.Users.Find(id);
+            if(user is null)
+                return NotFound();
+            
+            else return user;
+        }
     }
 }
