@@ -26,8 +26,8 @@ namespace ExMoney.Backend.Controllers
 
             //find currencies
             Currencyapi fx = new(settings.CurrencyExchangeApiKey);
-            double rate = 0d;
-            double exchangeValue = 0d;
+            double rate;
+            double exchangeValue;
 
             try
             {
@@ -40,17 +40,34 @@ namespace ExMoney.Backend.Controllers
                 rate = Convert.ToDouble(rateResponse);
                 exchangeValue = rate * data.Amount;
 
+                if (data.BaseCurrencySymbol.ToLower() == "xof")
+                {
+                    settings.LatestF2NRate = rate;
+                }
+                else
+                {
+                    settings.LatestN2FRate = rate;
+                }
+
+                db.Entry(settings).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+                _ = await db.SaveChangesAsync();
+
             }
             catch (Exception)
             {
-                logger.LogCritical("Unable to get rate data from {apiUrl}", settings.CurrencyEcxhangeBaseUrl);
+                logger.LogCritical("Unable to get rate data from {apiUrl}.", settings.CurrencyEcxhangeBaseUrl);
+                logger.LogWarning("Falling back to stored values.");
+
+                rate = data.BaseCurrencySymbol.ToLower() == "xof" ? settings.LatestF2NRate : settings.LatestN2FRate;
+                exchangeValue = rate * data.Amount;
             }
+
 
             //apply 5% commission
             data.AmountToPay = exchangeValue * 1.05;
             data.Rate = rate;
             data.Commission = data.AmountToPay - exchangeValue;
-            await Task.CompletedTask;
 
             return data;
         }
