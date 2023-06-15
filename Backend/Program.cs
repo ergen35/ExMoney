@@ -45,6 +45,8 @@ if (app.Environment.IsDevelopment())
 // app.UseAuthorization();
 // app.UseAuthentication();
 
+app.MapGet("/", (ctx) => "Status Ok");
+
 app.MapControllers();
 
 app.Run();
