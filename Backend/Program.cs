@@ -27,9 +27,6 @@ builder.Services.AddDbContext<BackendDbContext>(options =>
 builder.Services.AddHttpClient();
 
 
-//TODO: add authentication & authorization 
-
-//-- 
 WebApplication app = builder.Build();
 
 //Apply EF Core migrations

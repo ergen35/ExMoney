@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExMoney.Backend.Migrations
 {
     [DbContext(typeof(BackendDbContext))]
-    [Migration("20230614135843_dbContextUpdate")]
-    partial class dbContextUpdate
+    [Migration("20230615181630_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
