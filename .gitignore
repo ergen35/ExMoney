@@ -478,3 +478,4 @@ $RECYCLE.BIN/
 .meteor/*
 Backend/.vscode/*
 IdP/keys/*
+Apps/ExMoney/.meteor/**
