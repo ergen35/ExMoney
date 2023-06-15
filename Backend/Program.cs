@@ -1,4 +1,5 @@
 using ExMoney.Backend.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -45,7 +46,9 @@ if (app.Environment.IsDevelopment())
 // app.UseAuthorization();
 // app.UseAuthentication();
 
-app.MapGet("/", (ctx) => "Status Ok");
+app.MapGet("/status", async (ctx) => {
+    await ctx.Response.WriteAsJsonAsync("Status, Ok");
+});
 
 app.MapControllers();
 

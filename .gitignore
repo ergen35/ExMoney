@@ -479,3 +479,6 @@ $RECYCLE.BIN/
 Backend/.vscode/*
 IdP/keys/*
 Apps/ExMoney/.meteor/**
+Apps/ExMoney/.meteor/generated/Microsoft.AspNetCore.Components.WebView.Maui.json
+.gitignore
+Apps/ExMoney/.meteor/generated/Microsoft.AspNetCore.Components.WebView.Maui.json
