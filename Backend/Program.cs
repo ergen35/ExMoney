@@ -50,6 +50,7 @@ app.MapGet("/status", async (ctx) => {
     await ctx.Response.WriteAsJsonAsync("Status, Ok");
 });
 
+
 app.MapControllers();
 
 app.Run();
