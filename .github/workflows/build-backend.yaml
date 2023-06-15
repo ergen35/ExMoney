@@ -14,7 +14,7 @@ on:
 env:
   DOTNET_VERSION: "6.0.x"
   WORKING_DIR: "Backend"
-  LOCAL_PUBLISH_DIR: "Backend/output-client"
+  LOCAL_PUBLISH_DIR: "output-client"
   REMOTE_PUBLISH_DIR: "exmoney-backend"
 
 jobs:
