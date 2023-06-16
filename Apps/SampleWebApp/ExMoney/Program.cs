@@ -7,6 +7,18 @@ using IdentityModel.OidcClient.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+//Configuration
+// if(builder.Environment.IsDevelopment())
+// {
+//     builder.Configuration["AuthServerUrl"] = "http://localhost:8050";
+//     builder.Configuration["BackendUrl"] = "";
+// }
+// else
+// {
+//     builder.Configuration["AuthServerUrl"] = "http://valerymassa30-001-site1.atempurl.com";
+//     builder.Configuration["BackendUrl"] = "http://exmonero-001-site1.itempurl.com";
+// }
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -43,7 +55,7 @@ builder.Services.Configure<IdpAuthenticationOptions>(o =>
     o.ClientId = "exmoney-mobile-app";
     o.Secret = "";
     o.Scope = "openid profile phone kyc_verified email";
-    o.ServerUrl = "http://localhost:8050";
+    o.ServerUrl = builder.Configuration["AuthServerUrl"];
 });
 
 //add keycloak Authenticator
@@ -54,7 +66,7 @@ builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
 {
     
     IHttpClientFactory factory = sp.GetRequiredService<IHttpClientFactory>();
-    return new DiscoveryCache("http://localhost:8050", () => factory.CreateClient());
+    return new DiscoveryCache(builder.Configuration["AuthServerUrl"], () => factory.CreateClient());
 });
 
 
