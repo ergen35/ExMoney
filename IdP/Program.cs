@@ -31,4 +31,8 @@ WebApplication app = builder.Build();
 app.MapDefaultControllerRoute();
 app.UseIdentityServer();
 
+app.MapGet("/status", async (ctx) => {
+    await ctx.Response.WriteAsJsonAsync("Status, Ok");
+});
+
 app.Run();
