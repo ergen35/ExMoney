@@ -51,15 +51,5 @@ namespace IdP.Controllers
             
             return Ok(newUser.Username);
         }
-
-
-        [HttpGet("find")]
-        public async Task<IActionResult> FindUser(string username)
-        {
-            var user = userStore.FindByUsername(username);           
-
-            return new ObjectResult(user);
-        }
-
     }
 }
