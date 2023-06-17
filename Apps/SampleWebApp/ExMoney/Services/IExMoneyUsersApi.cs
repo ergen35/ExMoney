@@ -7,5 +7,8 @@ namespace ExMoney.Services
     {
         [Get("/api/v1/users/get-user")]
         public Task<IApiResponse<User>> GetUserById(string id);
+
+        [Get("/api/v1/users/get-user-by-username")]
+        public Task<IApiResponse<User>> GetUserByUsername(string username);
     }
 }

@@ -125,7 +125,7 @@
         {
 
         }
-        else if(!(CurrentUser.KycVerification?.VerificationResult == KycVerificationResult.Ok) || !CurrentUser.EmailVerified)
+        else if(!(KycStatus?.VerificationResult == KycVerificationResult.Ok) || !CurrentUser.EmailVerified)
         {
             <div class="card overflow-hidden rounded-2">
             <div class="position-relative">
@@ -144,7 +144,7 @@
                         {
                             <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-danger"></span> Vérifier email </li>
                         }
-                        @if(!(CurrentUser.KycVerification?.VerificationResult == KycVerificationResult.Ok))
+                        @if(!(KycStatus?.VerificationResult == KycVerificationResult.Ok))
                         {
                             <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-dark"></span> Passer KYC</li>
                         }
@@ -161,6 +161,7 @@
     public List<Transaction> OngoingTransactions { get; set; }
 
     [CascadingParameter] public User CurrentUser { get; set; }
+    [CascadingParameter] public KycVerification KycStatus { get; set; }
 
     public double NgnBalance { get; set; }
     public double XofBalance { get; set; }

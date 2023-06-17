@@ -4,12 +4,14 @@
 
 @inject ExMoneyJsInterop jsInterop
 @inject IExMoneyUsersApi usersApi
+@inject IExMoneyKycStatusApi kycApi
 @inject KeycloakAuthenticator authenticator
 @inject NavigationManager navManager
 
 <PageTitle>Dashboard</PageTitle>
 
 <CascadingValue Value="CurrentUserData" TValue="User">
+<CascadingValue Value="KycStatus" TValue="KycVerification">
 
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
@@ -37,12 +39,14 @@
         </div>
     </div>
 </CascadingValue>
+</CascadingValue>
 
 
 @code {
     public DateTime lastUpdate = DateTime.Now;
 
     public User CurrentUserData { get; set; }
+    public KycVerification KycStatus { get; set; }
 
     private void CloseSidebarNav()
     {
@@ -65,6 +69,9 @@
             if(CurrentUserData is null){
                 navManager.NavigateTo("/account-prompt", forceLoad: true);
             }
+
+            //Set Kyc Status
+            KycStatus = await GetKycResult(CurrentUserData.Id);
         }
     }
 
@@ -73,16 +80,28 @@
         var userInfos = await authenticator.GetUserInfosAsync();
         Dictionary<string, string> infos = userInfos.ToDictionary((s) => s.Type, (t) => t.Value);
         
-        var id = infos["sub"];
+        //FIXME: Fetch user by username
+        var username = infos["preferred_username"];
         
-        if(!string.IsNullOrWhiteSpace(id))
+        if(!string.IsNullOrWhiteSpace(username))
         {
-            var response = await usersApi.GetUserById(id);
+            var response = await usersApi.GetUserByUsername(username);
 
             if(response.IsSuccessStatusCode)
                 return response.Content;
         }
+        //FIXME: End
         
         return null;
     }
+
+    private async Task<KycVerification> GetKycResult(string userId)
+    {
+        var response = await kycApi.GetKycStatus(userId);
+        
+        if(response.IsSuccessStatusCode)
+            return response.Content;
+
+        return default!;
+    }   
 }

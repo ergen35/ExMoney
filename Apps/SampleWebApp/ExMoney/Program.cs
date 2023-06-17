@@ -8,16 +8,16 @@ using IdentityModel.OidcClient.Infrastructure;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 //Configuration
-// if(builder.Environment.IsDevelopment())
-// {
-//     builder.Configuration["AuthServerUrl"] = "http://localhost:8050";
-//     builder.Configuration["BackendUrl"] = "";
-// }
-// else
-// {
-//     builder.Configuration["AuthServerUrl"] = "http://valerymassa30-001-site1.atempurl.com";
-//     builder.Configuration["BackendUrl"] = "http://exmonero-001-site1.itempurl.com";
-// }
+if(builder.Environment.IsDevelopment())
+{
+    builder.Configuration["AuthServerUrl"] = "http://localhost:8050";
+    builder.Configuration["BackendUrl"] = "http://localhost:5050";
+}
+else
+{
+    builder.Configuration["AuthServerUrl"] = "http://valerymassa30-001-site1.atempurl.com";
+    builder.Configuration["BackendUrl"] = "http://exmonero-001-site1.itempurl.com";
+}
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -31,6 +31,7 @@ builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurren
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
 builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyWalletsApi));
+builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyKycStatusApi));
 
 builder.Services.AddMemoryCache();
 builder.Services.AddAuthorizationCore();
@@ -63,8 +64,7 @@ builder.Services.AddSingleton<KeycloakAuthenticator>();
 
 //add discovery document
 builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
-{
-    
+{   
     IHttpClientFactory factory = sp.GetRequiredService<IHttpClientFactory>();
     return new DiscoveryCache(builder.Configuration["AuthServerUrl"], () => factory.CreateClient());
 });

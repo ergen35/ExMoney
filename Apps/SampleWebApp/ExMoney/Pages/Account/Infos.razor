@@ -96,22 +96,14 @@
                         <span>
                             <span class="ti ti-id-badge me-2 text-primary"></span> Vérification d'Identité
                         </span>
-                       @if(CurrentUser is not null)
-                       {
-                            @if (CurrentUser.KycVerification is not null)
+                     
+                        @if (KycStatus is not null)
+                        {
+                            if(KycStatus.VerificationResult == KycVerificationResult.Ok)
                             {
-                                if(CurrentUser.KycVerification.VerificationResult == KycVerificationResult.Ok)
-                                {
-                                    <span class="badge rounded-pill badge-success ms-3">
-                                        <span class="ti ti-circle-check text-success"></span>
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge rounded-pill badge-danger ms-3">
-                                        <span class="ti ti-x text-danger"></span>
-                                    </span>
-                                }
+                                <span class="badge rounded-pill badge-success ms-3">
+                                    <span class="ti ti-circle-check text-success"></span>
+                                </span>
                             }
                             else
                             {
@@ -119,13 +111,13 @@
                                     <span class="ti ti-x text-danger"></span>
                                 </span>
                             }
-                       }
-                       else
-                       {
+                        }
+                        else
+                        {
                             <span class="badge rounded-pill badge-danger ms-3">
                                 <span class="ti ti-x text-danger"></span>
                             </span>
-                       }
+                        }
                     </a>
 
                     <a class="list-group-item list-group-item-action px-3 border mb-1">
@@ -140,4 +132,6 @@
 
 @code {
     [CascadingParameter] public User CurrentUser { get; set; } 
+    [CascadingParameter] public KycVerification KycStatus { get; set; }
+
 }

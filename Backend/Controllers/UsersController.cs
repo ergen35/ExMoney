@@ -36,9 +36,19 @@ namespace ExMoney.Backend.Controllers
 
 
         [HttpGet("get-user")]
-        public ActionResult<User> GetUserById([FromQuery] string id)
+        public ActionResult<User> GetById([FromQuery] string id)
         {
             var user = db.Users.Find(id);
+            if (user is null)
+                return NotFound();
+
+            else return user;
+        }
+
+        [HttpGet("get-user-by-username")]
+        public ActionResult<User> GetByUsername([FromQuery] string username)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Email == username);
             if (user is null)
                 return NotFound();
 

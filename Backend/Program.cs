@@ -34,8 +34,6 @@ builder.Services.AddDbContext<BackendDbContext>(options =>
 
 builder.Services.AddHttpClient();
 
-
-
 builder.Services.AddMassTransit(config => {
 
     config.UsingGrpc((ctx, cfg) => {
