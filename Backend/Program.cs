@@ -1,12 +1,21 @@
 using ExMoney.Backend.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using MassTransit;
+using MassTransit.GrpcTransport;
+using ExMoney.Backend.EventHandlers;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders().AddSerilog();
 
 
 //---- Add services to the container.
+builder.Services.AddLogging(l => l.ClearProviders().AddSerilog());
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -25,6 +34,24 @@ builder.Services.AddDbContext<BackendDbContext>(options =>
 
 builder.Services.AddHttpClient();
 
+
+
+builder.Services.AddMassTransit(config => {
+
+    config.UsingGrpc((ctx, cfg) => {
+
+        cfg.Host(h => {
+            h.Host = "localhost";
+            h.Port = 19678;
+        });
+
+        cfg.ConfigureEndpoints(ctx);
+    });
+
+    //register consummers
+    config.AddConsumer<UserRegisteredHandler>();
+});
+// builder.Services.aDD
 
 WebApplication app = builder.Build();
 

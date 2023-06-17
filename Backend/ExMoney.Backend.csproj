@@ -13,11 +13,10 @@
     <PackageReference Include="IdentityModel.OidcClient" Version="5.2.1" />
     <PackageReference Include="IdentityModel.OidcClient.IdentityTokenValidator" Version="5.2.1" />
     <PackageReference Include="Keycloak.AuthServices.Authentication" Version="1.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
     <PackageReference Include="Microsoft.Aspnetcore.JsonPatch" Version="7.0.3" />
-    <!-- <PackageReference Include="Keycloak.AuthServices.Authorization" Version="1.5.1" /> -->
-    <!-- <PackageReference Include="masstransit" Version="8.0.13" /> -->
-    <!-- <PackageReference Include="masstransit.grpc" Version="8.0.13" /> -->
-    <!-- <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.9" /> -->
+    <PackageReference Include="masstransit" Version="8.0.13" />
+    <PackageReference Include="masstransit.grpc" Version="8.0.13" />
     <PackageReference Include="Microsoft.AspnetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.Mysql" Version="6.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
@@ -26,6 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Serilog.aspnetcore" Version="6.1.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -35,9 +35,7 @@ namespace ExMoney.SharedLibs
         public int Points { get; set; }
 
         public DateTime CreationDate { get; set; }
-
-        public KycVerification KycVerification { get; set; }
-
+    
         public bool EmailVerified { get; set; }
 
         public bool PhoneVerified { get; set; }

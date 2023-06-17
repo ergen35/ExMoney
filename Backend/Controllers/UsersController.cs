@@ -1,8 +1,9 @@
 using AutoMapper;
 using ExMoney.Backend.Data;
+using ExMoney.Backend.Events;
 using ExMoney.SharedLibs;
 using ExMoney.SharedLibs.DTOs;
-using IdentityModel.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExMoney.Backend.Controllers
@@ -12,14 +13,21 @@ namespace ExMoney.Backend.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMapper mapper;
+        private readonly IBus bus;
         private readonly BackendDbContext db;
         private readonly ILogger logger;
         private readonly HttpClient httpClient;
         private readonly IConfiguration config;
 
-        public UsersController(IMapper mapper, BackendDbContext db, ILogger<UsersController> logger, HttpClient httpClient, IConfiguration config)
+        public UsersController(IMapper mapper, 
+                                IBus bus,
+                                BackendDbContext db, 
+                                ILogger<UsersController> logger, 
+                                HttpClient httpClient, 
+                                IConfiguration config)
         {
             this.mapper = mapper;
+            this.bus = bus;
             this.db = db;
             this.logger = logger;
             this.httpClient = httpClient;
@@ -50,19 +58,24 @@ namespace ExMoney.Backend.Controllers
             {
                 var resMsg = await response.Content.ReadAsStringAsync();
 
-                return new ObjectResult(new ProblemDetails{
+                return new ObjectResult(new ProblemDetails
+                {
                     Status = 500,
                     Detail = resMsg,
                     Title = "Une erreur s'est produite"
                 });
             }
 
-            _ = await response.Content.ReadAsStringAsync();
-
             var user = mapper.Map<User>(data);
 
             db.Users.Add(user);
             await db.SaveChangesAsync();
+
+            //publis user registered event
+            // var sep = await bus.GetPublishSendEndpoint<UserRegisteredEvent>();
+
+            logger.LogInformation("Publishing {event}", nameof(UserRegisteredEvent));
+            await bus.Publish(new UserRegisteredEvent(user.Id, user.Email));
 
             return Ok("success registration");
         }

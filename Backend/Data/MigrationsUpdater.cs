@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExMoney.Backend.Data
@@ -9,10 +10,18 @@ namespace ExMoney.Backend.Data
             using IServiceScope servicesScope = sp.CreateScope();
 
             BackendDbContext context = servicesScope.ServiceProvider.GetRequiredService<BackendDbContext>();
-            //ensure database created
-            _ = context.Database.EnsureCreated();
-            //apply all pending migrations
-            context.Database.Migrate();
+
+            //drop database
+            context.Database.EnsureDeleted();
+            
+            // create 
+            if(!context.Database.EnsureCreated())
+            {
+                //apply all pending migrations
+                context.Database.Migrate();
+            }
+
+
         }
     }
 }
