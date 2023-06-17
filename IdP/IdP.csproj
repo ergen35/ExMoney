@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="automapper" Version="12.0.1" />
     <PackageReference Include="Duende.IdentityServer" Version="5.2.0" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="5.2.0" />
     <PackageReference Include="IdentityModel" Version="6.0.0" />
@@ -16,6 +17,10 @@
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.Mysql" Version="7.0.0" />
     <PackageReference Include="Serilog.AspnetCore" Version="6.1.0" />
+  </ItemGroup>
+
+   <ItemGroup>
+    <ProjectReference Include="..\SharedLibs\ExMoney.SharedLibs.csproj" />
   </ItemGroup>
 
 </Project>

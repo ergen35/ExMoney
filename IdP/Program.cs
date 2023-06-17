@@ -14,16 +14,18 @@ builder.Services.AddLogging(l => l.ClearProviders().AddSerilog());
 builder.Services.AddMvc();
 builder.Services.AddRazorPages();
 
+
 builder.Services.AddIdentityServer(options =>
 {
     options.EmitScopesAsSpaceDelimitedStringInJwt = true;
 })
-.AddTestUsers(IdpConfiguration.GetTestUsers())
+.AddTestUsers(IdpConfiguration.Users)
 .AddInMemoryApiScopes(IdpConfiguration.GetApiScopes())
 .AddInMemoryApiResources(IdpConfiguration.GetApiResources())
 .AddInMemoryClients(IdpConfiguration.GetClients())
 .AddInMemoryIdentityResources(IdpConfiguration.GetIdentityResources())
 .AddInMemoryPersistedGrants();
+
 
 
 WebApplication app = builder.Build();

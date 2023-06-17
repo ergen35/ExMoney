@@ -11,6 +11,7 @@ namespace ExMoney.SharedLibs.Mappings
             this.CreateMap<TransactionCreateDTO, Transaction>().ReverseMap();
             this.CreateMap<WalletCreateDTO, Wallet>().ReverseMap();
             this.CreateMap<ExMoneySettingsUpdateDTO, ExMoneySettings>().ReverseMap();
+            this.CreateMap<UserRegisterDTO, User>().ReverseMap();
         }
     }
 }

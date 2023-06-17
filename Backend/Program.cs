@@ -23,7 +23,6 @@ builder.Services.AddDbContext<BackendDbContext>(options =>
     _ = options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
 });
 
-
 builder.Services.AddHttpClient();
 
 

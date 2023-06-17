@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ExMoney.Backend.Migrations
 {
-    public partial class initial : Migration
+    public partial class rdmUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
