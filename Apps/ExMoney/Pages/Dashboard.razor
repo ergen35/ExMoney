@@ -8,142 +8,210 @@
 
 @inject ExMoneyJsInterop jsInterop
 @inject IExMoneyTransactionsApi transactionsApi
+@inject IExMoneyWalletsApi walletsApi
 
 <style>
-  .horizontal-scrollable>.row {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+    .horizontal-scrollable>.row {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 </style>
 
 <div class="container">
-  <span class="d-block fw-bolder text-center text-black fs-8">
-    <span class="ti ti-wallet"></span>
-    Portefeuilles
-  </span>
-  <div class="row">
-    <div class="col-6">
-      <WalletCard CurrencySymbol="NGN" Balance="26700" />
+    <span class="d-block fw-bolder text-center text-black fs-8">
+        <span class="ti ti-wallet"></span>
+        Portefeuilles
+    </span>
+    <div class="row">
+        <div class="col-6">
+            <Animate Animation="Animations.ZoomIn" DurationMs="650" DelayMs="180">
+                <WalletCard CurrencySymbol="xof" Balance="XofBalance" />
+            </Animate>
+        </div>
+        <div class="col-6">
+            <Animate Animation="Animations.ZoomIn" DurationMs="650">
+                <WalletCard CurrencySymbol="ngn" Balance="NgnBalance" />
+            </Animate>
+        </div>
     </div>
-    <div class="col-6">
-      <WalletCard CurrencySymbol="XOF" Balance="0" />
-    </div>
-  </div>
 </div>
 
 <div class="row">
-  <div class="col-12">
-    <!-- Monthly Earnings -->
-    <div class="card">
-      <div class="card-body">
-        <div class="row alig n-items-start">
-          <div class="col-12">
-            <h5 class="card-title mb-9 fw-semibold"> Ce Mois </h5>
-            <h4 class="fw-semibold mb-3"><span class="ti ti-affiliate fs-8 text-black"></span> 6820 Pts.</h4>
-            <div class="d-flex align-items-center pb-1">
-              <span
-                class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                <i class="ti ti-arrow-down-right text-danger"></i>
-              </span>
-              <p class="text-dark me-1 fs-3 mb-0">-2.2%</p>
-              <p class="fs-3 mb-0">Ce Mois</p>
+    <div class="col-12">
+        <!-- Monthly Earnings -->
+        <div class="card">
+            <div class="card-body">
+                <div class="row alig n-items-start">
+                    <div class="col-12">
+                        <h5 class="card-title mb-9 fw-semibold"> Ce Mois </h5>
+                        <h4 class="fw-semibold mb-3"><span class="ti ti-affiliate fs-8 text-black"></span> 
+
+                        @if(CurrentUser is null)
+                        {
+                            <SpinnerLoader ColorClass="text-dark" />
+                        }
+                        else
+                        {
+                            <span>
+                               @CurrentUser.Points Pts.
+                            </span>
+                        }
+                        </h4>
+                        <div class="d-flex align-items-center pb-1">
+                            <span
+                                class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
+                                <i class="ti ti-arrow-down-right text-danger"></i>
+                            </span>
+                            <p class="text-dark me-1 fs-3 mb-0">-2.2%</p>
+                            <p class="fs-3 mb-0">Ce Mois</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div id="earning"></div>
         </div>
-      </div>
-      <div id="earning"></div>
     </div>
-  </div>
 </div>
 <div class="row">
-  <div class="col-12 d-flex align-items-stretch">
-    <div class="card w-100">
-      <div class="card-body p-4">
-        <div class="mb-4">
-          <h5 class="card-title fw-semibold text-center"> <span class="ti ti-timeline text-warning-emphasis"></span>
-            Transactions En Cours</h5>
-          <hr class="divider">
-        </div>
-        <ul>
-          @if (OngoingTransactions is not null)
-          {
-            if (OngoingTransactions.Any())
-            {
-              @foreach (var transaction in OngoingTransactions)
-              {
-                <ExchangeRecord Status="transaction.Status" BaseCurrency="transaction.BaseCurrencyId"
-                  ChangeCurrency="transaction.ChangeCurrencyId" Amount="transaction.Amount" Rate="transaction.Rate"
-                  Date="transaction.Date" />
-              }
-            }
-            else
-            {
-              <li class="d-block text-center">
-                Aucune Transaction Trouvée
-              </li>
-            }
+    <div class="col-12 d-flex align-items-stretch">
+        <div class="card w-100">
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <h5 class="card-title fw-semibold text-center"> <span
+                            class="ti ti-timeline text-warning-emphasis"></span>
+                        Transactions En Cours</h5>
+                    <hr class="divider">
+                </div>
+                <ul>
+                    @if (OngoingTransactions is not null)
+                    {
+                        if (OngoingTransactions.Any())
+                        {
+                            @foreach (var transaction in OngoingTransactions)
+                            {
+                                <ExchangeRecord Status="transaction.Status" BaseCurrency="transaction.BaseCurrencyId"
+                                    ChangeCurrency="transaction.ChangeCurrencyId" Amount="transaction.Amount"
+                                    Rate="transaction.Rate" Date="transaction.Date" />
+                            }
+                        }
+                        else
+                        {
+                            <li class="d-block text-center">
+                                Aucune Transaction Trouvée
+                            </li>
+                        }
 
 
-            <li class="d-block text-center mt-3">
-              <a href="/exchanges" class="btn btn-dark"> <span class="ti ti-arrow-right"></span> Liste Complète
-              </a>
-            </li>
-          }
-          else
-          {
-            <div class="text-center">
-              <SpinnerLoader />
+                        <li class="d-block text-center mt-3">
+                            <a href="/exchanges" class="btn btn-dark"> <span class="ti ti-arrow-right"></span> Liste
+                                Complète
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <SpinnerLoader />
+                        </div>
+                    }
+                </ul>
             </div>
-          }
-        </ul>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 <div class="row mt-3">
-  <div class="col-12">
-    <div class="card overflow-hidden rounded-2">
-      <div class="position-relative">
-        <span class="d-block text-center fw-semibold text-secondary-emphasis fs-5">
-          <span class="ti ti-tools"></span> Actions requises
-        </span>
-        <a class="bg-dark rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-          <i class="ti ti-arrow-big-right fs-4"></i>
-        </a>
-      </div>
-      <div class="card-body pt-3 p-4">
-        <div class="d-flex align-items-center justify-content-between">
-          <ul class="list-unstyled align-items-center mb-0">
-            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-danger"></span> Vérifier email</li>
-            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-dark"></span> Passer KYC</li>
-            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-dark"></span> Votre premier échange</li>
-          </ul>
+    <div class="col-12">
+        @if(CurrentUser is null)
+        {
+
+        }
+        else if(!(KycStatus?.VerificationResult == KycVerificationResult.Ok) || !CurrentUser.EmailVerified)
+        {
+            <div class="card overflow-hidden rounded-2">
+            <div class="position-relative">
+                <span class="d-block text-center fw-semibold text-secondary-emphasis fs-5">
+                    <span class="ti ti-tools"></span> Actions requises
+                </span>
+                <a class="bg-dark rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+                    <i class="ti ti-arrow-big-right fs-4"></i>
+                </a>
+            </div>
+            <div class="card-body pt-3 p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <ul class="list-unstyled align-items-center mb-0">
+                        @if(!CurrentUser.EmailVerified)
+                        {
+                            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-danger"></span> Vérifier email </li>
+                        }
+                        @if(!(KycStatus?.VerificationResult == KycVerificationResult.Ok))
+                        {
+                            <li class="mt-1"> <span class="fas fa-hand-point-right me-3 text-dark"></span> Passer KYC</li>
+                        }
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
+        }
     </div>
-  </div>
 </div>
 
 
 @code {
-  public List<Transaction> OngoingTransactions { get; set; }
-  private bool transactionReqOk = true;
+    public List<Transaction> OngoingTransactions { get; set; }
 
-  protected override async Task OnAfterRenderAsync(bool firstRender)
-  {
-    if (firstRender)
+    [CascadingParameter] public User CurrentUser { get; set; }
+    [CascadingParameter] public KycVerification KycStatus { get; set; }
+
+    public double NgnBalance { get; set; }
+    public double XofBalance { get; set; }
+
+    private bool transactionReqOk = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-      jsInterop.InitDashboardCharts();
+        if (firstRender)
+        {
+            jsInterop.InitDashboardCharts();
 
-      //get 5 latest transactions
-      var ongoingTs = await transactionsApi.ListLastest("767J");
-      transactionReqOk = ongoingTs.IsSuccessStatusCode;
-      if (ongoingTs.IsSuccessStatusCode)
-      {
-        OngoingTransactions = ongoingTs.Content;
-        StateHasChanged();
-      }
+            //get 5 latest transactions
+            OngoingTransactions = await GetTransactions(CurrentUser?.Id);
+            StateHasChanged();
+
+            //Get User wallets
+            var result = await GetBalances(CurrentUser?.Id);
+            
+            XofBalance = result.xof;
+            StateHasChanged();
+
+            NgnBalance = result.ngn;
+            StateHasChanged();
+        }
     }
-  }
+
+
+    private async Task<List<Transaction>> GetTransactions(string userId)
+    {
+        var ongoingTs = await transactionsApi.ListLastest(userId);
+        transactionReqOk = ongoingTs.IsSuccessStatusCode;
+
+        if (ongoingTs.IsSuccessStatusCode)
+            return ongoingTs.Content;
+        else
+            return default!;
+    }
+    private async Task<(double xof, double ngn)> GetBalances(string userId)
+    {
+        var response = await walletsApi.GetUserWallets(userId);
+
+        if(response.IsSuccessStatusCode)
+        {
+            var ngn = response.Content.FirstOrDefault(w => w.CurrencyId == 2);
+            var xof = response.Content.FirstOrDefault(w => w.CurrencyId == 1);
+
+            return (xof is null ? 0d : xof!.Balance, ngn is null ? 0d : ngn!.Balance);
+        }
+
+        return (0d, 0d);
+    }
 }

@@ -22,22 +22,10 @@
                     else
                     {
                         <div class="row">
-                            <div class="col-12 text-center">
-                                <div class='card mx-5 @(NtoFselected ? "border-dark" : "border-light-secondary") border' @onclick="SelectNtoF" id="N2F">
-                                    <div class="card-body p-2 pb-0">
-                                        <span class="ti ti-currency-naira"
-                                            style="font-size: 30px; color: rgb(63, 157, 219);"></span>
-                                        <span class="mx-1 ti ti-arrows-exchange-2" style="font-size: 30px;"></span>
-                                        <span class="ti ti-currency-frank"
-                                            style="font-size: 30px; color: rgb(0, 0, 0);"></span>
-                                    </div>
-                                    <hr />
-                                    <span class='text-black'>Naira vers FCFA</span>
-                                </div>
-                            </div>
 
                             <div class="col-12 text-center">
-                                <div class='card mx-5 @(FtoNselected ? "border-dark" : "border-light-secondary") border' @onclick="SelectFtoN" id="F2N">
+                                <div class='card mx-5 @(FtoNselected ? "border-dark" : "border-light-secondary") border'
+                                @onclick="SelectFtoN" id="F2N">
                                     <div class="card-body p-2 pb-0">
                                         <span class="ti ti-currency-frank"
                                             style="font-size: 30px; color: rgb(63, 157, 219);"></span>
@@ -47,6 +35,21 @@
                                     </div>
                                     <hr />
                                     <span class='text-black'>FCFA vers Naira</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <div class='card mx-5 @(NtoFselected ? "border-dark" : "border-light-secondary") border'
+                                @onclick="SelectNtoF" id="N2F">
+                                    <div class="card-body p-2 pb-0">
+                                        <span class="ti ti-currency-naira"
+                                            style="font-size: 30px; color: rgb(63, 157, 219);"></span>
+                                        <span class="mx-1 ti ti-arrows-exchange-2" style="font-size: 30px;"></span>
+                                        <span class="ti ti-currency-frank"
+                                            style="font-size: 30px; color: rgb(0, 0, 0);"></span>
+                                    </div>
+                                    <hr />
+                                    <span class='text-black'>Naira vers FCFA</span>
                                 </div>
                             </div>
                         </div>
@@ -62,9 +65,9 @@
                         </div>
 
                         <div class="text-center mt-4">
-                            <a class="btn btn-dark" @onclick="GoToNextStep"> 
+                            <a class="btn btn-dark" @onclick="GoToNextStep">
                                 Continuer
-                                <span class="ti ti-arrow-big-right"></span> 
+                                <span class="ti ti-arrow-big-right"></span>
                             </a>
                         </div>
                     }

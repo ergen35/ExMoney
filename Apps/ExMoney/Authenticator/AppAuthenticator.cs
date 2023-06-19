@@ -111,8 +111,6 @@ namespace ExMoney.Authenticator
             DiscoveryDocumentResponse discoDoc = await discoveryCache.GetAsync();
             httpClient = new();
 
-            // Console.WriteLine("Access Token {0}", AccessToken);
-
             UserInfoResponse response = await httpClient.GetUserInfoAsync(new UserInfoRequest
             {
                 Address = discoDoc.UserInfoEndpoint,

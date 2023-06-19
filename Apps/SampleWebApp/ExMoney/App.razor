@@ -5,11 +5,11 @@
             <Found Context="routeData">
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(SimpleLayout)">
                     <Authorizing>
-                        <center>
-                            <div class="spinner-border text-primary mx-2" role="status">
+                        <center class="mt-5">
+                            <div class="spinner-border text-primary mx-2 mt-5 mb-2" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <div class="text-center">Authentification En Cours</div>
+                            <div class="text-center text-center">Vérification de la Session</div>
                         </center>
                     </Authorizing>
                     <NotAuthorized>
@@ -21,7 +21,7 @@
                 <PageTitle>Not found</PageTitle>
                 <LayoutView Layout="@typeof(SimpleLayout)">
                     <p role="alert">
-                        Il n'y a rien à voir ici, allez, <span class="fs-2 fw-bolder fst-italic">ouste</span>!
+                        Aucune Vue Disponible Ici
                     </p>
                 </LayoutView>
             </NotFound>

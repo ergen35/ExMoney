@@ -23,12 +23,14 @@ namespace ExMoney
             //-- Services
 
             builder.Services.AddMauiBlazorWebView();
-            //Add server's config
-            //builder.Configuration["AuthServer"] = "http://10.34.64.124:57575";
-            builder.Configuration["AuthServer"] = "http://localhost:8050";
-            //builder.Configuration["BackendServer"] = "http://api.exmoney.com";
-            builder.Configuration["BackendServer"] = "http://localhost:5050";
+            //Add server's config 
+            builder.Configuration["AuthServerUrl"] = "http://valerymassa30-001-site1.atempurl.com";
+            builder.Configuration["BackendUrl"] = "http://exmonero-001-site1.itempurl.com";
 
+#if DEBUG
+            builder.Configuration["AuthServerUrl"] = "http://localhost:8050";
+            builder.Configuration["BackendUrl"] = "http://localhost:5050";
+#endif
             //Add HttpClient
             builder.Services.AddLogging();
             builder.Services.AddHttpClient();
@@ -38,6 +40,8 @@ namespace ExMoney
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyCurrenciesApi));
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyTransactionsApi));
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
+            builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyWalletsApi));
+            builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyKycStatusApi));
 
 
             builder.Services.AddMemoryCache();
@@ -49,8 +53,10 @@ namespace ExMoney
 
             //add authentication state provider
             builder.Services.AddScoped<AppAuthenticationStateProvider>();
-            builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AppAuthenticationStateProvider>());
-
+            builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
+            {
+                return provider.GetRequiredService<AppAuthenticationStateProvider>();
+            });
             //configure authOptions
             builder.Services.Configure<IdpAuthenticationOptions>(o =>
             {

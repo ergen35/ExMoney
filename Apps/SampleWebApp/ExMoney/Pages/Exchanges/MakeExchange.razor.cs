@@ -70,14 +70,14 @@ namespace ExMoney.Pages.Exchanges
 
         public void GoToNextStep()
         {
-            QueryString qs = QueryString.Create(new List<KeyValuePair<string, string>>()
+           var nextUrl = NavManager.GetUriWithQueryParameters(NavManager.Uri, new Dictionary<string, object>() 
             {
-                new("bcid", BaseCurrencyId.ToString()),
-                new("ccid", ChangeCurrencyId.ToString()),
-                new("amount", Amount.ToString())
+                {"bcid", BaseCurrencyId.ToString()},
+                {"ccid", ChangeCurrencyId.ToString()},
+                {"amount", Amount.ToString()}
             });
 
-            NavManager.NavigateTo("/make-exchange/checkout" + qs.Value);
+            NavManager.NavigateTo(nextUrl);
         }
     }
 }

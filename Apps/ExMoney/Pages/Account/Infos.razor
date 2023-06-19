@@ -1,11 +1,7 @@
 @page "/account/infos"
 
-@using System.Text.Json
 @layout PagesLayout
 @attribute [Authorize]
-
-@inject IExMoneyUsersApi usersApi
-@inject KeycloakAuthenticator authenticator
 
 
 <div class="card w-100 h-100 position-relative overflow-hidden">
@@ -100,11 +96,21 @@
                         <span>
                             <span class="ti ti-id-badge me-2 text-primary"></span> Vérification d'Identité
                         </span>
-                        @if (KycVerified)
+                     
+                        @if (KycStatus is not null)
                         {
-                            <span class="badge rounded-pill badge-success ms-3">
-                                <span class="ti ti-circle-check text-success"></span>
-                            </span>
+                            if(KycStatus.VerificationResult == KycVerificationResult.Ok)
+                            {
+                                <span class="badge rounded-pill badge-success ms-3">
+                                    <span class="ti ti-circle-check text-success"></span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge rounded-pill badge-danger ms-3">
+                                    <span class="ti ti-x text-danger"></span>
+                                </span>
+                            }
                         }
                         else
                         {
@@ -117,7 +123,6 @@
                     <a class="list-group-item list-group-item-action px-3 border mb-1">
                         <span class="ti ti-key me-2 text-primary"></span> Mot de passe
                     </a>
-                    <a href=""></a>
                 </div>
             </div>
         </div>
@@ -126,35 +131,7 @@
 
 
 @code {
-
-    public User CurrentUser { get; set; }
-    public bool KycVerified = false;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var userInfos = await authenticator.GetUserInfosAsync();
-            Dictionary<string, string> infos = userInfos.ToDictionary((s) => s.Type, (t) => t.Value);
-
-            CurrentUser = new();
-
-            CurrentUser.Id = infos["sub"];
-            CurrentUser.Address = "Porto, Bénin";
-            CurrentUser.LastName = infos["family_name"];
-            CurrentUser.FirstName = infos["given_name"];
-            CurrentUser.Email = infos["email"];
-            CurrentUser.Phone = Convert.ToString(infos["phone_number"]);
-            CurrentUser.EmailVerified = bool.Parse(infos["email_verified"]);
-            CurrentUser.PhoneVerified = bool.Parse(infos["phone_number_verified"]);
-
-            KycVerified = bool.Parse(infos["kyc_verified"]);
-
-
-            StateHasChanged();
-
-            @* Console.WriteLine(JsonSerializer.Serialize(userInfos)); *@
-        }
-    }
+    [CascadingParameter] public User CurrentUser { get; set; } 
+    [CascadingParameter] public KycVerification KycStatus { get; set; }
 
 }

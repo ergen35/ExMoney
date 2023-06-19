@@ -3,7 +3,6 @@ using ExMoney.Services;
 using ExMoney.SharedLibs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace ExMoney.Pages.Exchanges
 {
@@ -71,7 +70,7 @@ namespace ExMoney.Pages.Exchanges
 
         public void GoToNextStep()
         {
-            var nextUrl = NavManager.GetUriWithQueryParameters(NavManager.Uri, new Dictionary<string, object>() 
+            var nextUrl = NavManager.GetUriWithQueryParameters(NavManager.Uri, new Dictionary<string, object>()
             {
                 {"bcid", BaseCurrencyId.ToString()},
                 {"ccid", ChangeCurrencyId.ToString()},
