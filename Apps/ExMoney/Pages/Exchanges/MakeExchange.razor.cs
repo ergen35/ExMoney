@@ -8,9 +8,9 @@ namespace ExMoney.Pages.Exchanges
 {
     public partial class MakeExchange
     {
+        [Inject] public IExMoneyCurrenciesApi currenciesApi { get; set; }
         [Inject] public NavigationManager NavManager { get; set; }
         [Inject] public IModalService ModalService { get; set; }
-        [Inject] public IExMoneyCurrenciesApi currenciesApi { get; set; }
         [Inject] public IMemoryCache memCache { get; set; }
 
         public string UiTitle { get; set; } = "Effectuer un Echange";

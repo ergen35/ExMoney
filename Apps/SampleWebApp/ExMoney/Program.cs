@@ -10,13 +10,13 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 //Configuration
 if(builder.Environment.IsDevelopment())
 {
-    builder.Configuration["AuthServerUrl"] = "http://localhost:8050";
-    builder.Configuration["BackendUrl"] = "http://localhost:5050";
+    builder.Configuration["AuthServer"] = "http://localhost:8050";
+    builder.Configuration["BackendServer"] = "http://localhost:5050";
 }
 else
 {
-    builder.Configuration["AuthServerUrl"] = "http://valerymassa30-001-site1.atempurl.com";
-    builder.Configuration["BackendUrl"] = "http://exmonero-001-site1.itempurl.com";
+    builder.Configuration["AuthServer"] = "http://valerymassa30-001-site1.atempurl.com";
+    builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
 }
 
 // Add services to the container.
@@ -56,7 +56,7 @@ builder.Services.Configure<IdpAuthenticationOptions>(o =>
     o.ClientId = "exmoney-mobile-app";
     o.Secret = "";
     o.Scope = "openid profile phone kyc_verified email";
-    o.ServerUrl = builder.Configuration["AuthServerUrl"];
+    o.ServerUrl = builder.Configuration["AuthServer"];
 });
 
 //add keycloak Authenticator
@@ -66,7 +66,7 @@ builder.Services.AddSingleton<KeycloakAuthenticator>();
 builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
 {   
     IHttpClientFactory factory = sp.GetRequiredService<IHttpClientFactory>();
-    return new DiscoveryCache(builder.Configuration["AuthServerUrl"], () => factory.CreateClient());
+    return new DiscoveryCache(builder.Configuration["AuthServer"], () => factory.CreateClient());
 });
 
 

@@ -24,12 +24,12 @@ namespace ExMoney
 
             builder.Services.AddMauiBlazorWebView();
             //Add server's config 
-            builder.Configuration["AuthServerUrl"] = "http://valerymassa30-001-site1.atempurl.com";
-            builder.Configuration["BackendUrl"] = "http://exmonero-001-site1.itempurl.com";
+            builder.Configuration["AuthServer"] = "http://valerymassa30-001-site1.atempurl.com";
+            builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
 
 #if DEBUG
-            builder.Configuration["AuthServerUrl"] = "http://localhost:8050";
-            builder.Configuration["BackendUrl"] = "http://localhost:5050";
+            builder.Configuration["AuthServer"] = "http://localhost:8050";
+            builder.Configuration["BackendServer"] = "http://localhost:5050";
 #endif
             //Add HttpClient
             builder.Services.AddLogging();
@@ -57,6 +57,14 @@ namespace ExMoney
             {
                 return provider.GetRequiredService<AppAuthenticationStateProvider>();
             });
+
+            //add discovery document
+            builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
+            {
+                IHttpClientFactory factory = sp.GetRequiredService<IHttpClientFactory>();
+                return new DiscoveryCache(builder.Configuration["AuthServer"], () => factory.CreateClient());
+            });
+
             //configure authOptions
             builder.Services.Configure<IdpAuthenticationOptions>(o =>
             {

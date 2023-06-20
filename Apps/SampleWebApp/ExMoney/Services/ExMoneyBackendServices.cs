@@ -9,7 +9,7 @@ public static class ExMoneyBackendServices
         //Refit Settings
         RefitSettings settings = new() { Buffered = false };
 
-        var backendUri = new Uri(configuration["ServerAddresses:BackendServer"]);
+        var backendUri = new Uri(configuration["BackendServer"]);
 
         services.AddRefitClient(backendType, settings)
             .ConfigureHttpClient(options =>
