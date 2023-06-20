@@ -27,7 +27,6 @@ builder.Services.AddIdentityServer(options =>
 .AddInMemoryPersistedGrants();
 
 
-
 WebApplication app = builder.Build();
 
 

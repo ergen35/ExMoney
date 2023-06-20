@@ -27,10 +27,10 @@ namespace ExMoney
             builder.Configuration["AuthServer"] = "http://valerymassa30-001-site1.atempurl.com";
             builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
 
-#if DEBUG
-            builder.Configuration["AuthServer"] = "http://localhost:8050";
-            builder.Configuration["BackendServer"] = "http://localhost:5050";
-#endif
+//#if DEBUG
+//            builder.Configuration["AuthServer"] = "http://localhost:8050";
+//            builder.Configuration["BackendServer"] = "http://localhost:5050";
+//#endif
             //Add HttpClient
             builder.Services.AddLogging();
             builder.Services.AddHttpClient();

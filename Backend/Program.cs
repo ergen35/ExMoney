@@ -55,7 +55,7 @@ WebApplication app = builder.Build();
 
 //Apply EF Core migrations
 
-MigrationsUpdater.ApplyPendingMigrations(app.Services);
+// MigrationsUpdater.ApplyPendingMigrations(app.Services);
 
 //--- Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -70,7 +70,6 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/status", async (ctx) => {
     await ctx.Response.WriteAsJsonAsync("Status, Ok");
 });
-
 
 app.MapControllers();
 
