@@ -1,6 +1,8 @@
 @page "/auth/register"
 
 @layout AuthLayout
+@inject IExMoneyAuthApi authApi
+@inject NavigationManager navManager
 
 <div class="card mb-0">
     <div class="card-body">
@@ -10,31 +12,69 @@
                 <span class="fw-bolder fst-italic text-info font-monospace" style="font-size: 25px;"> <span class="text-dark">Ex</span>Money</span>
             </a>
         </div>
-
-        <hr class="mb-2">
-
-        <form>
+        <hr class="mb-4">
+        <EditForm OnValidSubmit="RegisterUser" Model="Input">
             <div class="mb-3">
-                <label for="name" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="name" aria-describedby="textHelp">
+                <input type="text" @bind-value="Input.LastName" class="form-control" id="name" placeholder="Nom" aria-describedby="textHelp">
+            </div>
+            <div class="mb-3">
+                <input type="text" @bind-value="Input.FirstName" class="form-control" placeholder="Prénoms" id="firstname" aria-describedby="textHelp">
             </div>
              <div class="mb-3">
-                <label for="lastname" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="lastname" aria-describedby="textHelp">
+                <input type="phone" @bind-value="Input.Phone" class="form-control" id="phone" placeholder="Tél. (Ex: +22950505050)" aria-describedby="textHelp">
             </div>
             <div class="mb-3">
-                <label for="email-address" class="form-label">Adresse e-mail</label>
-                <input type="email" class="form-control" id="email-address" aria-describedby="emailHelp">
+                <input type="email" @bind-value="Input.Email" class="form-control" id="email-address" placeholder="Adresse e-mail" aria-describedby="emailHelp">
             </div>
             <div class="mb-4">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" id="password">
+                <input type="password" @bind-value="Input.Password" class="form-control" placeholder="Mot de passe" id="password">
             </div>
+
             <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Inscription</button>
             <div class="d-flex align-items-center justify-content-center">
                 <p class="fs-4 mb-0 fw-bold">Déja un compte?</p>
-                <a class="text-primary fw-bold ms-2">Me Connecter</a>
+                <a class="text-primary fw-bold ms-2" href="/auth/login">Me Connecter</a>
             </div>
-        </form>
+        </EditForm>
     </div>
 </div>
+
+@code{
+
+    
+    public UserRegisterDTO Input { get; set; } = new();
+
+    [CascadingParameter] public IModalService ModalService { get; set; }
+
+    public async Task RegisterUser(EditContext context)
+    {
+        var modalOptions = new ModalOptions {
+            DisableBackgroundCancel = true,
+            Size = ModalSize.Small,
+            Position = ModalPosition.Middle,
+            HideCloseButton = true,
+            AnimationType = ModalAnimationType.FadeInOut,
+            HideHeader = true,
+            Class = "text-center"
+        };
+
+        var modalParams = new ModalParameters()
+                    .Add("Msg", "Patientez pendant que nous vous inscrivons.");
+
+        var modalRef = ModalService.Show<ThreeDotsLoader>(string.Empty, modalParams, modalOptions);
+
+        @* await Task.Delay(TimeSpan.FromSeconds(5)); *@
+       
+        var data = context.Model as UserRegisterDTO;
+        
+        var response = await authApi.RegisterUserAsync(data);
+        if(response.IsSuccessStatusCode){
+            
+            navManager.NavigateTo("/auth/login");
+            modalRef.Close();
+            return;
+        }
+
+        modalRef.Close();
+    }
+}

@@ -42,6 +42,8 @@ namespace ExMoney
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyRatesApi));
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyWalletsApi));
             builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyKycStatusApi));
+	    builder.Services.RegisterBackendApi(builder.Configuration, typeof(IExMoneyAuthApi));
+
 
 
             builder.Services.AddMemoryCache();
