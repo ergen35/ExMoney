@@ -7,7 +7,7 @@ using IdentityModel.OidcClient.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-//Configuration
+//Configuration 
 if(builder.Environment.IsDevelopment())
 {
     builder.Configuration["AuthServer"] = "http://localhost:8050";

@@ -1,6 +1,10 @@
 @page "/auth/login"
+
+@using Microsoft.Extensions.Logging
+
 @inject AppAuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
+@inject ILogger<Login> logger
 
 @layout AuthLayout
 
@@ -57,15 +61,17 @@
 
     public async void UserLogin()
     {
-        await Task.Delay(TimeSpan.FromSeconds(3));
-
         isAuthenticating = true;
         StateHasChanged();
-        
+
+        Console.WriteLine("Okay");
+        logger.LogInformation("Okay");
+
         var result = await authStateProvider.LogInAsync(Username, Password);
-        
+
         authStateProvider.NotifyAuthStateChanged();
 
+        await Task.Delay(TimeSpan.FromSeconds(3));
 
         isAuthenticating = false;
         StateHasChanged();

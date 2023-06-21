@@ -54,7 +54,7 @@ jobs:
 
         - name: publish app
           working-directory: ${{ env.WORKING_DIR }}
-          run: dotnet publish -c Release /property:GenerateFullPaths=true --no-self-contained --output=../output-idp
+          run: dotnet publish -c Debug /property:GenerateFullPaths=true --no-self-contained --output=../output-idp
 
         - name: FTP Deployment on server
           uses: airvzxf/ftp-deployment-action@latest

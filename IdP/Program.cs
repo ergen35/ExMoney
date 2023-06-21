@@ -29,7 +29,6 @@ builder.Services.AddIdentityServer(options =>
 
 WebApplication app = builder.Build();
 
-
 app.MapDefaultControllerRoute();
 app.UseIdentityServer();
 
