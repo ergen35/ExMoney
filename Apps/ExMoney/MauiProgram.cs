@@ -62,9 +62,12 @@ namespace ExMoney
 
             //add discovery document
             builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
-            {
-                IHttpClientFactory factory = sp.GetRequiredService<IHttpClientFactory>();
-                return new DiscoveryCache(builder.Configuration["AuthServer"], () => factory.CreateClient());
+            {   
+                var factory = sp.GetRequiredService<IHttpClientFactory>();
+
+                return new DiscoveryCache(builder.Configuration["AuthServer"], () => factory.CreateClient(), new() {
+                    RequireHttps = false 
+                });
             });
 
             //configure authOptions

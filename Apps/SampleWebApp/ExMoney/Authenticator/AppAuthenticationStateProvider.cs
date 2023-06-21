@@ -28,7 +28,7 @@ namespace ExMoney.Authenticator
             currentUser = new ClaimsPrincipal(identity);
             currentUser.AddIdentity(identity);
             
-            // logger.LogError("Current User Claims {user}", JsonSerializer.Serialize(currentUser.Identity));
+            logger.LogError("Current User Claims {user}", JsonSerializer.Serialize(currentUser.Identity));
             return isAuthenticated;
         }
 

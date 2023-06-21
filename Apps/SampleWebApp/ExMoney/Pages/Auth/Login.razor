@@ -1,6 +1,7 @@
 @page "/auth/login"
 @inject AppAuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
+@inject ILogger<Login> logger
 
 @layout AuthLayout
 
@@ -57,18 +58,19 @@
 
     public async void UserLogin()
     {
-
         isAuthenticating = true;
         StateHasChanged();
         
-        var result = await authStateProvider.LogInAsync(Username, Password);
-        
+        var result = await authStateProvider.LogInAsync(Username, Password);        
         authStateProvider.NotifyAuthStateChanged();
 
         await Task.Delay(TimeSpan.FromSeconds(2.5));
-
+        
         isAuthenticating = false;
+
         StateHasChanged();
+
+        logger.LogInformation("Auth status is {status}", result);
 
         if(result)
         {
