@@ -25,12 +25,12 @@ namespace ExMoney
             builder.Services.AddMauiBlazorWebView();
             //Add server's config 
             builder.Configuration["AuthServer"] = "http://valerymassa30-001-site1.atempurl.com";
-            //builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
+            builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
 
-            //#if DEBUG
-            //builder.Configuration["AuthServer"] = "http://localhost:8050";
+#if DEBUG
+            builder.Configuration["AuthServer"] = "http://localhost:8050";
             builder.Configuration["BackendServer"] = "http://localhost:5050";
-            //#endif
+#endif
             //Add HttpClient
             builder.Services.AddLogging();
             builder.Services.AddHttpClient();

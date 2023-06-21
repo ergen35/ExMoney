@@ -70,7 +70,7 @@ namespace ExMoney.Pages.Exchanges
 
         public void GoToNextStep()
         {
-           var nextUrl = NavManager.GetUriWithQueryParameters(NavManager.Uri, new Dictionary<string, object>() 
+           var nextUrl = NavManager.GetUriWithQueryParameters("/make-exchange/checkout", new Dictionary<string, object>() 
             {
                 {"bcid", BaseCurrencyId.ToString()},
                 {"ccid", ChangeCurrencyId.ToString()},
