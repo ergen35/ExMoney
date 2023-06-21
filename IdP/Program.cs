@@ -12,6 +12,7 @@ builder.Logging.ClearProviders().AddSerilog();
 //add services to the container
 builder.Services.AddLogging(l => l.ClearProviders().AddSerilog());
 builder.Services.AddMvc();
+builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 
 builder.Services.AddIdentityServer(options =>
@@ -26,6 +27,9 @@ builder.Services.AddIdentityServer(options =>
 .AddInMemoryPersistedGrants();
 
 WebApplication app = builder.Build();
+
+app.UseRouting();
+app.UseStaticFiles();
 
 app.MapDefaultControllerRoute();
 app.UseIdentityServer();
