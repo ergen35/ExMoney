@@ -32,6 +32,8 @@ app.UseRouting();
 app.UseStaticFiles();
 
 app.MapDefaultControllerRoute();
+app.MapControllers();
+
 app.UseIdentityServer();
 
 app.MapGet("/status", async (ctx) => {

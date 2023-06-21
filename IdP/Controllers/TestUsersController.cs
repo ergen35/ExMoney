@@ -5,7 +5,6 @@ using Duende.IdentityServer.Test;
 using Duende.IdentityServer.Validation;
 using ExMoney.SharedLibs.DTOs;
 using IdentityModel;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdP.Controllers
