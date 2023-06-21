@@ -9,6 +9,21 @@ Log.Logger = new LoggerConfiguration().WriteTo
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders().AddSerilog();
 
+
+// Add Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allow-all",
+        policy =>
+        {
+            policy.AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains();
+        });
+});
+
 //add services to the container
 builder.Services.AddLogging(l => l.ClearProviders().AddSerilog());
 builder.Services.AddMvc();
@@ -28,6 +43,7 @@ builder.Services.AddIdentityServer(options =>
 
 WebApplication app = builder.Build();
 
+app.UseCors();
 app.UseRouting();
 app.UseStaticFiles();
 

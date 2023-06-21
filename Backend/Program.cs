@@ -32,6 +32,20 @@ builder.Services.AddDbContext<BackendDbContext>(options =>
     _ = options.UseMySql(conStr, ServerVersion.AutoDetect(conStr));
 });
 
+// Add Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("allow-all",
+        policy =>
+        {
+            policy.AllowAnyHeader()
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .SetIsOriginAllowedToAllowWildcardSubdomains();
+        });
+});
+
 builder.Services.AddHttpClient();
 
 builder.Services.AddMassTransit(config => {
@@ -62,6 +76,9 @@ if (app.Environment.IsDevelopment())
 {
 
 }
+
+app.UseCors();
+app.MapDefaultControllerRoute();
 
 //TODO: add authentication & authorization 
 // app.UseAuthorization();

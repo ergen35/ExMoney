@@ -14,7 +14,7 @@ namespace ExMoney.Authenticator
         public string IdToken { get; set; }
         public string AccessToken { get; set; }
 
-        public KeycloakAuthenticator(IOptions<IdpAuthenticationOptions> IdpOptions, IDiscoveryCache discoveryCache)
+        public KeycloakAuthenticator(IOptions<IdpAuthenticationOptions> IdpOptions, IDiscoveryCache discoveryCache, ILogger<KeycloakAuthenticator> logger)
         {
             options = IdpOptions.Value;
             this.discoveryCache = discoveryCache;
