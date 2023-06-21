@@ -12,7 +12,7 @@ on:
       - "SharedLibs/**.csproj"
       - "SharedLibs/**.cs"
 env:
-  DOTNET_VERSION: "7.0.x"
+  DOTNET_VERSION: "6.0.x"
   WORKING_DIR: "IdP"
   LOCAL_PUBLISH_DIR: "output-idp"
   REMOTE_PUBLISH_DIR: "exomoy-idp"
