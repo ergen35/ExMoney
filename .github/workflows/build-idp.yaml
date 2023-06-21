@@ -39,7 +39,7 @@ jobs:
 
       - name: Build project
         working-directory: ${{ env.WORKING_DIR }}
-        run: dotnet build -c Release --no-restore
+        run: dotnet build -c Debug --no-restore
 
   deploy:
       runs-on: "ubuntu-latest"
