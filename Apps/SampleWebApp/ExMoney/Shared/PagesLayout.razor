@@ -80,7 +80,6 @@
         var userInfos = await authenticator.GetUserInfosAsync();
         Dictionary<string, string> infos = userInfos.ToDictionary((s) => s.Type, (t) => t.Value);
         
-        //FIXME: Fetch user by username
         var username = infos["preferred_username"];
         
         if(!string.IsNullOrWhiteSpace(username))
@@ -90,7 +89,6 @@
             if(response.IsSuccessStatusCode)
                 return response.Content;
         }
-        //FIXME: End
         
         return null;
     }
