@@ -8,16 +8,16 @@ using IdentityModel.OidcClient.Infrastructure;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Configuration 
-// if(builder.Environment.IsDevelopment())
-// {
-//     builder.Configuration["AuthServer"] = "http://localhost:8050";
-//     builder.Configuration["BackendServer"] = "http://localhost:5050";
-// }
-// else
-// {
+if(builder.Environment.IsDevelopment())
+{
+    builder.Configuration["AuthServer"] = "http://localhost:8050";
+    builder.Configuration["BackendServer"] = "http://localhost:5050";
+}
+else
+{
     builder.Configuration["AuthServer"] = "http://valerymassa30-001-site1.atempurl.com";
     builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
-// }
+}
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -61,13 +61,11 @@ builder.Services.Configure<IdpAuthenticationOptions>(o =>
 });
 
 //add keycloak Authenticator
-builder.Services.AddSingleton<KeycloakAuthenticator>();
+builder.Services.AddSingleton<AppAuthenticator>();
 
 //add discovery document
-builder.Services.AddSingleton<IDiscoveryCache>((sp) =>
-{   
+builder.Services.AddSingleton<IDiscoveryCache>((sp) =>{   
     var factory = sp.GetRequiredService<IHttpClientFactory>();
-
     return new DiscoveryCache(builder.Configuration["AuthServer"], () => factory.CreateClient(), new() {
         RequireHttps = false 
     });

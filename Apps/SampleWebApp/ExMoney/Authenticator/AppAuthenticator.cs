@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace ExMoney.Authenticator
 {
-    public class KeycloakAuthenticator
+    public class AppAuthenticator
     {
         private readonly IdpAuthenticationOptions options;
         private readonly IDiscoveryCache discoveryCache;
@@ -14,7 +14,7 @@ namespace ExMoney.Authenticator
         public string IdToken { get; set; }
         public string AccessToken { get; set; }
 
-        public KeycloakAuthenticator(IOptions<IdpAuthenticationOptions> IdpOptions, IDiscoveryCache discoveryCache, ILogger<KeycloakAuthenticator> logger)
+        public AppAuthenticator(IOptions<IdpAuthenticationOptions> IdpOptions, IDiscoveryCache discoveryCache, ILogger<AppAuthenticator> logger)
         {
             options = IdpOptions.Value;
             this.discoveryCache = discoveryCache;
@@ -66,7 +66,6 @@ namespace ExMoney.Authenticator
                     // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(claims));
                     // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { claimsIdentity.Name, claimsIdentity.AuthenticationType, claimsIdentity.IsAuthenticated, claimsIdentity.Label }));
 
-                    //TODO: Map Roles
                     return (!response.IsError, claimsIdentity);
                 }
                 else

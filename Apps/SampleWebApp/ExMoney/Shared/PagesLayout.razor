@@ -5,8 +5,9 @@
 @inject ExMoneyJsInterop jsInterop
 @inject IExMoneyUsersApi usersApi
 @inject IExMoneyKycStatusApi kycApi
-@inject KeycloakAuthenticator authenticator
+@inject AppAuthenticator authenticator
 @inject NavigationManager navManager
+@inject IConfiguration configuration
 
 <PageTitle>Dashboard</PageTitle>
 
@@ -53,6 +54,12 @@
         jsInterop.CloseSidebarNav();
     }
 
+    protected override void OnInitialized()
+    {
+        //start server
+        StartCallbackServer();
+    }    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (lastUpdate.AddMinutes(20) < DateTime.Now)
@@ -69,9 +76,6 @@
             if(CurrentUserData is null){
                 navManager.NavigateTo("/account-prompt", forceLoad: true);
             }
-
-            //Set Kyc Status
-            KycStatus = await GetKycResult(CurrentUserData.Id);
         }
     }
 
@@ -103,3 +107,4 @@
         return default!;
     }   
 }
+

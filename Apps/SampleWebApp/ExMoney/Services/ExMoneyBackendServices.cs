@@ -15,7 +15,6 @@ public static class ExMoneyBackendServices
             .ConfigureHttpClient(options =>
             {
                 options.BaseAddress = backendUri;
-                // options.DefaultRequestHeaders = TODO: Authorization Pronto
             }
         );
 

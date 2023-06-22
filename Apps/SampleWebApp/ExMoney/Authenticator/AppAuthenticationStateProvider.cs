@@ -7,10 +7,10 @@ namespace ExMoney.Authenticator
     public class AppAuthenticationStateProvider : AuthenticationStateProvider
     {
         private ClaimsPrincipal currentUser = new();
-        private readonly KeycloakAuthenticator authClient;
+        private readonly AppAuthenticator authClient;
         private readonly ILogger logger;
 
-        public AppAuthenticationStateProvider(KeycloakAuthenticator authClient, ILogger<AppAuthenticationStateProvider> logger)
+        public AppAuthenticationStateProvider(AppAuthenticator authClient, ILogger<AppAuthenticationStateProvider> logger)
         {
             this.authClient = authClient;
             this.logger = logger;
