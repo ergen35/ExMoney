@@ -1,29 +1,34 @@
-﻿<CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true" Size="ModalSize.Automatic" Position="ModalPosition.Middle">
-    <CascadingAuthenticationState>
-        <Router AppAssembly="@typeof(Main).Assembly">
-            <Found Context="routeData">
-                <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(SimpleLayout)">
-                    <Authorizing>
-                        <center class="mt-5">
-                            <div class="spinner-border text-primary mx-2 mt-5 mb-2" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <div class="text-center text-center">Vérification de la Session</div>
-                        </center>
-                    </Authorizing>
-                    <NotAuthorized>
-                        <AccountPromptView />
-                    </NotAuthorized>
-                </AuthorizeRouteView>
-            </Found>
-            <NotFound>
-                <PageTitle>Not found</PageTitle>
-                <LayoutView Layout="@typeof(SimpleLayout)">
-                    <p role="alert">
-                        Aucune Vue Disponible Ici
-                    </p>
-                </LayoutView>
-            </NotFound>
-        </Router>
-    </CascadingAuthenticationState>
+﻿<CascadingBlazoredModal HideCloseButton="true" ContentScrollable="false" DisableBackgroundCancel="true"
+    Size="ModalSize.Automatic" Position="ModalPosition.Middle">
+    <ErrorHandler>
+        <CascadingAuthenticationState>
+            <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                    <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(SimpleLayout)">
+                        <Authorizing>
+                            <center class="mt-5">
+                                <div class="spinner-border text-primary mx-2 mt-5 mb-2" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <span class="text-center text-black fs-4 mt-3">
+                                    Vérification de la Session
+                                </span>
+                            </center>
+                        </Authorizing>
+                        <NotAuthorized>
+                            <AccountPromptView />
+                        </NotAuthorized>
+                    </AuthorizeRouteView>
+                </Found>
+                <NotFound>
+                    <PageTitle>Not found</PageTitle>
+                    <LayoutView Layout="@typeof(SimpleLayout)">
+                        <p role="alert">
+                            Aucune Vue Disponible Ici
+                        </p>
+                    </LayoutView>
+                </NotFound>
+            </Router>
+        </CascadingAuthenticationState>
+    </ErrorHandler>
 </CascadingBlazoredModal>
