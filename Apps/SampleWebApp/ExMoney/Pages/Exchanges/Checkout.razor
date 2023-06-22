@@ -74,19 +74,12 @@
 
                             @if (isCalculated)
                             {
-                                @* <button @onclick="SetPhone">Pay</button> *@
                                 <div class="text-center mt-5">
                                     @* url="<url-vers-votre-logo>" *@
-                                    @* <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)"
+                                     <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)"
                                         key="7e1c6d50fdba11ed976703e23fcc8506" position="center" sandbox="true" data=""
-                                        callback="http://api.exmoney.xyz/payment-callback" /> *@
+                                        callback="http://valerymassa30-001-site1.atempurl.com/exmoney-payment-callback" /> 
 
-
-                                        <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)"
-                                                key="a1d0081aa5a95b6c5359­5e16b18cf0c0a6b25e8a" position="center" sandbox="false" data=""
-                                                callback="http://valerymassa30-001-site1.atempurl.com/exmoney-payment-callback/" />
-
-                                        @* a1d0081aa5a95b6c5359­5e16b18cf0c0a6b25e8a *@
                                 </div>
                             }
                         </Animate>

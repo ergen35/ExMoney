@@ -8,9 +8,9 @@ namespace ExMoney.Pages.Exchanges
 {
     public partial class MakeExchange
     {
-        [Inject] public IExMoneyCurrenciesApi currenciesApi { get; set; }
         [Inject] public NavigationManager NavManager { get; set; }
         [Inject] public IModalService ModalService { get; set; }
+        [Inject] public IExMoneyCurrenciesApi currenciesApi { get; set; }
         [Inject] public IMemoryCache memCache { get; set; }
 
         public string UiTitle { get; set; } = "Effectuer un Echange";
@@ -70,8 +70,7 @@ namespace ExMoney.Pages.Exchanges
 
         public void GoToNextStep()
         {
-            var urii = new Uri(new Uri(NavManager.Uri), "/checkout");
-            var nextUrl = NavManager.GetUriWithQueryParameters(urii.AbsoluteUri, new Dictionary<string, object>()
+           var nextUrl = NavManager.GetUriWithQueryParameters("/make-exchange/checkout", new Dictionary<string, object>() 
             {
                 {"bcid", BaseCurrencyId.ToString()},
                 {"ccid", ChangeCurrencyId.ToString()},
