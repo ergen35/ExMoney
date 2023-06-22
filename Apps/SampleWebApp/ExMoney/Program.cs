@@ -8,16 +8,16 @@ using IdentityModel.OidcClient.Infrastructure;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Configuration 
-if(builder.Environment.IsDevelopment())
-{
-    builder.Configuration["AuthServer"] = "http://localhost:8050";
-    builder.Configuration["BackendServer"] = "http://localhost:5050";
-}
-else
-{
+// if(builder.Environment.IsDevelopment())
+// {
+//     builder.Configuration["AuthServer"] = "http://localhost:8050";
+//     builder.Configuration["BackendServer"] = "http://localhost:5050";
+// }
+// else
+// {
     builder.Configuration["AuthServer"] = "http://valerymassa30-001-site1.atempurl.com";
     builder.Configuration["BackendServer"] = "http://exmonero-001-site1.itempurl.com";
-}
+// }
 
 // Add services to the container.
 builder.Services.AddRazorPages();
