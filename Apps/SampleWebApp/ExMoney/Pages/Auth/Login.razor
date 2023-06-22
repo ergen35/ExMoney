@@ -2,6 +2,7 @@
 @inject AppAuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 @inject ILogger<Login> logger
+@using System.ComponentModel.DataAnnotations
 
 @layout AuthLayout
 
@@ -15,22 +16,33 @@
             </a>
         </div>
         
-        <hr class="mb-4">
+        <hr >
 
-        <div>
+        <EditForm OnValidSubmit="UserLogin" Model="Input">
+            <div class="mb-4 mt-1">
+                <DataAnnotationsValidator />
+                @if(!authSucceeded)
+                {
+                    <span class="d-block text-danger text-center">
+                        Vos informations Sont Incorrectes. <br>
+                        Ou vérifiez votre connexion
+                    </span>
+                }
+            </div>
+
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Adresse e-mail</label>
-                <input type="email" class="form-control" @bind-value=@Username id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" required class="form-control" @bind-value=@Input.Username id="exampleInputEmail1" aria-describedby="emailHelp">
             </div>
             <div class="mb-4">
                 <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
-                <input type="password" @bind-value=@Password class="form-control" id="exampleInputPassword1">
+                <input type="password" required @bind-value=@Input.Password class="form-control" id="exampleInputPassword1">
             </div>
             <div class="text-center mb-4">
-                <a class="text-primary fw-bold" href="./index.html">Mot de passe oublié ?</a>
+                <a class="text-primary fw-bold">Mot de passe oublié ?</a>
             </div>
             
-            <button type="button"  @onclick="UserLogin" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
+            <button type="submit" class='btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2  @(isAuthenticating ? "disabled" : "")'>
                @if(isAuthenticating)
                {
                     <SpinnerLoader ColorClass="text-white" />
@@ -44,24 +56,24 @@
             <div class="d-flex align-items-center justify-content-center">
                 <a class="text-primary fw-bold ms-2" href="/auth/register">Inscription</a>
             </div>
-        </div>
+        </EditForm>
     </div>
 </div>
 
 
 @code{
-    public string Username { get; set; }
-    public string Password { get; set; }
+   
+    public LoginModel Input { get; set; } = new();
 
     public bool isAuthenticating = false;
-    public bool authFailed = false;
+    public bool authSucceeded = true;
 
-    public async void UserLogin()
+    public async Task UserLogin(EditContext context)
     {
         isAuthenticating = true;
         StateHasChanged();
         
-        var result = await authStateProvider.LogInAsync(Username, Password);        
+        authSucceeded = await authStateProvider.LogInAsync(Input.Username, Input.Password);        
         authStateProvider.NotifyAuthStateChanged();
 
         await Task.Delay(TimeSpan.FromSeconds(2.5));
@@ -70,12 +82,22 @@
 
         StateHasChanged();
 
-        logger.LogInformation("Auth status is {status}", result);
+        logger.LogInformation("Auth status is {status}", authSucceeded);
 
-        if(result)
+        if(authSucceeded)
         {
             navManager.NavigateTo("/dashboard");
         }
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "L'adresse e-mail est requise.")]
+        [EmailAddress(ErrorMessage= "Veillez entrer une Adresse e-mail valide.")] 
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "Le mot de passe est requis.")]
+        public string Password { get; set; }
     }
 
 }
