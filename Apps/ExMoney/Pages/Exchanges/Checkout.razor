@@ -75,10 +75,10 @@
                             @if (isCalculated)
                             {
                                 <div class="text-center mt-5">
-                                    @* url="<url-vers-votre-logo>" *@
-                                     <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)"
+                                    @* url="<url-vers-votre-logo>"  *@
+                                    <kkiapay-widget amount="@Math.Round(ExchangeRateData.AmountToPay)"
                                         key="7e1c6d50fdba11ed976703e23fcc8506" position="center" sandbox="true" data=""
-                                        callback="http://valerymassa30-001-site1.atempurl.com/exmoney-payment-callback" /> 
+                                         theme="blue" /> 
 
                                 </div>
                             }
@@ -105,6 +105,8 @@
     public string PayPhoneNumber { get; set; }
     public ExchangeRate ExchangeRateData { get; set; } = new();
     public List<Currency> Currencies { get; set; }
+
+    [CascadingParameter] public User CurrentUser { get; set; }
 
     public bool isCalculated = false;
 
@@ -134,6 +136,12 @@
                 ExchangeRateData = rateResponse.Content!;
                 isCalculated = true;
                 StateHasChanged();
+
+                PaymentStore.Amount = Amount;
+                PaymentStore.Rate = rateResponse.Content.Rate;
+                PaymentStore.Date = DateTime.Now;
+                PaymentStore.BaseCurrencyId = BaseCurrencyId;
+                PaymentStore.ChangeCurrencyId  = ChangeCurrencyId;
             }
         }
     }

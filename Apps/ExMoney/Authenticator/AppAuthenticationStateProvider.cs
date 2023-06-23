@@ -1,17 +1,16 @@
 using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Logging;
 
 namespace ExMoney.Authenticator
 {
     public class AppAuthenticationStateProvider : AuthenticationStateProvider
     {
         private ClaimsPrincipal currentUser = new();
-        private readonly KeycloakAuthenticator authClient;
+        private readonly AppAuthenticator authClient;
         private readonly ILogger logger;
 
-        public AppAuthenticationStateProvider(KeycloakAuthenticator authClient, ILogger<AppAuthenticationStateProvider> logger)
+        public AppAuthenticationStateProvider(AppAuthenticator authClient, ILogger<AppAuthenticationStateProvider> logger)
         {
             this.authClient = authClient;
             this.logger = logger;
@@ -29,7 +28,7 @@ namespace ExMoney.Authenticator
             currentUser = new ClaimsPrincipal(identity);
             currentUser.AddIdentity(identity);
             
-            // logger.LogError("Current User Claims {user}", JsonSerializer.Serialize(currentUser.Identity));
+            logger.LogError("Current User Claims {user}", JsonSerializer.Serialize(currentUser.Identity));
             return isAuthenticated;
         }
 

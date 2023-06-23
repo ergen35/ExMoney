@@ -5,7 +5,7 @@
 @inject ExMoneyJsInterop jsInterop
 @inject IExMoneyUsersApi usersApi
 @inject IExMoneyKycStatusApi kycApi
-@inject KeycloakAuthenticator authenticator
+@inject AppAuthenticator authenticator
 @inject NavigationManager navManager
 
 <PageTitle>Dashboard</PageTitle>
@@ -73,6 +73,7 @@
             //Set Kyc Status
             KycStatus = await GetKycResult(CurrentUserData.Id);
         }
+
     }
 
     private async Task<User> GetUserInfos()

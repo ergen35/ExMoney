@@ -82,8 +82,7 @@ namespace ExMoney
 
             //add keycloak Authenticator
             builder.Services.AddSingleton<KeycloakAuthenticator>();
-
-           
+            
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();

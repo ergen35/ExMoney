@@ -1,60 +1,61 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web
+@namespace ExMoney.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>ExMoney</title>
-    <base href="/" />
-    <!-- template assets--> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    @* template assets *@
     <link rel="shortcut icon" type="image/png" href="assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="assets/css/styles.min.css" />
-    <!-- Font awesome--> 
+    @* Font awesome *@
     <link href="fa/css/fontawesome.min.css" rel="stylesheet" />
     <link href="fa/css/brands.min.css" rel="stylesheet" />
     <link href="fa/css/regular.min.css" rel="stylesheet" />
     <link href="fa/css/solid.min.css" rel="stylesheet" />
 
-    <!-- App Assets--> 
+    @* App Assets *@
     <link href="css/site.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/app.css" />
     <link href="ExMoney.styles.css" rel="stylesheet" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 
 <body>
-
-    <div class="status-bar-safe-area"></div>
-
-    <div id="app">
-        <div class="text-center">
-            <div class="spinner-border text-primary mx-2" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    </div>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
 
     <a href="/handle-payment/success" id="successOne"></a>
     <a href="/handle-payment/fail" id="failOne"></a>
 
     <div id="blazor-error-ui">
-        Une Erreur Fatale Est Survenue.
-        <a href="" class="reload">Recharger</a>
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
 
-    <!--@* js *@-->
+    @* js *@
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>
-    <!--@* validation *@-->
+    @* validation *@
     <script src="assets/libs/jquery-validation/jquery.validate.min.js"></script>
     <script src="assets/libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <!-- bs -->
+    @* bs *@
     <script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <!--charts-->
+    @* charts *@
     <script src="assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="assets/libs/simplebar/dist/simplebar.js"></script>
-    <!-- interop-->
+    @* interop *@
     <script src="js/exmoney.interop.js"></script>
     <script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
-    <!-- kkiapay-->
+    @* kkiapay *@
     <script src="https://cdn.kkiapay.me/k.js"></script>
 
     <script>
@@ -63,19 +64,20 @@
 
         addSuccessListener(response => {
             console.log(response);
+            @* window.location = "/handle-payment/success" *@
+            @* DotNet.invokeMethodAsync("ExMoney") *@
             sso.setAttribute("href", `/handle-payment/success/${response.transactionId}`)
             sso.click();
         });
 
         addFailedListener(error => {
             console.log(error);
+            @* window.location = "/handle-payment/fail" *@
             flo.click();
         });
     </script>
 
-    <!-- blazor assets -->
-    <script src="_framework/blazor.webview.js" autostart="false"></script>
-
+    <script src="_framework/blazor.server.js"></script>
 </body>
 
 </html>

@@ -1,26 +1,23 @@
 using System.Security.Claims;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
 
 namespace ExMoney.Authenticator
 {
-    public class KeycloakAuthenticator
+    public class AppAuthenticator
     {
         private readonly IdpAuthenticationOptions options;
         private readonly IDiscoveryCache discoveryCache;
-        private readonly ILogger logger;
         private HttpClient httpClient;
 
         public string RefreshToken { get; set; }
         public string IdToken { get; set; }
         public string AccessToken { get; set; }
 
-        public KeycloakAuthenticator(IOptions<IdpAuthenticationOptions> IdpOptions, IDiscoveryCache discoveryCache, ILogger<KeycloakAuthenticator> logger)
+        public AppAuthenticator(IOptions<IdpAuthenticationOptions> IdpOptions, IDiscoveryCache discoveryCache, ILogger<AppAuthenticator> logger)
         {
             options = IdpOptions.Value;
             this.discoveryCache = discoveryCache;
-            this.logger = logger;
             httpClient = new HttpClient();
         }
 
@@ -66,10 +63,9 @@ namespace ExMoney.Authenticator
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "oidc", ClaimTypes.Name, ClaimTypes.Role);
 
 
-                    logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(claims));
-                    logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(new { claimsIdentity.Name, claimsIdentity.AuthenticationType, claimsIdentity.IsAuthenticated, claimsIdentity.Label }));
+                    // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(claims));
+                    // Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new { claimsIdentity.Name, claimsIdentity.AuthenticationType, claimsIdentity.IsAuthenticated, claimsIdentity.Label }));
 
-                    //TODO: Map Roles
                     return (!response.IsError, claimsIdentity);
                 }
                 else
