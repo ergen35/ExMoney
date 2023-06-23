@@ -1,1 +1,72 @@
-@page "/handle-payment"
+@page "/handle-payment/{result}/{transactionId}"
+
+@inject NavigationManager navManager
+@inject IExMoneyTransactionsApi transactionsApi
+
+
+
+@if(result == "success")
+{
+    <div class="text-center mt-5">
+        <span class="d-block">
+            <span class="fas fa-check-circle fa-8x text-primary"></span>
+        </span>
+    
+        <span style="font-size: 25px;" class="fw-bolder text-success-emphasis">
+            Succes
+        </span>
+        <span class="d-block fs-4">
+            Votre transaction a bien été prise en compte
+        </span>
+    </div>
+
+    <span class="d-block text-center mt-3">
+        <a class="btn btn-primary" href="/"> <span class="fas fa-home me-1 "></span> Retour</a>
+    </span>
+}
+else
+{
+   <div class="text-center mt-5">
+        <span class="d-block">
+            <span class="fas fa-check-circle fa-8x text-danger-emphasis"></span>
+        </span>
+    
+        <span style="font-size: 25px;" class="fw-bolder text-success-emphasis">
+            Echec
+        </span>
+        <span class="d-block fs-4">
+            Votre transaction n'a pas aboutie.
+        </span>
+    </div>
+
+    <span class="d-block text-center mt-3">
+        <a class="btn btn-primary" href="/"> <span class="fas fa-home me-1 "></span> Retour</a>
+    </span>
+}
+
+
+@code{
+
+    [Parameter] public string result { get; set; }
+    [Parameter] public string transactionId { get; set; }
+
+    [CascadingParameter] public User CurrentUser { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PaymentStore.TransactionId = transactionId;
+
+        var dto = new TransactionCreateDTO {
+            Amount = PaymentStore.Amount,
+            BaseCurrencyId = PaymentStore.BaseCurrencyId,
+            ChangeCurrencyId = PaymentStore.ChangeCurrencyId ,
+            TransactionId = transactionId,
+            UserId = CurrentUser?.Id,
+            Date = PaymentStore.Date,
+            Rate = PaymentStore.Rate
+        };
+
+        var response = await transactionsApi.Create(dto);
+    }
+}
+

@@ -28,6 +28,9 @@
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
 
+    <a href="/handle-payment/success" id="successOne"></a>
+    <a href="/handle-payment/fail" id="failOne"></a>
+
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.
@@ -54,6 +57,26 @@
     <script src="_content/BlazorAnimate/blazorAnimateInterop.js"></script>
     @* kkiapay *@
     <script src="https://cdn.kkiapay.me/k.js"></script>
+
+    <script>
+        var sso = document.getElementById("successOne");
+        var flo = document.getElementById("failOne");
+
+        addSuccessListener(response => {
+            console.log(response);
+            @* window.location = "/handle-payment/success" *@
+            @* DotNet.invokeMethodAsync("ExMoney") *@
+            sso.setAttribute("href", `/handle-payment/success/${response.transactionId}`)
+            sso.click();
+        });
+
+        addFailedListener(error => {
+            console.log(error);
+            @* window.location = "/handle-payment/fail" *@
+            flo.click();
+        });
+    </script>
+
     <script src="_framework/blazor.server.js"></script>
 </body>
 

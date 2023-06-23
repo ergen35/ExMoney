@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using ExMoney.Authenticator;
 using IdentityModel.Client;
 using IdentityModel.OidcClient.Infrastructure;
+using ExMoney.Data;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 

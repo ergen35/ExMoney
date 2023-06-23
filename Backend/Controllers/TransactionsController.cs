@@ -42,15 +42,11 @@ namespace ExMoney.Backend.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<Transaction>> Add(string userId, TransactionCreateDTO data)
+        public async Task<ActionResult<Transaction>> Add(TransactionCreateDTO data)
         {
             //TODO: Do check user's existence
             var transaction = mapper.Map<Transaction>(data);
-
-            //TOD0: define rate
-            transaction.Rate = Random.Shared.NextDouble() * Random.Shared.Next(maxValue: 900, minValue: 1);
-            transaction.Date = DateTime.Now;
-            transaction.Status = TransactionStatus.Accepted;
+            transaction.Status = TransactionStatus.Processing;
 
             try
             {
@@ -66,7 +62,6 @@ namespace ExMoney.Backend.Controllers
                     Title = "Unknow error"
                 });
             }
-
 
             return Created(nameof(Add), transaction);
         }

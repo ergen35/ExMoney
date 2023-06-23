@@ -20,14 +20,8 @@ namespace ExMoney.SharedLibs
         //User making the transaction
         [Required] public string UserId { get; set; }
         public User User { get; set; }
-
-        //PayIn
-        public string PayInId { get; set; }
-        public PaymentOperation PayIn { get; set; }
-
-        //PayOut
-        public string PayOutId { get; set; }
-        public PaymentOperation PayOut { get; set; }
+        
+        [Required] public string TransactionId { get; set; }
     }
 
 }

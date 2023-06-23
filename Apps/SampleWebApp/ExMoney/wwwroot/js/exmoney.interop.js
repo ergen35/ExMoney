@@ -60,5 +60,4 @@ window.exmoneyInterop = {
         };
         new ApexCharts(document.querySelector("#earning"), earning).render();
     }
-
 }
