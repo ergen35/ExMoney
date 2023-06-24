@@ -40,15 +40,18 @@
                     {
                         if (Displayed.Any())
                         {
-                            <ul class="list-group list-group-light">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div class="fw-bold">John Doe</div>
-                                        <div class="text-muted">john.doe@gmail.com</div>
-                                    </div>
-                                    <span class="badge rounded-pill badge-success">Active</span>
-                                </li>
-                            </ul>
+                            foreach(var trans in Displayed)
+                            {
+                                <ul class="list-group list-group-light">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-bold">John Doe</div>
+                                            <div class="text-muted">john.doe@gmail.com</div>
+                                        </div>
+                                        <span class="badge rounded-pill badge-success">Active</span>
+                                    </li>
+                                </ul>
+                            }
                         }
                         else
                         {
@@ -74,6 +77,8 @@
     public bool showFiltered = false;
     
     public const string selectorVisualEffectCss = "outline-";
+    
+    [CascadingParameter] public User CurrentUser { get; set; }
 
     public List<Transaction> Transactions { get; set; }
     public List<Transaction> OnGoTransactions { get; set; }
@@ -83,9 +88,7 @@
     {
         if(firstRender)
         {
-            const string userId = "0f31b521-f866-4442-984b-cd85a9ee7a8f";
-
-            var latests = await transactionsApi.ListLastest(userId, count: 20);
+            var latests = await transactionsApi.ListLastest(CurrentUser.Id, count: 10);
             if (latests.IsSuccessStatusCode)
             {
                 Transactions = latests.Content!;

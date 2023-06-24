@@ -13,13 +13,12 @@ namespace ExMoney.SharedLibs
         [Required] public double Rate { get; set; } = 1.0;
         public TransactionStatus Status { get; set; } = TransactionStatus.NoStatus;
 
-        //Navigation properties
-        public Currency BaseCurrency { get; set; }
-        public Currency ChangeCurrency { get; set; }
+        //Currencies
+        public int BaseCurrencyId { get; set; }
+        public int ChangeCurrencyId { get; set; }
 
         //User making the transaction
         [Required] public string UserId { get; set; }
-        public User User { get; set; }
         
         [Required] public string TransactionId { get; set; }
     }

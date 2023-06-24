@@ -1,9 +1,11 @@
 using ExMoney.SharedLibs;
 using ExMoney.SharedLibs.DTOs;
+using ExMoney.Backend.Events;
 using AutoMapper;
 using ExMoney.Backend.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
 
 namespace ExMoney.Backend.Controllers
 {
@@ -13,11 +15,13 @@ namespace ExMoney.Backend.Controllers
     {
         private readonly IMapper mapper;
         private readonly BackendDbContext db;
+        private readonly IBus bus;
 
-        public TransactionsController(IMapper mapper, BackendDbContext db)
+        public TransactionsController(IMapper mapper, BackendDbContext db, IBus bus)
         {
             this.mapper = mapper;
             this.db = db;
+            this.bus = bus;
         }
 
         [HttpGet("list")]
@@ -53,6 +57,8 @@ namespace ExMoney.Backend.Controllers
                 db.Transactions.Add(transaction);
                 await db.SaveChangesAsync();
                 //TODO: propagate transaction created, prompt for payment  
+                
+                await bus.Publish(new TransactionCreatedEvent(transaction.Id, transaction.UserId));
             }
             catch (System.Exception)
             {
